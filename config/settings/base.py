@@ -52,6 +52,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# Modelo de usuario personalizado
+AUTH_USER_MODEL = "accounts.UsuarioBase"
+
+# Urls de sesión
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
 # Base de datos vacía por ahora, se define en cada entorno
 DATABASES = {}
 
