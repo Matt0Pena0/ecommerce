@@ -4,22 +4,28 @@
     # Añadir aqui las url necesarias
 
     {% comment %} <li><a href="{% url 'core:contact' %}">Contacto</a></li> {% endcomment %}
-    {% comment %} <li><a href="{% url 'core:register' %}">Registro</a></li> {% endcomment %}
 
     
   <section class="user">
     {% if request.user.is_authenticated %}
-      <p>Estás logueado como: {{request.user}}</p>
-      <form action="{% url 'accounts:logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Log Out</button>
-      </form>
+      <p>Estás logueado como: {{ request.user }}</p>
+      <li>
+        <a href="">
+          <form action="{% url 'accounts:logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Log Out</button>
+          </form>
+        </a>
+      </li>
     {% else %}
-      <form action="{% url 'accounts:login' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Iniciar Sesión</button>
-      </form>
+      <li>  
+        <a href="{% url 'accounts:login' %}"><button type="button">Iniciar Sesión</button></a>
+      </li>
+      <li>
+        <a href="{% url 'accounts:register' %}"><button type="button">Registrarse</button></a>
+      </li>
     {% endif %}
-    </section>
+  </section>
+
 
 </ul>

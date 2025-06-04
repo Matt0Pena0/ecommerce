@@ -9,6 +9,16 @@
 
     {% include '_includes/_header.html' %}
 
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          {% if message.tags %}<div class="{{ message.tags }}">{% endif %}
+            {{ message }}
+          {% if message.tags %}</div>{% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
     {% block page_content %}
 
     {% endblock %}
