@@ -1,0 +1,17 @@
+.main-header {
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 60px;
+}
+
+.logo-container img {
+  height: 150px;
+  width: auto;
+  object-fit: contain;
+}

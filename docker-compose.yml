@@ -1,0 +1,31 @@
+services:
+  db:
+    image: ${DB_IMAGE_NAME}
+    container_name: ${DB_CONTAINER_NAME}
+    environment:
+      MYSQL_ROOT_PASSWORD:   ${DB_PASS}
+      MYSQL_DATABASE:        ${DB_NAME}
+      MYSQL_USER:            ${DB_USER}
+      MYSQL_PASSWORD:        ${DB_PASS}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  web:
+    build: .
+    container_name: ${WEB_CONTAINER_NAME}
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+volumes:
+  db_data:

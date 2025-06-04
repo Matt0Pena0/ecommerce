@@ -1,0 +1,16 @@
+{% extends 'layout_base.html' %}
+
+{% block head_title %}Pagina Login{% endblock %}
+
+{% block page_content %}
+    <h1>This is the login page.</h1>
+
+  {% if error_message %}
+    <p>{{ error_message }}</p>
+  {% endif %}
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.as_p}}
+      <button>Enviar</button>
+    </form>
+{% endblock %}

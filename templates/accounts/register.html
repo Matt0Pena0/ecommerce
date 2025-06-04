@@ -1,0 +1,19 @@
+{% extends 'layout_base.html' %}
+
+{% block head_title %}Pagina de Registro{% endblock %}
+
+{% block page_content %}
+  <h1>Registro.</h1>
+  {% if form %}
+    {% if error_message %}
+      <p>{{ error_message }}</p>
+    {% endif %}
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.as_p}}
+      <button>Enviar</button>
+    </form>
+  {% else %}
+    <p>{{ msg }}</p>
+  {% endif %}
+{% endblock %}
