@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
+
+
 class UserRegisterForm(forms.Form):
     username = forms.CharField(max_length=140, label="Nombre de usuario")
     first_name = forms.CharField(max_length=140, label="Nombre")
@@ -11,7 +13,9 @@ class UserRegisterForm(forms.Form):
     email = forms.EmailField(max_length=140, label="Email")
 
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Contraseña")
-    password2 = forms.CharField(widget=forms.PasswordInput(), label="Repite tu contraseña")
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(), label="Repite tu contraseña"
+    )
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -24,7 +28,7 @@ class UserRegisterForm(forms.Form):
             validate_password(password2)
 
         return password2
-    
+
     def clean_email(self):
         email = self.cleaned_data.get("email")
         if User.objects.filter(email=email).exists():

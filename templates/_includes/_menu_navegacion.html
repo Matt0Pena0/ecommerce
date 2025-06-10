@@ -10,21 +10,19 @@
     {% if request.user.is_authenticated %}
       <p>Estás logueado como: {{ request.user }}</p>
       <li>
-        <a href="">
-          <form action="{% url 'accounts:logout' %}" method="post">
+        <form action="{% url 'accounts:logout' %}" method="post">
           {% csrf_token %}
-          <button type="submit">Log Out</button>
-          </form>
-        </a>
-      </li>
-    {% else %}
-      <li>  
-        <a href="{% url 'accounts:login' %}"><button type="button">Iniciar Sesión</button></a>
+          <button type="submit">Cerrar Sesión</button>
+        </form>
       </li>
       <li>
-        <a href="{% url 'accounts:register' %}"><button type="button">Registrarse</button></a>
+        <a href="{% url 'accounts:password_change' %}">Cambiar Contraseña</a>
       </li>
-    {% endif %}
+      {% else %}
+      <li><a href="{% url 'accounts:login' %}">Iniciar Sesión</a></li>
+      <li><a href="{% url 'accounts:register' %}">Registrarse</a></li>
+      <li><a href="{% url 'accounts:password_reset' %}">Recuperar Contraseña</a></li>
+      {% endif %}
   </section>
 
 

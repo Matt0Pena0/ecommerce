@@ -1,5 +1,5 @@
 from .base import *
-
+from decouple import config
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
@@ -29,3 +29,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_TO = config("EMAIL_TO")
+EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS")
+# EMAIL_USE_SSL = config("EMAIL_USE_SSL")

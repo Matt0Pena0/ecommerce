@@ -10,6 +10,9 @@ docker-compose exec web python3 manage.py makemigrations
 # Apply migrations to the database
 docker-compose exec web python3 manage.py migrate
 
+# Create a new app
+docker-compose exec web python3 manage.py startapp
+
 # Open Django shell
 docker-compose exec web python3 manage.py shell
 
