@@ -10,7 +10,7 @@ Date: Mon, 2 Jun 2025 20:04:32 -0000
   
   Recibimos una solicitud para restablecer tu contraseña. Hacé clic en el siguiente enlace para establecer una nueva:
   
-  {{ protocol }}://{{ domain }}{% url 'accounts:password_reset_confirm' uidb64=uid token=token %}
+  {{ protocol }}://{{ domain }}{% url 'accounts:password_reset:confirm' uidb64=uid token=token %}
   
   Si no solicitaste esto, podés ignorar este correo.
   

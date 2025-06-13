@@ -16,12 +16,12 @@
         </form>
       </li>
       <li>
-        <a href="{% url 'accounts:password_change' %}">Cambiar Contraseña</a>
+        <a href="{% url 'accounts:password_change:change' %}">Cambiar Contraseña</a>
       </li>
       {% else %}
       <li><a href="{% url 'accounts:login' %}">Iniciar Sesión</a></li>
       <li><a href="{% url 'accounts:register' %}">Registrarse</a></li>
-      <li><a href="{% url 'accounts:password_reset' %}">Recuperar Contraseña</a></li>
+      <li><a href="{% url 'accounts:password_reset:reset' %}">Recuperar Contraseña</a></li>
       {% endif %}
   </section>
 

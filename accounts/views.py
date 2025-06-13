@@ -42,8 +42,8 @@ class BaseUserRegisterView(FormView):
                 last_name=form.cleaned_data["last_name"],
             )
             messages.success(
-                self.request,
-                "Usuario creado correctamente. Inicie sesión.")
+                self.request, "Usuario creado correctamente. Inicie sesión."
+            )
         except IntegrityError:
             form.add_error("Error en la creación del usuario.")
             return self.form_invalid(form)
@@ -53,8 +53,8 @@ class BaseUserRegisterView(FormView):
 
 # Cambio de contraseña
 class BasePasswordChangeView(PasswordChangeView):
-    template_name = "accounts/password_change.html"
-    success_url = reverse_lazy("accounts:password_change_done")
+    template_name = "accounts/password_change/change.html"
+    success_url = reverse_lazy("accounts:password_change:done")
 
     def form_valid(self, form):
         messages.success(self.request, "Contraseña actualizada correctamente.")
@@ -62,40 +62,40 @@ class BasePasswordChangeView(PasswordChangeView):
 
 
 # Recuperación de contraseña
-from django.contrib.auth.views import (
-    PasswordResetCompleteView,
-    PasswordResetConfirmView,
-    PasswordResetDoneView,
-    PasswordResetView)
+from django.contrib.auth.views import (PasswordResetCompleteView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetDoneView,
+                                       PasswordResetView)
 
 
 class BasePasswordResetView(PasswordResetView):
-    template_name = "accounts/password_reset.html"
-    email_template_name = "accounts/password_reset_email.html"
-    subject_template_name = "accounts/password_reset_subject.txt"
-    success_url = reverse_lazy("accounts:password_reset_done")
+    template_name = "accounts/password_reset/reset.html"
+    email_template_name = "accounts/password_reset/email.html"
+    subject_template_name = "accounts/password_reset/subject.txt"
+    success_url = reverse_lazy("accounts:password_reset:done")
 
     def form_valid(self, form):
         messages.success(
             self.request,
-            "Se ha enviado un email con instrucciones para recuperar tu contraseña.")
+            "Correo enviado correctamente.",
+        )
         return super().form_valid(form)
 
 
 class BasePasswordResetDoneView(PasswordResetDoneView):
-    template_name = "accounts/password_reset_done.html"
+    template_name = "accounts/password_reset/done.html"
 
 
 class BasePasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = "accounts/password_reset_confirm.html"
-    success_url = reverse_lazy("accounts:password_reset_complete")
+    template_name = "accounts/password_reset/confirm.html"
+    success_url = reverse_lazy("accounts:password_reset/complete")
 
     def form_valid(self, form):
         messages.success(
-            self.request,
-            "Tu contraseña ha sido restablecida correctamente.")
+            self.request, "Tu contraseña ha sido restablecida correctamente."
+        )
         return super().form_valid(form)
 
 
 class BasePasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = "accounts/password_reset_complete.html"
+    template_name = "accounts/password_reset/complete.html"

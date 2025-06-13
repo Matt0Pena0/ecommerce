@@ -7,5 +7,4 @@ app_name = "core"
 
 urlpatterns = [
     path("", home_view, name="home"),
-    # path("contact/ccbv", ContactView.as_view(), name="contact"),
 ]
