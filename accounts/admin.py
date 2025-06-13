@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UsuarioBase, RolesBase
+from .models import RolesBase, UsuarioBase
 
 
 @admin.register(UsuarioBase)

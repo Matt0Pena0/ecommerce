@@ -1,6 +1,3 @@
-from django.db import models
-
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -17,4 +14,8 @@ class RolesBase(models.Model):
 
 
 class UsuarioBase(AbstractUser):
-    rol = models.ForeignKey(RolesBase, on_delete=models.SET_NULL, null=True, blank=True)
+    rol = models.ForeignKey(
+        RolesBase,
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
