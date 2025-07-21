@@ -5,14 +5,17 @@ from django.db import IntegrityError
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 
-from .forms import UserRegisterForm
+from .forms import CustomUserAuthenticationForm, UserRegisterForm
 
 
 # Inicio de sesión
 class BaseLoginView(LoginView):
     template_name = "accounts/login.html"
+    authentication_form = CustomUserAuthenticationForm
     redirect_authenticated_user = True
     success_url = reverse_lazy("core:home")
+
+
 
     def get_success_url(self):
         return self.success_url
@@ -30,24 +33,19 @@ User = get_user_model()
 class BaseUserRegisterView(FormView):
     form_class = UserRegisterForm
     template_name = "accounts/register.html"
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("accounts:login")
 
     def form_valid(self, form):
-        try:
-            user = User.objects.create_user(
+        user = User.objects.create_user(
                 username=form.cleaned_data["username"],
                 email=form.cleaned_data["email"],
                 password=form.cleaned_data["password1"],
                 first_name=form.cleaned_data["first_name"],
                 last_name=form.cleaned_data["last_name"],
             )
-            messages.success(
+        messages.success(
                 self.request, "Usuario creado correctamente. Inicie sesión."
             )
-        except IntegrityError:
-            form.add_error("Error en la creación del usuario.")
-            return self.form_invalid(form)
-
         return super().form_valid(form)
 
 
@@ -88,7 +86,7 @@ class BasePasswordResetDoneView(PasswordResetDoneView):
 
 class BasePasswordResetConfirmView(PasswordResetConfirmView):
     template_name = "accounts/password_reset/confirm.html"
-    success_url = reverse_lazy("accounts:password_reset/complete")
+    success_url = reverse_lazy("accounts:password_reset:complete")
 
     def form_valid(self, form):
         messages.success(

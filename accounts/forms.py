@@ -1,8 +1,16 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.forms import AuthenticationForm
 
 User = get_user_model()
+
+
+class CustomUserAuthenticationForm(AuthenticationForm):
+    error_messages = {
+        "invalid_login": "Por favor, introduzca un nombre de usuario y contraseña válidos.",
+        "inactive": "Esta cuenta está inactiva.",
+    }
 
 
 class UserRegisterForm(forms.Form):
@@ -27,6 +35,13 @@ class UserRegisterForm(forms.Form):
             validate_password(password2)
 
         return password2
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Este nombre de usuario ya está en uso.")
+
+        return username
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
