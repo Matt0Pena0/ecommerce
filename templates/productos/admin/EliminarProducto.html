@@ -1,0 +1,13 @@
+{% extends "LayoutBase.html" %}
+
+{% block head_title %}Confirmar eliminación{% endblock %}
+{% block page_title %}Eliminar Producto{% endblock %}
+
+{% block page_content %}
+<p>¿Estás seguro que deseás eliminar el producto "{{ object.nombre }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Sí, eliminar</button>
+  <a href="{% url 'productos:listar' %}">Cancelar</a>
+</form>
+{% endblock %}

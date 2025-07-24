@@ -9,6 +9,7 @@ __pycache__/
 media/
 staticfiles/
 node_modules/
+.venv/
 venv/
 .idea/
 .vscode/

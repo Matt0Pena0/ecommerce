@@ -2,30 +2,42 @@ services:
   db:
     image: ${DB_IMAGE_NAME}
     container_name: ${DB_CONTAINER_NAME}
+    volumes:
+      - mym_db_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD:   ${DB_PASS}
+      MYSQL_ROOT_PASSWORD:   ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE:        ${DB_NAME}
       MYSQL_USER:            ${DB_USER}
       MYSQL_PASSWORD:        ${DB_PASS}
     ports:
       - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}", "-e", "SELECT 1"]
+      interval: 10s
+      retries: 5
 
   web:
     build: .
     container_name: ${WEB_CONTAINER_NAME}
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000
+      "
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     environment:
-      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
-  db_data:
+  mym_db_data:
