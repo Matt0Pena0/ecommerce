@@ -1,0 +1,53 @@
+{% extends "LayoutBase.html" %}
+
+{% block head_title %}{% if object %}Editar{% else %}Nuevo{% endif %} Producto{% endblock %}
+{% block page_title %}{% if object %}Editar{% else %}Crear{% endif %} Producto{% endblock %}
+
+{% block page_content %}
+  <form method="post">
+    {% csrf_token %}
+    {% comment %} <p>
+      <label for="id_codigo">Código</label><br>
+      {{ form.codigo }}  {# esto ya es <input list="codigos_list" …> #}
+    </p> {% endcomment %}
+    {{ form.as_p }}
+
+
+    <button type="submit">
+      {% if object %}Guardar Cambios{% else %}Crear Producto{% endif %}
+    </button>
+  </form>
+
+  {# DATALISTS PARA AUTOCOMPLETE #}
+  <datalist id="codigos_list">
+    {% for c in codigos %}
+      <option value="{{ c }}"></option>
+    {% endfor %}
+  </datalist>
+
+  <datalist id="marcas_list">
+    {% for m in marcas %}
+      <option value="{{ m }}"></option>
+    {% endfor %}
+  </datalist>
+
+  <datalist id="categorias_list">
+    {% for c in categorias %}
+      <option value="{{ c }}"></option>
+    {% endfor %}
+  </datalist>
+
+  <datalist id="gondolas_list">
+    {% for g in gondolas %}
+      <option value="{{ g }}"></option>
+    {% endfor %}
+  </datalist>
+
+  <datalist id="unidades_list">
+    {% for u in unidades %}
+      <option value="{{ u }}"></option>
+    {% endfor %}
+  </datalist>
+
+<a href="{% url 'productos:listar' %}">← Volver a la lista</a>
+{% endblock %}
