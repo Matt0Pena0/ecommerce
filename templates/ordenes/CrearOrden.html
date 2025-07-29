@@ -1,0 +1,35 @@
+{% extends "LayoutBase.html" %}
+
+{% block head_title %}Cree su Orden de Compra:{% endblock %}
+
+{% block page_content %}
+
+<h2>Realizar nueva Orden de Compra</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  <table>
+    <tr>
+      <th>Producto</th>
+      <th>Precio Unitario</th>
+      <th>Unidad</th>
+      <th>Stock</th>
+      <th>Cantidad</th>
+    </tr>
+    {% for producto in productos %}
+      <tr>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.precio_unitario }}</td>
+        <td>{{ producto.unidad_medida.nombre }}</td>
+        <td>{{ producto.stock }}</td>
+        <td>
+          <input type="number" name="cantidad_{{ producto.codigo }}" min="0" max="100" value="0" />
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <button type="submit">Enviar Orden de Compra</button>
+</form>
+
+{% endblock %}

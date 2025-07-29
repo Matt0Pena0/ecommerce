@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "core",
     "accounts",
     "productos",
+    "ordenes",
 ]
 
 MIDDLEWARE = [
