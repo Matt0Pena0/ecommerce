@@ -27,9 +27,6 @@ class IExporter(Protocol):
 #             df.to_excel(writer, index=False, sheet_name="Pedido")
 #         return buffer.getvalue()
 
-# class TxtExporter:
-
-
 
 # class PDFExporter:
 #     def __init__(self, html_exporter: HTMLExporter):

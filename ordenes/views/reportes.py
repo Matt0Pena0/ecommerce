@@ -1,20 +1,14 @@
 from django.shortcuts import get_object_or_404
+from django.conf import settings
+import os
+
 from django.views import View
 from ordenes.models import Orden
 from ordenes.services.exporters.txt_exporter import TxtExporter
 # from ordenes.services.exporters.html_exporters import HTMLExporter
 # ExcelExporter, PDFExporter
 
-# En tu archivo de vistas (views.py)
 
-from django.conf import settings
-import os
-
-# ... (otras importaciones que ya tenías) ...
-from ordenes.models import Orden # Asegúrate de importar Orden
-from ordenes.services.exporters.txt_exporter import TxtExporter
-
-# ...
 
 def exportar_orden_a_txt(orden: Orden):
     """

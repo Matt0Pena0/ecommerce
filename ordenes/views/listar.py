@@ -12,6 +12,6 @@ class OrdenListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
         if user.is_superuser:
-            return Orden.objects.all().order_by("-fecha")
+            return Orden.objects.all().order_by("-creado")
 
-        return Orden.objects.filter(solicitante=user).order_by("-fecha")
+        return Orden.objects.filter(solicitante=user).order_by("-creado")

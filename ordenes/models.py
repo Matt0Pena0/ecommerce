@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.conf import settings
 
 from productos.models import Producto
@@ -24,17 +25,23 @@ from productos.models import Producto
 
 #     def __str__(self):
 #         return self.get_nombre_display()
-ESTADOS = [
-    ("pendiente",  "Pendiente"),
-    ("en_reparto", "En reparto"),
-    ("completado", "Completado"),
-]
+# ESTADOS = [
+#     ("pendiente",  "Pendiente"),
+#     ("en_reparto", "En reparto"),
+#     ("completado", "Completado"),
+# ]
+
+
+User = get_user_model()
 
 class Orden(models.Model):
-    solicitante = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    fecha = models.DateTimeField(auto_now_add=True)
-    estado = models.CharField(max_length=50, null=True, choices=ESTADOS, default="pendiente")
-    observaciones = models.TextField(blank=True)
+    solicitante = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ordenes")
+    creado = models.DateTimeField(auto_now_add=True)
+    # actualizado = models.DateTimeField(auto_now=True)
+    # estado = models.ForeignKey("EstadoOrden", on_delete=models.PROTECT)
+
+    def total(self):
+        return sum(item.subtotal() for item in self.items.all())
 
     # def save(self, *args, **kwargs):
     #     # Si es nuevo y no indicaron un estado, asignamos "pendiente"

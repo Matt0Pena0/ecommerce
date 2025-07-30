@@ -1,0 +1,38 @@
+{% extends "LayoutBase.html" %}
+{% block page_title %}Pedidos asignados{% endblock %}
+
+{% block page_content %}
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Fecha</th>
+    <th>Solicitante</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+  {% for orden in ordenes %}
+  <tr>
+    <td>{{ orden.id }}</td>
+    <td>{{ orden.fecha|date:"d/m/Y H:i" }}</td>
+    <td>{{ orden.solicitante.username }}</td>
+    <td>{{ orden.estado }}</td>
+    <td>{{ orden.detalle }}</td>
+    <td>{{ orden.observaciones|default:"-" }}</td>
+  </tr>
+  {% empty %}
+    <tr><td colspan="4">No se encontraron ordenes de compra.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
+
+  {% comment %}
+  <form method="get">
+    <label for="orden.estado">Filtrar por estado:</label>
+    <select name="orden.estado" onchange="this.form.submit()">
+      <option value="">-- Todos --</option>
+      {% for orden.estado in orden.estados %}
+        <option value="{{ orden.estado.nombre }}">{{ orden.estado.nombre }}</option>
+      {% endfor %}
+    </select>
+  </form> {% endcomment %}

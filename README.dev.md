@@ -114,3 +114,4 @@ docker compose build web
 # Remove dangling images and rebuild everything
 docker system prune -f && docker compose up --build
 ```
+

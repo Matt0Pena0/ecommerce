@@ -9,7 +9,7 @@
 <h2>Carrito de Compras</h2>
 
 {% if carrito.items.exists %}
-  <form method="POST" action="{% url 'ordenes:actualizar' %}">
+  <form method="POST" action="{% url 'carrito:actualizar' %}">
     {% csrf_token %}
     <table>
       <thead>
@@ -35,7 +35,7 @@
             </td>
             <td>${{ item.subtotal }}</td>
             <td>
-              <a href="{% url 'ordenes:eliminar' item.producto.codigo %}">❌</a>
+              <a href="{% url 'carrito:eliminar' item.producto.codigo %}">❌</a>
             </td>
           </tr>
         {% endfor %}
@@ -47,7 +47,7 @@
     <button type="submit">Actualizar Cantidades</button>
   </form>
 
-  <form method="POST" action="{% url 'ordenes:finalizar' %}">
+  <form method="POST" action="{% url 'ordenes:crear' %}">
     {% csrf_token %}
     <button type="submit" class="btn">🛒 Finalizar Compra</button>
   </form>

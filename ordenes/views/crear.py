@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-# from ordenes.services.exporters.txt_exporter import TxtExporter
+from ordenes.services.exporters.txt_exporter import TxtExporter
 from ordenes.views.reportes import exportar_orden_a_txt
-from ordenes.services.orden_service import OrdenService
 from productos.models import Producto
+
 
 
 @login_required
@@ -20,7 +20,7 @@ def crear_orden(request):
         observaciones = request.POST.get("observaciones", "")
 
         if items:
-            servicio = OrdenService()
+            servicio = TxtExporter()
             nueva_orden = servicio.crear_orden(
                 solicitante=request.user,
                 items=items,
@@ -31,4 +31,20 @@ def crear_orden(request):
         
     context = {"productos": productos}
 
-    return render(request, "ordenes/CrearOrden.html", context)
+    return render(request, "core/home.html", context)
+
+
+# @login_required
+# def finalizar_orden(request):
+#     carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
+
+#     if not carrito.items.exists():
+#         return redirect("carrito:crear")
+
+#     # Aquí podrías implementar la lógica para finalizar la orden
+#     # Por ejemplo, crear una instancia de Orden y asociarla con el carrito
+
+#     # Limpiar el carrito después de finalizar la orden
+#     carrito.items.all().delete()
+
+#     return redirect("carrito:crear")

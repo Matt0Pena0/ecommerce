@@ -1,0 +1,530 @@
+[
+  {
+    "nombre": "Servilletas",
+    "unidad": "unidad",
+    "marca": "Nova",
+    "descripcion": "doble hoja grande"
+  },
+  {
+    "nombre": "Servilletas",
+    "unidad": "unidad",
+    "marca": "Nova",
+    "descripcion": "doble hoja de 100mts"
+  },
+  {
+    "nombre": "Servilletas",
+    "unidad": "unidad",
+    "marca": "Nova",
+    "descripcion": "gigante"
+  },
+  {
+    "nombre": "Papel higiénico",
+    "unidad": "unidad",
+    "marca": "Sublime",
+    "descripcion": "doble hoja"
+  },
+  {
+    "nombre": "Papel higiénico",
+    "unidad": "unidad",
+    "marca": "Sublime",
+    "descripcion": "PH sublime azul"
+  },
+  {
+    "nombre": "Aceite",
+    "unidad": "unidad",
+    "marca": "Óptimo",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Jabón en polvo",
+    "unidad": "unidad",
+    "marca": "Gramby",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Suavizante",
+    "unidad": "unidad",
+    "marca": "Confort",
+    "descripcion": "naranja"
+  },
+  {
+    "nombre": "Lavandina",
+    "unidad": "unidad",
+    "marca": "Jane",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Detergente",
+    "unidad": "unidad",
+    "marca": "CIF",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Arroz",
+    "unidad": "unidad",
+    "marca": "Parboiled",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Arroz",
+    "unidad": "unidad",
+    "marca": "Saman",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Arroz",
+    "unidad": "unidad",
+    "marca": "Carnaroli",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Manteca",
+    "unidad": "unidad",
+    "marca": "Conaprole",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Manteca",
+    "unidad": "unidad",
+    "marca": "Conaprole",
+    "descripcion": "de 200g"
+  },
+  {
+    "nombre": "Pan lactal",
+    "unidad": "unidad",
+    "marca": "Los Sorchantes",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Pan lactal",
+    "unidad": "unidad",
+    "marca": "Bimbo",
+    "descripcion": "de semillas"
+  },
+  {
+    "nombre": "Pan lactal",
+    "unidad": "unidad",
+    "marca": "Bimbo Vital",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Pan rayado",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Requesón",
+    "unidad": "unidad",
+    "marca": "Conaprole",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Queso Philadelphia",
+    "unidad": "unidad",
+    "marca": "Philadelphia",
+    "descripcion": "original"
+  },
+  {
+    "nombre": "Queso Philadelphia",
+    "unidad": "unidad",
+    "marca": "Philadelphia",
+    "descripcion": "común"
+  },
+  {
+    "nombre": "Pulpa de tomate",
+    "unidad": "unidad",
+    "marca": "Conaprole",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Harina 0000",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Mayonesa",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "tipo casera"
+  },
+  {
+    "nombre": "Mayonesa",
+    "unidad": "unidad",
+    "marca": "Hellmans",
+    "descripcion": "casera"
+  },
+  {
+    "nombre": "Mayonesa",
+    "unidad": "unidad",
+    "marca": "Hellmans",
+    "descripcion": "azul"
+  },
+  {
+    "nombre": "Ketchup",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Mostaza",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Azúcar",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Vascolet",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Vascolet",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "oreo"
+  },
+  {
+    "nombre": "Tallarines",
+    "unidad": "unidad",
+    "marca": "Cololo",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Tirabuzones",
+    "unidad": "unidad",
+    "marca": "Adria",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Suavizante",
+    "unidad": "unidad",
+    "marca": "Downy",
+    "descripcion": "rosado"
+  },
+  {
+    "nombre": "Fundas de leche",
+    "unidad": "unidad",
+    "marca": "Parmalat",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Fundas de leche",
+    "unidad": "unidad",
+    "marca": "Parmalat",
+    "descripcion": "de 6"
+  },
+  {
+    "nombre": "Talco corporal",
+    "unidad": "unidad",
+    "marca": "Sr Selby",
+    "descripcion": "perfumado"
+  },
+  {
+    "nombre": "Talco para pies",
+    "unidad": "unidad",
+    "marca": "Xabapie",
+    "descripcion": "frasco grande"
+  },
+  {
+    "nombre": "Desodorante",
+    "unidad": "unidad",
+    "marca": "Dove",
+    "descripcion": "coco"
+  },
+  {
+    "nombre": "Desodorante",
+    "unidad": "unidad",
+    "marca": "Old Spice",
+    "descripcion": "negro vip"
+  },
+  {
+    "nombre": "Desodorante",
+    "unidad": "unidad",
+    "marca": "Rexona",
+    "descripcion": "odorno en crema"
+  },
+  {
+    "nombre": "Desodorante",
+    "unidad": "unidad",
+    "marca": "Rexona",
+    "descripcion": "sensitive en crema"
+  },
+  {
+    "nombre": "Limpiador Pato",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "para inodoro floral"
+  },
+  {
+    "nombre": "Galletas",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "cerealitas de arroz"
+  },
+  {
+    "nombre": "Fideos",
+    "unidad": "unidad",
+    "marca": "Adria",
+    "descripcion": "colita de chancho"
+  },
+  {
+    "nombre": "Fideos",
+    "unidad": "unidad",
+    "marca": "Adria",
+    "descripcion": "moñas"
+  },
+  {
+    "nombre": "Polenta",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Pasta de dientes",
+    "unidad": "unidad",
+    "marca": "Colgate",
+    "descripcion": "max white blanca grande"
+  },
+  {
+    "nombre": "Pasta de dientes",
+    "unidad": "unidad",
+    "marca": "Colgate",
+    "descripcion": "grande triple acción"
+  },
+  {
+    "nombre": "Galletas",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "malteada la trigueña"
+  },
+  {
+    "nombre": "Raid",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "mata moscas y mosquitos"
+  },
+  {
+    "nombre": "Raid",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "mata cucarachas"
+  },
+  {
+    "nombre": "Pastillas de mosquitos",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Salsa de soja",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Papel de cocina",
+    "unidad": "unidad",
+    "marca": "Nova",
+    "descripcion": "doble hoja"
+  },
+  {
+    "nombre": "Royal",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "de 200g"
+  },
+  {
+    "nombre": "Levadura instantánea",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "caja"
+  },
+  {
+    "nombre": "Dulce de leche",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "manjar"
+  },
+  {
+    "nombre": "Suavizante",
+    "unidad": "unidad",
+    "marca": "Confort",
+    "descripcion": "rosado o naranja"
+  },
+  {
+    "nombre": "Sal fina",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Maicena",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Palillos de plástico",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Ajo deshidratado",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Repuesto líquido para aparato de mosquitos",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Veneno para cucarachas",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "casitas"
+  },
+  {
+    "nombre": "Acondicionador",
+    "unidad": "unidad",
+    "marca": "Treseme",
+    "descripcion": "880ml"
+  },
+  {
+    "nombre": "Detergente",
+    "unidad": "unidad",
+    "marca": "Axion",
+    "descripcion": "2lt"
+  },
+  {
+    "nombre": "Aceto balsámico",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Shampoo y acondicionador",
+    "unidad": "unidad",
+    "marca": "Elvive",
+    "descripcion": "grande óleo"
+  },
+  {
+    "nombre": "Shampoo y acondicionador",
+    "unidad": "unidad",
+    "marca": "Elvive",
+    "descripcion": "400ml óleo extraordinario"
+  },
+  {
+    "nombre": "Bidón de 5L",
+    "unidad": "unidad",
+    "marca": "CIF",
+    "descripcion": "perfumol rosado"
+  },
+  {
+    "nombre": "Bidón de 5L",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "de aceite"
+  },
+  {
+    "nombre": "Aguajane",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Fideos",
+    "unidad": "unidad",
+    "marca": "Adria",
+    "descripcion": "mostacholitos"
+  },
+  {
+    "nombre": "Calditos de verduras",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "caja de 12"
+  },
+  {
+    "nombre": "Rapiditas",
+    "unidad": "unidad",
+    "marca": "Bimbo",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Aerosol Lysoform",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Calditos de gallina",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "caja de 12"
+  },
+  {
+    "nombre": "Calditos de panceta",
+    "unidad": "unidad",
+    "marca": "",
+    "descripcion": "caja de 12"
+  },
+  {
+    "nombre": "Aromatizador",
+    "unidad": "unidad",
+    "marca": "Glade",
+    "descripcion": "de vainilla"
+  },
+  {
+    "nombre": "Bolsitas",
+    "unidad": "Rollo",
+    "marca": "",
+    "descripcion": "de 24x34"
+  },
+  {
+    "nombre": "Bolsitas",
+    "unidad": "Rollo",
+    "marca": "",
+    "descripcion": "de 38x38"
+  },
+  {
+    "nombre": "Puré instantáneo",
+    "unidad": "500g",
+    "marca": "",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Queso crema",
+    "unidad": "unidad",
+    "marca": "Casan cream",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Corbatitas",
+    "unidad": "Kg",
+    "marca": "Adria",
+    "descripcion": ""
+  },
+  {
+    "nombre": "Nylon film",
+    "unidad": "Rollo",
+    "marca": "",
+    "descripcion": "de 28 cm"
+  },
+  {
+    "nombre": "Leche chocolatada",
+    "unidad": "Lt",
+    "marca": "Conaprole",
+    "descripcion": ""
+  }
+]
