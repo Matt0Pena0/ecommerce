@@ -1,16 +1,16 @@
-.main-header {
-  padding: 1rem;
+.page-content {
+  padding-top: 5rem;
   border-bottom: 1px solid #ccc;
 }
 
-.logo-container {
+.logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   height: 60px;
 }
 
-.logo-container img {
+.logo img {
   height: 150px;
   width: auto;
   object-fit: contain;

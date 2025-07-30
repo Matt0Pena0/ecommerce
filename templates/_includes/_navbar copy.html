@@ -1,0 +1,50 @@
+{% load static %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+{% endblock head %}
+
+
+<nav class="navbar">
+  <ul>
+    <li><a href="{% url 'core:home' %}">Inicio</a></li>
+    # Añadir aqui las url necesarias
+
+    {% comment %} <li><a href="{% url 'core:contact' %}">Contacto</a></li> {% endcomment %}
+
+    
+  <section class="user">
+    {% if request.user.is_authenticated %}
+      <p>Estás logueado como: {{ request.user }}</p>
+      <li>
+        <form action="{% url 'accounts:logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Cerrar Sesión</button>
+        </form>
+      </li>
+      <li><a href="{% url 'accounts:password_change:change' %}">Cambiar Contraseña</a></li>
+      
+      <hr>
+      <li><a href="{% url 'productos:listar' %}">Listar Productos</a></li>
+      {% if request.user.is_superuser %}
+<<<<<<<< HEAD:templates/_includes/_navbar.html
+        <li><a href="{% url 'productos:crear' %}">Crear Producto</a></li>
+      {% endif %}
+      {% else %}
+========
+      <li><a href="{% url 'productos:crear' %}">Crear Producto</a></li>
+      {% endif %}
+      <hr>
+    <li><a href="{% url 'ordenes:listar' %}">Listar Ordenes</a></li>
+    <li><a href="{% url 'ordenes:crear' %}">Crear Orden de Compra</a></li>
+    {% else %}
+      <hr>
+>>>>>>>> dev:templates/_includes/_navbar copy.html
+      <li><a href="{% url 'accounts:login' %}">Iniciar Sesión</a></li>
+      <li><a href="{% url 'accounts:register' %}">Registrarse</a></li>
+      <li><a href="{% url 'accounts:password_reset:reset' %}">Recuperar Contraseña</a></li>
+    {% endif %}
+  </section>
+
+
+</ul>
+</nav>

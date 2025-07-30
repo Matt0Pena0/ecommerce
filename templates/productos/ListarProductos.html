@@ -1,72 +1,128 @@
 {% extends "LayoutBase.html" %}
+{% load static %}
 
 {% block head_title %}Catálogo de Productos{% endblock %}
 {% block page_title %}Todos los Productos{% endblock %}
 
+{% block head %} 
+  <link rel="stylesheet" href="{% static 'css/card.css' %}">
+{% endblock head %}
 
 {% block page_content %}
   {% if request.user.is_superuser %}
-    <p>
-      <a href="{% url 'productos:crear' %}" class="btn">
-        ➕ Nuevo Producto
-      </a>
-    </p>
+  <p>
+    <a href="{% url 'productos:crear' %}" class="btn">
+      ➕ Nuevo Producto
+    </a>
+  </p>
   {% endif %}
-
-  <form method="get" class="filtros-form">
-  
-    <select name="order">
-      {% for opt in order_fields %}
-        <option value="{{ opt.key }}"
-          {% if opt.key == current_order %}selected{% endif %}>
-          {{ opt.label }}
+  <div class="product-filters">
+    <form method="get" class="filtros-form">
+      <select name="order">
+        {% for opt in order_fields %}
+          <option value="{{ opt.key }}"
+            {% if opt.key == current_order %}selected{% endif %}>
+            {{ opt.label }}
+          </option>
+        {% endfor %}
+      </select>
+      <input type="text"   name="q"       placeholder="Buscar nombre…" value="{{ request.GET.q }}">
+      <input type="text"   name="codigo"  placeholder="Buscar código…" value="{{ request.GET.codigo }}">
+      <select name="marca">
+        <option value="">--Marca--</option>
+        {% for m in marcas %}
+          <option value="{{ m.id }}" {% if request.GET.marca == m.id|stringformat:"s" %}selected{% endif %}>
+            {{ m.nombre }}
+          </option>
+        {% endfor %}
+      </select>
+      <select name="categoria">
+        <option value="">--Categoría--</option>
+        {% for c in categorias %}
+          <option value="{{ c.id }}" {% if request.GET.categoria == c.id|stringformat:"s" %}selected{% endif %}>
+            {{ c.nombre }}
+          </option>
+        {% endfor %}
+      </select>
+      <select name="gondola">
+        <option value="">--Góndola--</option>
+        {% for g in gondolas %}
+          <option value="{{ g.id }}" {% if request.GET.gondola == g.id|stringformat:"s" %}selected{% endif %}>
+            {{ g.nombre }}
+          </option>
+        {% endfor %}
+      </select>
+      <select name="stock">
+        <option value="">--Stock--</option>
+        <option value="available" {% if request.GET.stock == "available" %}selected{% endif %}>
+          Con stock
         </option>
-      {% endfor %}
-    </select>
-  
-    <input type="text"   name="q"       placeholder="Buscar nombre…" value="{{ request.GET.q }}">
-    <input type="text"   name="codigo"  placeholder="Buscar código…" value="{{ request.GET.codigo }}">
-
-    <select name="marca">
-      <option value="">--Marca--</option>
-      {% for m in marcas %}
-        <option value="{{ m.id }}" {% if request.GET.marca == m.id|stringformat:"s" %}selected{% endif %}>
-          {{ m.nombre }}
+        <option value="out" {% if request.GET.stock == "out" %}selected{% endif %}>
+          Sin stock
         </option>
-      {% endfor %}
-    </select>
+      </select>
+      <button type="submit">Filtrar</button>
+    </form>
+  </div>
 
-    <select name="categoria">
-      <option value="">--Categoría--</option>
-      {% for c in categorias %}
-        <option value="{{ c.id }}" {% if request.GET.categoria == c.id|stringformat:"s" %}selected{% endif %}>
-          {{ c.nombre }}
-        </option>
-      {% endfor %}
-    </select>
+  <div class="product-container">
+  {% for p in productos %}
+  <div class="card">
+    <div class="badge">HOT SALE</div>
+    <div class="img">
+      <img src="{% static 'img/producto.png' %}" alt="">
+    </div>
 
-    <select name="gondola">
-      <option value="">--Góndola--</option>
-      {% for g in gondolas %}
-        <option value="{{ g.id }}" {% if request.GET.gondola == g.id|stringformat:"s" %}selected{% endif %}>
-          {{ g.nombre }}
-        </option>
-      {% endfor %}
-    </select>
+    <div class="info">
+      <h2 class="title">{{ p.nombre }}</h2>
+      <div class="cat">
+        <span class="sub-cat">{{ p.categoria.nombre }}</span>
+        <span class="sub-cat">{{ p.gondola.nombre }}</span>
+      </div>
 
-    <select name="stock">
-      <option value="">--Stock--</option>
-      <option value="available" {% if request.GET.stock == "available" %}selected{% endif %}>
-        Con stock
-      </option>
-      <option value="out" {% if request.GET.stock == "out" %}selected{% endif %}>
-        Sin stock
-      </option>
-    </select>
+      <div class="bottom">
+        <div class="price">
+          {% if p.onSale %}
+            <span class="old">precio sin descuento</span>
+            <span class="new">precio con descuento</span>
+          {% else %}
+            <span class="price">${{ p.precio_unitario }}</span>
+          {% endif %}
+        </div>
 
-    <button type="submit">Filtrar</button>
-  </form>
+        <div class="stock">
+          {% if p.stock > 0 %}
+            Con stock
+          {% else %}
+            Sin stock
+          {% endif %}
+        </div>
+      </div>
 
+      {% if request.user.is_authenticated %}
+      <div class="action-orden">
+        <form action="">
+          <input class="quantity" type="number" name="cantidad_{{ p.codigo }}" min="1"/>
+          <div add-to-cart>
+            <button class="btn" type="submit">
+              <span class="btn-text">Agregar al carrito</span>
+              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+  {% endfor %}
+  </div>
+
+{% comment %} 
   <table>
     <thead>
       <tr>
@@ -84,7 +140,6 @@
       </tr>
     </thead>
     <tbody>
-      {% for p in productos %}
         <tr>
           <td>{{ p.codigo }}</td>
           <td>{{ p.nombre }}</td>
@@ -108,4 +163,10 @@
       {% endfor %}
     </tbody>
   </table>
+<<<<<<< HEAD
 {% endblock %}
+=======
+  {% endcomment %}
+
+{% endblock %} 
+>>>>>>> dev
