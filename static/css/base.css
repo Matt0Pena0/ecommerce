@@ -15,3 +15,29 @@
   width: auto;
   object-fit: contain;
 }
+.alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.alert {
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.alert-success {
+  background-color: #28a745;
+}
+.alert-error, .alert-danger {
+  background-color: #dc3545;
+}
+.alert-warning {
+  background-color: #ffc107;
+  color: #000;
+}

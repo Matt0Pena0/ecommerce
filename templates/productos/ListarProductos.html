@@ -6,6 +6,7 @@
 
 {% block head %} 
   <link rel="stylesheet" href="{% static 'css/card.css' %}">
+  <script src="{% static 'js/app.js' %}" defer></script>
 {% endblock head %}
 
 {% block page_content %}
@@ -101,7 +102,20 @@
 
         {% if request.user.is_authenticated %}
         <div class="action-orden">
-          <form method="POST" action="{% url 'carrito:agregar_al_carrito' p.codigo %}">
+            <form class="add-to-cart-form" method="POST" data-codigo="{{ p.codigo }}">
+                {% csrf_token %}
+                <input class="quantity" type="number" value="0" min="1" max="{{ p.stock }}">
+                <div add-to-cart>
+                    <button class="btn" type="submit">
+                        <span class="btn-text">Agregar al carrito</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% endif %}
+
+          {% comment %} <form method="POST" action="{% url 'carrito:agregar_al_carrito' p.codigo %}">
             {% csrf_token %}
             <input class="quantity" type="number" name="cantidad_{{ p.codigo }}" min="1" max="{{ p.stock }}">
             <div add-to-cart>
@@ -114,56 +128,10 @@
                 </svg>
               </button>
             </div>
-          </form>
+            </form> {% endcomment %}
         </div>
-        {% endif %}
+        
       </div>
-
-    </div>
-    {% endfor %}
-  </div>
-
-{% comment %} 
-  <table>
-    <thead>
-      <tr>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Marca</th>
-        <th>Categoría</th>
-        <th>Góndola</th>
-        <th>Unidad</th>
-        <th>Precio</th>
-        <th>Stock</th>
-        {% if request.user.is_superuser %}
-          <th>Acciones</th>
-        {% endif %}
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>{{ p.codigo }}</td>
-          <td>{{ p.nombre }}</td>
-          <td>{{ p.marca.nombre }}</td>
-          <td>{{ p.categoria.nombre }}</td>
-          <td>{{ p.gondola.nombre }}</td>
-          <td>{{ p.unidad_medida.nombre }}</td>
-          <td>{{ p.precio_unitario }}</td>
-          <td>{{ p.stock }}</td>
-          <td>
-            {% if request.user.is_superuser %}
-              <a href="{% url 'productos:actualizar' p.pk %}">✏️</a>
-              <a href="{% url 'productos:eliminar'   p.pk %}">🗑️</a>
-            {% endif %}
-          </td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="9">No hay productos para mostrar.</td>
-        </tr>
       {% endfor %}
-    </tbody>
-  </table>
-  {% endcomment %}
-
+  </div>
 {% endblock %} 
