@@ -1,15 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib import messages
 import json
 
-from ordenes.views.reportes import exportar_orden_a_txt
 from carrito.models import Carrito, ItemCarrito
-from ordenes.models import Orden, ItemOrden
 from productos.models import Producto
+from ordenes.services.crear_orden_service import OrdenService
+
+
+@login_required
+def obtener_carrito_usuario(request):
+    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
+
+    return carrito, _
 
 
 @login_required
@@ -26,7 +31,7 @@ def agregar_al_carrito_api(request):
             return JsonResponse({"error": "Datos inválidos"}, status=400)
 
         producto = get_object_or_404(Producto, codigo=producto_codigo)
-        carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
+        carrito, _ = obtener_carrito_usuario(request)
         item, creado = ItemCarrito.objects.get_or_create(
             carrito=carrito,
             producto=producto,
@@ -56,6 +61,7 @@ def agregar_al_carrito_api(request):
         traceback.print_exc()  # Muestra el error completo en consola
         return JsonResponse({"error": str(e)}, status=500)
 
+"""
 # @login_required
 # def agregar_al_carrito(request, producto_codigo):
 #     producto = get_object_or_404(Producto, codigo=producto_codigo)
@@ -95,23 +101,19 @@ def agregar_al_carrito_api(request):
 #             messages.success(request, f"'{producto.nombre}' fue agregado al carrito.")
 
 #     return redirect("productos:listar")
-
-
-@login_required
-def obtener_carrito_usuario(request):
-    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
-    return carrito
+"""
 
 
 @login_required
 def ver_carrito(request):
-    carrito = obtener_carrito_usuario(request)
+    carrito, _ = obtener_carrito_usuario(request)
+
     return render(request, "carrito/VerCarrito.html", {"carrito": carrito})
 
 
 @login_required
 def actualizar_carrito(request):
-    carrito = obtener_carrito_usuario(request)
+    carrito, _ = obtener_carrito_usuario(request)
 
     if request.method == "POST":
         for item in carrito.items.all():
@@ -141,7 +143,7 @@ def actualizar_carrito(request):
 
 @login_required
 def eliminar_item_carrito(request, producto_codigo):
-    carrito = obtener_carrito_usuario(request)
+    carrito, _ = obtener_carrito_usuario(request)
     item = carrito.items.filter(producto__codigo=producto_codigo).first()
     if item:
         item.delete()
@@ -151,24 +153,15 @@ def eliminar_item_carrito(request, producto_codigo):
 
 @login_required
 def finalizar_carrito(request):
-    carrito = obtener_carrito_usuario(request)
+    carrito, _ = obtener_carrito_usuario(request)
 
     if not carrito.items.exists():
         messages.warning(request, "Tu carrito está vacío.")
-        return redirect("carrito:ver_carrito")
+        return redirect("productos:listar")
 
-    # Crear la orden
-    orden = Orden.objects.create(solicitante=request.user)
-
-    # Crear los items en la orden
-    for item in carrito.items.all():
-        ItemOrden.objects.create(
-            orden=orden,
-            producto=item.producto,
-            cantidad=item.cantidad,
-        )
-
-    exportar_orden_a_txt(orden)
+    items = [(item.producto, item.cantidad) for item in carrito.items.all()]
+    orden_service = OrdenService()
+    orden = orden_service.crear_orden(request.user, items)
 
     # Limpiar carrito
     carrito.items.all().delete()
