@@ -1,0 +1,14 @@
+{% load static %}
+<div>
+  <script type="module">
+    import { showToast } from {% static 'js/toast.js' %};
+
+    document.addEventListener('DOMContentLoaded', () => {
+      {% if messages %}
+        {% for message in messages %}
+          showToast("{{ message|escapejs }}", "{{ message.tags }}");
+        {% endfor %}
+      {% endif %}
+    });
+  </script>
+</div>

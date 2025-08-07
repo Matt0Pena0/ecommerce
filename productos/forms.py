@@ -2,14 +2,24 @@ from django import forms
 import unicodedata
 import re
 
+from accounts.utils import RolRequeridoMixin
 from productos.models import Producto, Codigo, Marca, Categoria, Gondola, UnidadMedida
 
 
-class CreateOrGetModelChoiceField(forms.ModelChoiceField):
+class CreateOrGetModelChoiceField(forms.ModelChoiceField, RolRequeridoMixin):
     """
-    Un ModelChoiceField que, si el valor no coincide con ninguna instancia,
-    la crea con get_or_create() usando el campo `nombre`.
+    Campo personalizado que extiende ModelChoiceField.
+
+    Permite ingresar texto libre en lugar de seleccionar una opción existente.
+    Si el valor ingresado no coincide con ninguna instancia del queryset,
+    se crea una nueva utilizando el campo `nombre`.
+
+    Métodos:
+        normalize(value): Normaliza el texto para comparación (minúsculas, sin tildes, sin puntuación).
+        to_python(value): Devuelve la instancia correspondiente o crea una nueva si no existe.
+        prepare_value(value): Convierte el valor para mostrarlo correctamente en el formulario.
     """
+    rol_requerido = ["admin"]
 
     def normalize(self, value: str) -> str:
         """
@@ -55,7 +65,26 @@ class CreateOrGetModelChoiceField(forms.ModelChoiceField):
             return value.nombre
         return super().prepare_value(value)
 
-class ProductoForm(forms.ModelForm):
+class ProductoForm(forms.ModelForm, RolRequeridoMixin):
+    """
+    Formulario para crear o actualizar instancias de Producto.
+
+    Campos personalizados:
+        - `codigo`: Campo libre para ingresar un código único.
+        - `marca`, `categoria`, `gondola`, `unidad_medida`: Campos que permiten
+        seleccionar o crear nuevas instancias mediante texto libre.
+
+    Validaciones:
+        - `clean_codigo()`: Verifica que el código ingresado no esté duplicado
+        en otra instancia de Producto.
+
+    Meta:
+        `model` (Producto): Modelo asociado.
+        `fields` (list): Campos incluidos en el formulario.
+        `exclude` (list): Campos excluidos del formulario.
+    """
+    rol_requerido = ["admin"]
+
     codigo = forms.CharField(
         max_length=20,
         required=False,

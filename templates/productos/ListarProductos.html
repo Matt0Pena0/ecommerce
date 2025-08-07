@@ -6,7 +6,7 @@
 
 {% block head %} 
   <link rel="stylesheet" href="{% static 'css/card.css' %}">
-  <script src="{% static 'js/app.js' %}" defer></script>
+  <script src="{% static 'js/agregar_al_carrito.js' %}" defer></script>
 {% endblock head %}
 
 {% block page_content %}
@@ -102,36 +102,19 @@
 
         {% if request.user.is_authenticated %}
         <div class="action-orden">
-            <form class="add-to-cart-form" method="POST" data-codigo="{{ p.codigo }}">
-                {% csrf_token %}
-                <input class="quantity" type="number" value="0" min="1" max="{{ p.stock }}">
-                <div add-to-cart>
-                    <button class="btn" type="submit">
-                        <span class="btn-text">Agregar al carrito</span>
-                    </button>
-                </div>
-            </form>
+          <form class="add-to-cart-form" method="POST" data-codigo="{{ p.codigo }}">
+              {% csrf_token %}
+              <input class="quantity" type="number" value="0" min="1" max="{{ p.stock }}">
+              <div add-to-cart>
+                  <button class="btn" type="submit">
+                      <span class="btn-text">Agregar al carrito</span>
+                  </button>
+              </div>
+          </form>
         </div>
-        
         {% endif %}
-
-          {% comment %} <form method="POST" action="{% url 'carrito:agregar_al_carrito' p.codigo %}">
-            {% csrf_token %}
-            <input class="quantity" type="number" name="cantidad_{{ p.codigo }}" min="1" max="{{ p.stock }}">
-            <div add-to-cart>
-              <button class="btn" type="submit">
-                <span class="btn-text">Agregar al carrito</span>
-                <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4"/>
-                  <line x1="3" y1="6" x2="21" y2="6"/>
-                  <path d="M16 10a4 4 0 01-8 0"/>
-                </svg>
-              </button>
-            </div>
-            </form> {% endcomment %}
-        </div>
-        
       </div>
-      {% endfor %}
+    </div>
+    {% endfor %}
   </div>
 {% endblock %} 

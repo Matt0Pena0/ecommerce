@@ -47,13 +47,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-// Función para mostrar notificaciones "toast"
-function showToast(message, type = 'info') {
-    // (Esta es la misma función de la respuesta anterior para mostrar notificaciones)
-    const toast = document.createElement('body');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => { toast.remove(); }, 3000);
-}

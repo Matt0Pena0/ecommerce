@@ -11,6 +11,17 @@ from .forms import CustomUserAuthenticationForm, UserRegisterForm
 
 # Inicio de sesión
 class BaseLoginView(LoginView):
+    """
+    Vista personalizada para el inicio de sesión de usuarios, que hereda de 
+        :view: `LoginView`.
+
+    - Usa un formulario de autenticación personalizado, para la personalización de `error_messages`.
+        :form: `CustomUserAuthenticationForm`
+    
+    - Redirige a  automáticamente si el usuario ya está autenticado.
+        :template: `accounts/Login.html`.
+    """
+
     template_name = "accounts/Login.html"
     authentication_form = CustomUserAuthenticationForm
     redirect_authenticated_user = True
@@ -22,6 +33,14 @@ class BaseLoginView(LoginView):
 
 # Cierre de sesión
 class BaseLogoutView(LogoutView):
+    """
+    Vista base, herda de:
+        :view: `LogoutView`
+
+    Redirige a la vista de Login:
+        :view: `accounts.BaseLoginView`
+    """
+
     next_page = reverse_lazy("accounts:login")
 
 
@@ -29,6 +48,12 @@ class BaseLogoutView(LogoutView):
 User = get_user_model()
 
 class BaseUserRegisterView(FormView):
+    """
+    Vista personalizada para registrar un nuevo usuario, hereda de:
+        :form: `accounts.forms.FormView`
+    """
+
+
     form_class = UserRegisterForm
     template_name = "accounts/Register.html"
     success_url = reverse_lazy("accounts:login")
@@ -65,6 +90,22 @@ from django.contrib.auth.views import (PasswordResetCompleteView,
 
 
 class BasePasswordResetView(PasswordResetView):
+    """
+    Flujo de recuperación de contraseña:
+
+    - La :view: `accounts.BasePasswordResetView`: recibe el correo para enviar los pasos de recuperación.
+        :template: `accounts/password_reset/Reset.html`
+
+    - La :view: `accounts.BasePasswordResetDoneView`: confirma que el correo fue enviado.
+        :template: `accounts/password_reset/Done.html`
+
+    - La :view: `accounts.BasePasswordResetConfirmView`: permite ingresar nueva contraseña.
+        :template: `accounts/password_reset/Confirm.html`
+
+    - La :view: `accounts.BasePasswordResetCompleteView`: confirma que la contraseña fue restablecida.
+        :template: `accounts/password_reset/Complete.html`
+    """
+
     template_name = "accounts/password_reset/Reset.html"
     email_template_name = "accounts/password_reset/email.html"
     subject_template_name = "accounts/password_reset/subject.txt"

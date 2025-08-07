@@ -27,7 +27,14 @@
       </a>
       <div class="menu">
         <a href="{% url 'carrito:ver_carrito' %}">Ver Carrito</a>
-        {% comment %} <a href="{% url 'ordenes:listar' %}">Listar Ordenes</a> {% endcomment %}
+      </div>
+    </div>
+    <div class="dropdown">
+      <a href="#">Ordenes
+        <img src='{% static "iconos/chevron.png" %}'>
+      </a>
+      <div class="menu">
+        <a href="{% url 'ordenes:listar' %}">Listar Ordenes</a>
       </div>
     </div>
     <div class="dropdown">

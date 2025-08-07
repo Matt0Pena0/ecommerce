@@ -2,6 +2,11 @@ from django.db import models
 
 
 class Codigo(models.Model):
+    """
+    Representa un código único asociado a un producto.
+
+    Si no se define explícitamente, se asigna automáticamente el valor del `pk` como código.
+    """
     codigo = models.CharField(max_length=20, unique=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -13,7 +18,7 @@ class Codigo(models.Model):
         if is_new and not self.codigo:
             # Usamos el pk numérico como código, convertido a string
             self.codigo = str(self.pk)
-            # Actualizamos sólo ese campo para no reinvocar recursivamente save()
+            # Actualizar sólo este campo con save()
             super().save(update_fields=["codigo"])
 
     def __str__(self):
@@ -21,6 +26,9 @@ class Codigo(models.Model):
 
 
 class Marca(models.Model):
+    """
+    Marca comercial del producto.
+    """
     nombre = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -28,6 +36,9 @@ class Marca(models.Model):
 
 
 class Categoria(models.Model):
+    """
+    Categoría a la que pertenece el producto.
+    """
     nombre = models.CharField(max_length=50, unique=True)
     
     def __str__(self):
@@ -35,6 +46,9 @@ class Categoria(models.Model):
 
 
 class Gondola(models.Model):
+    """
+    Ubicación física o lógica del producto dentro del sistema de inventario.
+    """
     nombre = models.CharField(max_length=50, unique=True, blank=True)
     
     def __str__(self):
@@ -42,6 +56,9 @@ class Gondola(models.Model):
 
 
 class UnidadMedida(models.Model):
+    """
+    Unidad de medida utilizada para el producto (ej. kg, litro, unidad).
+    """
     nombre = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
@@ -49,6 +66,12 @@ class UnidadMedida(models.Model):
 
 
 class Producto(models.Model):
+    """
+    Modelo principal que representa un producto en el sistema.
+
+    Incluye información como nombre, marca, categoría, ubicación, unidad de medida,
+    precio, descripción y stock disponible.
+    """
     codigo = models.OneToOneField(Codigo, on_delete=models.CASCADE, primary_key=True, blank=True)    
     nombre = models.CharField(max_length=100)
     marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True, blank=True)

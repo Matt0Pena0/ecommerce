@@ -4,6 +4,7 @@ from accounts.views import (BasePasswordResetCompleteView,
                             BasePasswordResetConfirmView,
                             BasePasswordResetDoneView, BasePasswordResetView)
 
+
 urlpatterns = [
     path("", BasePasswordResetView.as_view(), name="reset"),
     path(

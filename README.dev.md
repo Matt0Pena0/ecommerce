@@ -107,6 +107,7 @@ docker network inspect <network_name>
 
 # Upgrade pip inside the web container
 docker compose exec web pip install --upgrade pip
+docker compose exec web pip install docutils 0.22
 
 # Rebuild only the web service
 docker compose build web

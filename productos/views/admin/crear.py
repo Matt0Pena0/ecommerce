@@ -3,11 +3,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
+from accounts.utils import RolRequeridoMixin
 from productos.forms import ProductoForm
 from productos.models import Codigo, Marca, Categoria, Gondola, UnidadMedida
 
 
-class ProductosAdminCreateView(LoginRequiredMixin, CreateView):
+class ProductosAdminCreateView(LoginRequiredMixin, RolRequeridoMixin, CreateView):
+    """
+    Campo personalizado que extiende ModelChoiceField.
+
+    Permite ingresar texto libre en lugar de seleccionar una opción existente.
+    Si el valor ingresado no coincide con ninguna instancia del queryset,
+    se crea una nueva utilizando el campo `nombre`.
+
+    Métodos:
+        _normalize_(value): Normaliza el texto para comparación (minúsculas, sin tildes, sin puntuación).
+        _to_python_(value): Devuelve la instancia correspondiente o crea una nueva si no existe.
+        _prepare_value_(value): Convierte el valor para mostrarlo correctamente en el formulario.
+    """
+    rol_requerido = ["admin"]
     form_class = ProductoForm
     template_name = "productos/admin/FormularioProducto.html"
     success_url = reverse_lazy("productos:listar")

@@ -11,10 +11,12 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "grappelli",
     "django_extensions",
+    "django.contrib.admindocs",
 ] + INSTALLED_APPS
 
 MIDDLEWARE += [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django.contrib.admindocs.middleware.XViewMiddleware",
 ]
 
 INTERNAL_IPS = ["127.0.0.1"]

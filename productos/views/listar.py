@@ -7,8 +7,11 @@ from productos.models import Producto, Marca, Categoria, Gondola
 class ProductoListView(LoginRequiredMixin, ListView):
     """
     Vista con control de usuario, para listar Productos
-    con filtros, buscador y orden dinámico.
-        - redirect_url: a dónde redirigir si no tiene permiso.
+    con filtros, buscador y orden dinámico.  
+
+    - redirect_url: a dónde redirigir si no tiene permiso. "usuario:login"  
+    - :template:`productos/ListarProductos.html`  
+    
     """
     redirect_url = "usuarios:login"
     model = Producto
@@ -20,7 +23,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
 
     ORDER_FIELDS = {
         "codigo":            "codigo__codigo",
-        "-codigo":           "-codigo",
+        "-codigo":           "-codigo__codigo",
         "nombre":            "nombre",
         "-nombre":           "-nombre",
         "precio_asc":        "precio_unitario",

@@ -10,7 +10,7 @@ app_name = "productos"
 urlpatterns = [
     path("listar/", ProductoListView.as_view(), name="listar"),
 
-    path("admin/crear/", ProductosAdminCreateView.as_view(), name="crear"),
+    path("admin/crear", ProductosAdminCreateView.as_view(), name="crear"),
     path("admin/actualizar/<int:pk>", ProductosAdminUpdateView.as_view(), name="actualizar"),
     path("admin/eliminar/<int:pk>", ProductosAdminDeleteView.as_view(), name="eliminar"),
 ]

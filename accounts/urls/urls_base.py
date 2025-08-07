@@ -2,6 +2,7 @@ from django.urls import include, path
 
 from accounts.views import BaseLoginView, BaseLogoutView, BaseUserRegisterView
 
+
 app_name = "accounts"
 
 urlpatterns = [

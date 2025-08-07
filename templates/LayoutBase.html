@@ -5,9 +5,12 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       {% load static %}
       <link rel="stylesheet" href="{% static 'css/base.css' %}">
+      <script src="{% static 'js/toast.js' %}" ></script>
       {% block head %}{% endblock %}
   </head>
-  <body data-url-agregar-carrito="{% url 'carrito:agregar_al_carrito_api'%}">
+  <body 
+  data-url-agregar-carrito="{% url 'carrito:agregar_al_carrito_api'%}"
+  >
     <header>
       {% include '_includes/_navbar.html' %}
     </header>
@@ -26,6 +29,6 @@
       </div>
 
       {% include '_includes/_footer.html' %}
+      {% include '_includes/_toast.html' %}
   </body>
-  
 </html>
