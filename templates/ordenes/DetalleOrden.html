@@ -1,0 +1,32 @@
+{% extends "LayoutBase.html" %}
+{% block page_title %}Pedidos asignados{% endblock %}
+
+{% block head %} 
+  {% load static %}
+  <script src="{% static 'js/copy_orden.js' %}"></script>
+{% endblock head %}
+
+
+{% block page_content %}
+  <h1>Detalle de la Orden #{{ orden.id }}</h1>
+  <p>Solicitante: {{ orden.solicitante.username }}</p>
+  <p>Fecha: {{ orden.creado }}</p>
+
+  <h2>Items del pedido:</h2>
+  <ul>
+      {% for item in orden.items.all %}
+          <li>
+              {{ item.cantidad }} x {{ item.producto.nombre }} -
+              ${{ item.producto.precio_unitario }} c/u
+          </li>
+      {% endfor %}
+  </ul>
+
+  <h3>Opciones de exportación:</h3>
+  <a href="{% url 'ordenes:exportar_txt' orden.id %}">Exportar a TXT</a>
+  <a href="{% url 'ordenes:exportar_excel' orden.id %}">Exportar a Excel</a>
+  <button id="copiar-txt-btn" data-url-copy-orden="{% url 'ordenes:exportar_copia' orden.id %}">Exportar copia</button>
+  {% comment %} <a href="{% url 'ordenes:exportar_pdf' orden.id %}">Exportar a PDF</a> {% endcomment %}
+
+  <a href="{% url 'ordenes:listar' %}">Volver a la lista de órdenes</a>
+{% endblock %}

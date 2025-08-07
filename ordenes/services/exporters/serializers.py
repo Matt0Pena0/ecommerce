@@ -1,7 +1,9 @@
 from ordenes.models import Orden
 
+
 class OrdenSerializer:
-    """Convierte un Orden en una lista de dicts listos para exportar."""
+    """Convierte una Orden en una lista de dicts listos para exportar."""
+
     @staticmethod
     def serialize(orden: Orden) -> list[dict]:
         rows = []

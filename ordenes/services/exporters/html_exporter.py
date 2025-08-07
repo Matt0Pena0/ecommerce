@@ -1,7 +1,7 @@
-from exporters.exporters import IExporter
+from ordenes.services.exporters_interface import IExporter
 
 
-class HTMLExporter(IExporter):
+class HtmlExporter(IExporter):
     def __init__(self, template_name: str):
         self.template_name = template_name
 
