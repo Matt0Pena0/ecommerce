@@ -1,0 +1,124 @@
+{% load filters %}
+{% load static %}
+
+<section>
+  <!-- Botón hamburguesa -->
+  <button class="filters-toggle" aria-label="Mostrar filtros">
+    ☰ Filtros
+  </button>
+
+  <aside class="filters">
+    <div class="product-filters">
+      <form method="get" class="filtros-form">
+
+        <!-- Orden -->
+        <div class="filter" data-name="order">
+          <input type="checkbox" id="filter-order" class="filter-toggle">
+          <label for="filter-order" class="select-trigger">
+            {{ order_fields|get_label:current_order }}
+          </label>
+          <div class="options">
+            {% for opt in order_fields %}
+              <div class="option" data-value="{{ opt.key }}">
+                {{ opt.label }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Buscar nombre -->
+        <input type="text" name="q" placeholder="Buscar nombre…" value="{{ request.GET.q }}">
+
+        <!-- Buscar código -->
+        <input type="text" name="codigo" placeholder="Buscar código…" value="{{ request.GET.codigo }}">
+
+        <!-- Marca -->
+        <div class="filter" data-name="marca">
+          <input type="checkbox" id="filter-marca" class="filter-toggle">
+          <label for="filter-marca" class="select-trigger">
+            {% if request.GET.marca %}
+              {{ marcas|get_nombre:request.GET.marca }}
+            {% else %}
+              --Marca--
+            {% endif %}
+          </label>
+          <div class="options">
+            <div class="option" data-value="">--Marca--</div>
+            {% for m in marcas %}
+              <div class="option" data-value="{{ m.id }}">
+                {{ m.nombre }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Categoría -->
+        <div class="filter" data-name="categoria">
+          <input type="checkbox" id="filter-categoria" class="filter-toggle">
+          <label for="filter-categoria" class="select-trigger">
+            {% if request.GET.categoria %}
+              {{ categorias|get_nombre:request.GET.categoria }}
+            {% else %}
+              --Categoría--
+            {% endif %}
+          </label>
+          <div class="options">
+            <div class="option" data-value="">--Categoría--</div>
+            {% for c in categorias %}
+              <div class="option" data-value="{{ c.id }}">
+                {{ c.nombre }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Góndola -->
+        <div class="filter" data-name="gondola">
+          <input type="checkbox" id="filter-gondola" class="filter-toggle">
+          <label for="filter-gondola" class="select-trigger">
+            {% if request.GET.gondola %}
+              {{ gondolas|get_nombre:request.GET.gondola }}
+            {% else %}
+              --Góndola--
+            {% endif %}
+          </label>
+          <div class="options">
+            <div class="option" data-value="">--Góndola--</div>
+            {% for g in gondolas %}
+              <div class="option" data-value="{{ g.id }}">
+                {{ g.nombre }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Stock -->
+        <div class="filter" data-name="stock">
+          <input type="checkbox" id="filter-stock" class="filter-toggle">
+          <label for="filter-stock" class="select-trigger">
+            {% if request.GET.stock == "available" %}
+              Con stock
+            {% elif request.GET.stock == "out" %}
+              Sin stock
+            {% else %}
+              --Stock--
+            {% endif %}
+          </label>
+          <div class="options">
+            <div class="option" data-value="">--Stock--</div>
+            <div class="option" data-value="available">Con stock</div>
+            <div class="option" data-value="out">Sin stock</div>
+          </div>
+        </div>
+
+        <button type="submit" class="button">Aplicar</button>
+        <a href="{% url 'productos:listar' %}" class="button">Limpiar filtros</a>
+
+      </form>
+    </div>
+  </aside>
+</section>
+
+{% block head %}
+  <script src="{% static 'js/filters.js' %}"></script>
+{% endblock head %}

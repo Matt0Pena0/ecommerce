@@ -1,0 +1,135 @@
+.filters {
+  position: fixed;
+  top: 5rem;
+  left: 24px;
+  bottom: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 220px;
+  border-radius: 16px;
+  padding: 1rem;
+  background: rgb(0 0 0 / 32%);
+  backdrop-filter: blur(30px);
+  overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
+}
+
+.filtros-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-toggle {
+  display: none;
+}
+
+.select-trigger {
+  background: #2b2a31;
+  color: #f9f9f9;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.select-trigger:hover {
+  background: #3a3843;
+}
+
+.options {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+  background: #2b2a31;
+  border-radius: 6px;
+}
+
+.filter-toggle:checked ~ .options {
+  max-height: 200px; /* altura visible */
+  overflow-y: auto;  /* scroll si excede */
+}
+
+.option {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #f9f9f9;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+.options::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+.button {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* Botón hamburguesa por defecto oculto en escritorio */
+.filters-toggle {
+  display: none;
+  background: #1960f3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .filters {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    transform: translateX(-100%);
+    z-index: 999;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .filters.open {
+    transform: translateX(0);
+  }
+
+  .filters-toggle {
+    display: inline-block;
+    margin: 10px;
+  }
+}

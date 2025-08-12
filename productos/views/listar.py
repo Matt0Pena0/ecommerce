@@ -69,15 +69,17 @@ class ProductoListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        # Para poblar los dropdowns
+        
+        # Datos para poblar los dropdowns
         ctx["marcas"]     = Marca.objects.all()
         ctx["categorias"] = Categoria.objects.all()
         ctx["gondolas"]   = Gondola.objects.all()
 
+        # Orden
         ctx["order_fields"] = [
             {"key": k, "label": lbl} for k, lbl in [
                 ("codigo",      "Código ↑"),
-                ("-codigo",      "Código ↓"),
+                ("-codigo",     "Código ↓"),
                 ("nombre",      "Nombre ↑"),
                 ("-nombre",     "Nombre ↓"),
                 ("precio_asc",  "Precio ↑"),
@@ -88,7 +90,70 @@ class ProductoListView(LoginRequiredMixin, ListView):
                 ("-marca",      "Marca ↓"),
             ]
         ]
-        # Guardamos la selección actual
         ctx["current_order"] = self.request.GET.get("order", "nombre")
+        ctx["current_order_label"] = next(
+            (o["label"] for o in ctx["order_fields"] if o["key"] == ctx["current_order"]),
+            "Ordenar por..."
+        )
+
+        # Marca
+        marca_id = self.request.GET.get("marca", "")
+        ctx["current_marca"] = marca_id
+        ctx["current_marca_label"] = next(
+            (m.nombre for m in ctx["marcas"] if str(m.id) == marca_id),
+            "--Marca--"
+        )
+
+        # Categoría
+        categoria_id = self.request.GET.get("categoria", "")
+        ctx["current_categoria"] = categoria_id
+        ctx["current_categoria_label"] = next(
+            (c.nombre for c in ctx["categorias"] if str(c.id) == categoria_id),
+            "--Categoría--"
+        )
+
+        # Góndola
+        gondola_id = self.request.GET.get("gondola", "")
+        ctx["current_gondola"] = gondola_id
+        ctx["current_gondola_label"] = next(
+            (g.nombre for g in ctx["gondolas"] if str(g.id) == gondola_id),
+            "--Góndola--"
+        )
+
+        # Stock
+        stock_val = self.request.GET.get("stock", "")
+        ctx["current_stock"] = stock_val
+        ctx["current_stock_label"] = {
+            "available": "Con stock",
+            "out": "Sin stock"
+        }.get(stock_val, "--Stock--")
 
         return ctx
+
+
+
+    # def get_context_data(self, **kwargs):
+    #     ctx = super().get_context_data(**kwargs)
+    #     # Para poblar los dropdowns
+    #     ctx["marcas"]     = Marca.objects.all()
+    #     ctx["categorias"] = Categoria.objects.all()
+    #     ctx["gondolas"]   = Gondola.objects.all()
+
+    #     ctx["order_fields"] = [
+    #         {"key": k, "label": lbl} for k, lbl in [
+    #             ("codigo",      "Código ↑"),
+    #             ("-codigo",      "Código ↓"),
+    #             ("nombre",      "Nombre ↑"),
+    #             ("-nombre",     "Nombre ↓"),
+    #             ("precio_asc",  "Precio ↑"),
+    #             ("precio_desc", "Precio ↓"),
+    #             ("stock_asc",   "Stock ↑"),
+    #             ("stock_desc",  "Stock ↓"),
+    #             ("marca",       "Marca ↑"),
+    #             ("-marca",      "Marca ↓"),
+    #         ]
+    #     ]
+    #     # Guardamos la selección actual
+    #     ctx["current_order"] = self.request.GET.get("order", "nombre")
+
+    #     return ctx

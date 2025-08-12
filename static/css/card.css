@@ -1,23 +1,3 @@
-:root{
-  --primary-color: #18181b;
-  --secondary-color: #27272a;
-  --accent-color: #3f3f46;
-  --text-color: #081c15;
-  --background-card: #f4f4f5;
-  --background-color: #111827;
-
-  --space-xxs:      0.25rem;    /* 4x */
-  --space-xs:       0.5rem;     /* 8x */
-  --space-sm:       0.75rem;    /* 12px */
-  --space-df:       1rem;       /* 16px */
-  --space-df-md:    1.25rem;    /* 20px */
-  --space-md:       1.50rem;    /* 24px */
-  --space-md-lg:    1.75rem;    /* 28px */
-  --space-lg:       2rem;       /* 32px */
-  --space-lg-bg:    2.50rem;    /* 40px */
-  --space-bg:       3rem;       /* 48px */
-}
-
 body {
   font-family: "Segoe UI", sans-serif;
   background-color: var(--background-color);
@@ -165,6 +145,7 @@ body {
   margin: auto;
   gap: 1rem;
 }
+
 .quantity {
   margin: auto;
   font-size: var(--space-df);
