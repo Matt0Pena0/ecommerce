@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
+
 class RolRequeridoMixin(UserPassesTestMixin):
     """
     Mixins para restringir el acceso a la vista a usuarios con roles específicos.
@@ -44,5 +45,4 @@ class PermisosDatosMixin:
             return queryset.filter(solicitante=user)
         
         # Por defecto, si no tiene un rol específico, no se muestra nada.
-        # Esto evita que usuarios sin roles puedan ver objetos.
         return queryset.none()

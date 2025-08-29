@@ -15,10 +15,19 @@
   <h2>Items del pedido:</h2>
   <ul>
       {% for item in orden.items.all %}
-          <li>
-              {{ item.cantidad }} x {{ item.producto.nombre }} -
-              ${{ item.producto.precio_unitario }} c/u
-          </li>
+        <li>
+          {{ item.cantidad }} x {{ item.producto.nombre }} 
+          {% if item.producto.marca %}
+          {{ item.producto.marca }}
+          {% endif %} -
+          {% if item.producto.unidad_medida %}
+            {{ item.producto.unidad_medida }}
+          {% endif %}
+          {% if item.producto.descripcion %}
+            {{ item.producto.descripcion }}
+          {% endif %}
+
+        </li>
       {% endfor %}
   </ul>
 

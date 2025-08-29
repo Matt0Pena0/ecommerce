@@ -2,10 +2,10 @@ from decouple import config
 
 from .base import *
 
-ALLOWED_HOSTS = ["https://101c55def6b5.ngrok-free.app", '.ngrok-free.app',"localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["https://e6a59706d8aa.ngrok-free.app", '.ngrok-free.app',"localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://101c55def6b5.ngrok-free.app",
+    "https://e6a59706d8aa.ngrok-free.app",
 ]
 INSTALLED_APPS = [
     "debug_toolbar",
@@ -33,11 +33,11 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        "NAME":     os.getenv("DB_NAME"),          # Nombre de la base de datos
-        "USER":     os.getenv("DB_USER"),          # Usuario creado para la base de datos
-        "PASSWORD": os.getenv("DB_PASS"),          # Contraseña del usuario
-        "HOST":     os.getenv("DB_HOST"),          # Dirección IP del host (localhost o la  IP de tu máquina)
-        'PORT': '3306',                            # Puerto por defecto de MySQL
+        "NAME":     config("DB_NAME"),          # Nombre de la base de datos
+        "USER":     config("DB_USER"),          # Usuario creado para la base de datos
+        "PASSWORD": config("DB_PASS"),          # Contraseña del usuario
+        "HOST":     config("DB_HOST"),          # Dirección IP del host (localhost o la  IP de la máquina)
+        'PORT': '3306',                         # Puerto por defecto de MySQL
         'OPTIONS':{
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
@@ -45,10 +45,3 @@ DATABASES = {
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_HOST = config("EMAIL_HOST")
-# EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-# EMAIL_TO = config("EMAIL_TO")
-# EMAIL_PORT = config("EMAIL_PORT")
-# EMAIL_USE_TLS = config("EMAIL_USE_TLS")
-# EMAIL_USE_SSL = config("EMAIL_USE_SSL")

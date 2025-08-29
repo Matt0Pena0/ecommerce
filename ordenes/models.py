@@ -7,21 +7,17 @@ from productos.models import Producto
 
 
 class EstadoOrden(models.Model):
-    # PENDIENTE  = "pendiente"
-    # EN_REPARTO = "en_reparto"
-    # COMPLETADO = "completado"
-
-    ESTADOS = [
-        ("pendiente",  "Pendiente"),
-        ("en_reparto", "En reparto"),
-        ("completado", "Completado"),
-    ]
+    ESTADOS = {
+        "pendiente":  "Pendiente",
+        "en_reparto": "En Reparto",
+        "completado": "Completado",
+    }
 
     nombre = models.CharField(
         max_length=30,
         unique=True,
         choices=ESTADOS,
-        default="pendiente",
+        default=ESTADOS["pendiente"],
     )
 
     def __str__(self):
@@ -49,7 +45,11 @@ class Orden(models.Model):
     """
     solicitante = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ordenes")
     creado = models.DateTimeField(auto_now_add=True)
-    estado = models.CharField(EstadoOrden, max_length=20, default="pendiente")
+    estado = models.CharField(
+        max_length=20,
+        choices=EstadoOrden.ESTADOS,
+        default=EstadoOrden.ESTADOS["pendiente"]
+    )
 
     def total(self):
         """

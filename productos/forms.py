@@ -6,7 +6,7 @@ from accounts.utils import RolRequeridoMixin
 from productos.models import Producto, Codigo, Marca, Categoria, Gondola, UnidadMedida
 
 
-class CreateOrGetModelChoiceField(forms.ModelChoiceField, RolRequeridoMixin):
+class CreateOrGetModelChoiceField(forms.ModelChoiceField):
     """
     Campo personalizado que extiende ModelChoiceField.
 
@@ -19,8 +19,6 @@ class CreateOrGetModelChoiceField(forms.ModelChoiceField, RolRequeridoMixin):
         to_python(value): Devuelve la instancia correspondiente o crea una nueva si no existe.
         prepare_value(value): Convierte el valor para mostrarlo correctamente en el formulario.
     """
-    rol_requerido = ["admin"]
-
     def normalize(self, value: str) -> str:
         """
         Devuelve una versión normalizada del string:

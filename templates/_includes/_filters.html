@@ -27,10 +27,14 @@
         </div>
 
         <!-- Buscar nombre -->
-        <input type="text" name="q" placeholder="Buscar nombre…" value="{{ request.GET.q }}">
+        <div class="s">
+          <input class="search" type="text" name="q" placeholder="Buscar nombre…" value="{{ request.GET.q }}">
+        </div>
 
         <!-- Buscar código -->
-        <input type="text" name="codigo" placeholder="Buscar código…" value="{{ request.GET.codigo }}">
+        <div class="s">
+          <input class="search" type="text" name="codigo" placeholder="Buscar código…" value="{{ request.GET.codigo }}">
+        </div>
 
         <!-- Marca -->
         <div class="filter" data-name="marca">

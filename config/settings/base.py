@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     # Apps externas comunes
     "import_export",
     "core",
@@ -67,13 +68,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # # Personalizado
-    # {
-    #     'NAME': 'accounts.validators.CustomSymbolPasswordValidator',
-    # },
 ]
 
 # Modelo de usuario personalizado
@@ -84,7 +78,7 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "core:home"
 LOGOUT_REDIRECT_URL = "accounts:login"
 
-# Base de datos vacía por ahora, se define en cada entorno
+# Base de datos vacía, se define en cada entorno
 DATABASES = {}
 
 # Static files
@@ -96,7 +90,7 @@ STATIC_ROOT = str(BASE_DIR / "staticfiles")
 
 # Media files
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = str(BASE_DIR / "mediafiles")
 
 LANGUAGE_CODE = "es-UY"
 TIME_ZONE = "America/Montevideo"

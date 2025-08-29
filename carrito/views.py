@@ -12,9 +12,9 @@ from ordenes.services.crear_orden_service import OrdenService
 
 @login_required
 def obtener_carrito_usuario(request):
-    carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
+    carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
 
-    return carrito, _
+    return carrito, creado
 
 
 @login_required
@@ -23,7 +23,7 @@ def agregar_al_carrito_api(request):
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
     try:
-        # Leemos el cuerpo de la petición, que esperamos sea JSON
+        # Leer el cuerpo de la petición, llega dentro de JSON
         data = json.loads(request.body)
         producto_codigo = data.get('producto_codigo')
         cantidad = int(data.get('cantidad', 1))
@@ -31,7 +31,7 @@ def agregar_al_carrito_api(request):
             return JsonResponse({"error": "Datos inválidos"}, status=400)
 
         producto = get_object_or_404(Producto, codigo=producto_codigo)
-        carrito, _ = obtener_carrito_usuario(request)
+        carrito, creado = obtener_carrito_usuario(request)
         item, creado = ItemCarrito.objects.get_or_create(
             carrito=carrito,
             producto=producto,
@@ -61,66 +61,24 @@ def agregar_al_carrito_api(request):
         traceback.print_exc()  # Muestra el error completo en consola
         return JsonResponse({"error": str(e)}, status=500)
 
-"""
-# @login_required
-# def agregar_al_carrito(request, producto_codigo):
-#     producto = get_object_or_404(Producto, codigo=producto_codigo)
-
-#     if request.method == "POST":
-#         # 1. Construimos el nombre dinámico del campo, igual que en el template.
-#         nombre_del_campo = f"cantidad_{producto.codigo}"
-#         # 2. Obtenemos la cantidad de forma segura.
-#         cantidad_str = request.POST.get(nombre_del_campo)
-#         try:
-#             cantidad = int(cantidad_str)
-#             if cantidad <= 0:
-#                 # Si la cantidad es inválida, no hacemos nada o mostramos un error.
-#                 messages.error(request, "Cantidad inválida.")
-#                 return redirect("productos:listar")
-
-#         except (ValueError, TypeError):
-#             # Si el valor no es un número, usamos 1 por defecto.
-#             cantidad = 1
-#             return redirect("productos:listar")
-
-
-#         # 3. Obtenemos o creamos el carrito y el ítem
-#         carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
-#         item = ItemCarrito.objects.filter(carrito=carrito, producto=producto).first()
-
-#         if item:
-#             item.cantidad += cantidad
-#             item.save()
-#             messages.success(request, f"Cantidad actualizada para '{producto.nombre}'.")
-#         else:
-#             ItemCarrito.objects.get_or_create(
-#                 carrito=carrito,
-#                 producto=producto,
-#                 cantidad=cantidad,
-#             )
-#             messages.success(request, f"'{producto.nombre}' fue agregado al carrito.")
-
-#     return redirect("productos:listar")
-"""
-
 
 @login_required
 def ver_carrito(request):
-    carrito, _ = obtener_carrito_usuario(request)
+    carrito, creado = obtener_carrito_usuario(request)
 
     return render(request, "carrito/VerCarrito.html", {"carrito": carrito})
 
 
 @login_required
 def actualizar_carrito(request):
-    carrito, _ = obtener_carrito_usuario(request)
+    carrito, creado = obtener_carrito_usuario(request)
 
     if request.method == "POST":
-        for item in carrito.items.all():
-            # Construimos el nombre del campo dinámicamente, igual que en el template
+        for item in carrito.items.select_related('producto'):
+            # Construir el nombre del campo dinámicamente, igual que en el template
             nombre_campo = f"cantidad_{item.producto.codigo}"
             
-            # Usamos .get() con un valor por defecto para evitar errores si no viene el dato
+            # Usar .get() para obtener el dato
             cantidad_str = request.POST.get(nombre_campo)
             if cantidad_str:
                 try:
@@ -143,7 +101,7 @@ def actualizar_carrito(request):
 
 @login_required
 def eliminar_item_carrito(request, producto_codigo):
-    carrito, _ = obtener_carrito_usuario(request)
+    carrito, creado = obtener_carrito_usuario(request)
     item = carrito.items.filter(producto__codigo=producto_codigo).first()
     if item:
         item.delete()
@@ -153,15 +111,15 @@ def eliminar_item_carrito(request, producto_codigo):
 
 @login_required
 def finalizar_carrito(request):
-    carrito, _ = obtener_carrito_usuario(request)
+    carrito, creado = obtener_carrito_usuario(request)
 
     if not carrito.items.exists():
         messages.warning(request, "Tu carrito está vacío.")
         return redirect("productos:listar")
 
-    items = [(item.producto, item.cantidad) for item in carrito.items.all()]
+    items = [(item.producto, item.cantidad) for item in carrito.items.select_related('producto')]
     orden_service = OrdenService()
-    orden = orden_service.crear_orden(request.user, items)
+    orden_service.crear_orden(request.user, items)
 
     # Limpiar carrito
     carrito.items.all().delete()

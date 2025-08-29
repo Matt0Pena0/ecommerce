@@ -54,6 +54,7 @@
 .filter-toggle:checked ~ .options {
   max-height: 200px; /* altura visible */
   overflow-y: auto;  /* scroll si excede */
+  opacity: 0.5;
 }
 
 .option {
@@ -78,6 +79,35 @@
 
 .options::-webkit-scrollbar-thumb:hover {
   background: rgba(255,255,255,0.4);
+}
+
+.s {
+  width: 100%;
+  margin-top: 4px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.s .search {
+  width: 100%;
+  padding: 8px 4px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.s .search::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.s:focus {
+  background: rgba(255,255,255,0.05);
 }
 
 .button {
@@ -105,13 +135,14 @@
   color: white;
   border: none;
   padding: 10px 15px;
+  margin-left: 100px;
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
 }
 
 /* Mobile */
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
   .filters {
     position: fixed;
     top: 0;

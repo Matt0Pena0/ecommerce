@@ -53,19 +53,12 @@ class BaseUserRegisterView(FormView):
         :form: `accounts.forms.FormView`
     """
 
-
     form_class = UserRegisterForm
     template_name = "accounts/Register.html"
     success_url = reverse_lazy("accounts:login")
 
     def form_valid(self, form):
-        user = User.objects.create_user(
-                username=form.cleaned_data["username"],
-                email=form.cleaned_data["email"],
-                password=form.cleaned_data["password1"],
-                first_name=form.cleaned_data["first_name"],
-                last_name=form.cleaned_data["last_name"],
-            )
+        form.save()
         messages.success(
                 self.request, "Usuario creado correctamente. Inicie sesión."
             )

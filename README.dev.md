@@ -19,11 +19,16 @@ docker compose exec web python3 manage.py shell
 # Open database shell
 docker compose exec web python3 manage.py dbshell
 
+# Open database directamente
+docker compose exec db mysql -u root -p
+
 # Create a new Django superuser (admin account)
 docker compose exec web python3 manage.py createsuperuser
 
 # Run a custom script (django-extensions)
 docker compose exec web python3 manage.py runscript <app>.scripts.<script_name>
+
+docker compose exec web python3 manage.py runscript productos.scripts.load_data 
 
 # Collect static files into STATIC_ROOT
 docker compose exec web python3 manage.py collectstatic --noinput

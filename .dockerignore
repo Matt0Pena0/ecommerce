@@ -6,7 +6,7 @@ __pycache__/
 *.log
 *.env
 .env*
-media/
+asdmedia/
 staticfiles/
 node_modules/
 .venv/

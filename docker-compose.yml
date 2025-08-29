@@ -21,11 +21,14 @@ services:
     container_name: ${WEB_CONTAINER_NAME}
     command: >
       sh -c "
+        python manage.py makemigrations &&
         python manage.py migrate &&
         python manage.py runserver 0.0.0.0:8000
       "
     volumes:
       - .:/app
+      - ./static:/app/static
+      - ./mediafiles:/app/mediafiles
     ports:
       - "8000:8000"
     environment:

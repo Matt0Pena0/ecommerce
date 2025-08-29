@@ -72,7 +72,7 @@ class Producto(models.Model):
     Incluye información como nombre, marca, categoría, ubicación, unidad de medida,
     precio, descripción y stock disponible.
     """
-    codigo = models.OneToOneField(Codigo, on_delete=models.CASCADE, primary_key=True, blank=True)    
+    codigo = models.OneToOneField(Codigo, on_delete=models.CASCADE, primary_key=True, blank=True)
     nombre = models.CharField(max_length=100)
     marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True)
@@ -81,6 +81,8 @@ class Producto(models.Model):
     precio_unitario = models.DecimalField(max_digits=20, decimal_places=2)
     descripcion = models.TextField(blank=True)
     stock = models.IntegerField(default=0)
+    img = models.ImageField(upload_to='productos/', default='productos/producto.png', null=True, blank=True)
+    creado = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
         return f"{self.codigo} - {self.nombre}"

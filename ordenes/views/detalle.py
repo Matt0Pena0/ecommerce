@@ -18,9 +18,19 @@ class OrdenDetailView(LoginRequiredMixin, RolRequeridoMixin, PermisosDatosMixin,
     context_object_name = "orden"
     rol_requerido = ["cliente", "admin"]
 
-    # def get_object(self, queryset=None):
-    #     queryset = self.get_filtered_queryset(self.get_queryset())
-    #     return get_object_or_404(queryset, pk=self.kwargs['pk'])
+    # Paginación
+    paginate_by = 20  # 20 órdenes por página
+
+    def get_queryset(self):
+        # Queryset base
+        qs = super().get_queryset()
+
+        # Optimización de consultas:
+        # - select_related: trae al mismo tiempo datos del solicitante (usuario)
+        # - prefetch_related: trae items y productos relacionados para evitar N+1
+        qs = qs.select_related("solicitante").prefetch_related("items__producto")
+
+        return qs
 
 
 # Vista para txt

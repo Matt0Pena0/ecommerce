@@ -15,8 +15,10 @@
       <thead>
         <tr>
           <th>Producto</th>
+          <th>Marca</th>
           <th>Precio Unitario</th>
           <th>Unidad</th>
+          <th>Descripción</th>
           <th>Stock</th>
           <th>Cantidad</th>
           <th>Subtotal</th>
@@ -27,8 +29,10 @@
         {% for item in carrito.items.all %}
           <tr>
             <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.producto.marca.nombre }}</td>
             <td>${{ item.producto.precio_unitario }}</td>
             <td>{{ item.producto.unidad_medida.nombre }}</td>
+            <td>{{ item.producto.descripcion }}</td>
             <td>{{ item.producto.stock }}</td>
             <td>
               <input type="number" name="cantidad_{{ item.producto.codigo }}" value="{{ item.cantidad }}" max="{{ item.producto.stock }}">

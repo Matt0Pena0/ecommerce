@@ -43,6 +43,7 @@ class ProductoAdmin(admin.ModelAdmin):
         "unidad_medida",
         "precio_unitario",
         "stock",
+        "img",
     )
     list_filter = (
         "marca",

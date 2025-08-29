@@ -12,9 +12,11 @@
 
 {% block page_content %}
   {% if request.user.is_superuser %}
-  <button class="btn">
+  <div class="new-product">
+    <button class="btn-new-product">
       <a href="{% url 'productos:crear' %}">➕ Nuevo Producto</a>
-  </button>
+    </button>
+  </div>
   {% endif %}
 
   {% include '_includes/_filters.html' %}
@@ -24,7 +26,7 @@
     <div class="card">
       <div class="badge">HOT SALE</div>
       <div class="img">
-        <img src="{% static 'img/producto.png' %}" alt="">
+        <img src="" alt="">
       </div>
 
       <div class="info">
@@ -58,6 +60,7 @@
           <form class="add-to-cart-form" method="POST" data-codigo="{{ p.codigo }}">
               {% csrf_token %}
               <input class="quantity" type="number" value="0" min="1" max="{{ p.stock }}">
+              <label for="quantity">{{p.unidad_medida}}</label>
               <div add-to-cart>
                   <button class="btn" type="submit">
                       <span class="btn-text">Agregar al carrito</span>
@@ -67,6 +70,7 @@
         </div>
         {% endif %}
       </div>
+      <a href="{% url 'productos:actualizar' p.pk %}">editar</a>
     </div>
     {% endfor %}
   </div>

@@ -1,4 +1,3 @@
-// Add this script to your template or a separate .js file
 document.addEventListener('DOMContentLoaded', function() {
     // Select the button by its ID
     const copyButton = document.getElementById('copiar-txt-btn');

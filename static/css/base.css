@@ -19,8 +19,11 @@
 }
 
 .page-content {
+  position: relative;
+  max-width: 1000px;
+  margin: auto;
   padding-top: 5rem;
-  padding-left: 220px;
+  padding-inline-start: 0%;
   border-bottom: 1px solid #ccc;
 }
 

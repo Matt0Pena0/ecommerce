@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.password_validation import validate_password
+
+from .services import crear_usuario_service
+
 
 User = get_user_model()
 
@@ -42,9 +45,7 @@ class UserRegisterForm(forms.Form):
     direccion = forms.CharField(max_length=100, label= "Dirección")
 
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Contraseña")
-    password2 = forms.CharField(
-        widget=forms.PasswordInput(), label="Repite tu contraseña"
-    )
+    password2 = forms.CharField(widget=forms.PasswordInput(), label="Repite tu contraseña")
 
     def clean_password2(self):
         """
@@ -65,28 +66,10 @@ class UserRegisterForm(forms.Form):
 
         return password2
 
-    def clean_username(self):
+    def save(self):
         """
-        Valida que el username no esté en uso.
-
-        :return: username.
-        :raises ValidationError: Si ya hay un usuario igual registrado en :model: `models.UsuarioBase`
+        Guarda el usuario utilizando el service `crear_usuario_service`.
         """
-        username = self.cleaned_data.get("username")
-        if User.objects.filter(username=username).exists():
-            raise forms.ValidationError("Este nombre de usuario ya está en uso.")
-
-        return username
-
-    def clean_email(self):
-        """
-        Valida que el email no esté en uso.
-
-        :return: email.
-        :raises ValidationError: Si ya hay un email igual registrado en :model: `models.UsuarioBase`
-        """
-        email = self.cleaned_data.get("email")
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Este email ya está registrado.")
-
-        return email
+        data = self.cleaned_data
+        user = crear_usuario_service(**data)
+        return user

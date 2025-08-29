@@ -97,7 +97,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
         )
 
         # Marca
-        marca_id = self.request.GET.get("marca", "")
+        marca_id = self.request.GET.get("marca")
         ctx["current_marca"] = marca_id
         ctx["current_marca_label"] = next(
             (m.nombre for m in ctx["marcas"] if str(m.id) == marca_id),
@@ -105,7 +105,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
         )
 
         # Categoría
-        categoria_id = self.request.GET.get("categoria", "")
+        categoria_id = self.request.GET.get("categoria")
         ctx["current_categoria"] = categoria_id
         ctx["current_categoria_label"] = next(
             (c.nombre for c in ctx["categorias"] if str(c.id) == categoria_id),
@@ -113,7 +113,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
         )
 
         # Góndola
-        gondola_id = self.request.GET.get("gondola", "")
+        gondola_id = self.request.GET.get("gondola")
         ctx["current_gondola"] = gondola_id
         ctx["current_gondola_label"] = next(
             (g.nombre for g in ctx["gondolas"] if str(g.id) == gondola_id),
@@ -121,7 +121,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
         )
 
         # Stock
-        stock_val = self.request.GET.get("stock", "")
+        stock_val = self.request.GET.get("stock")
         ctx["current_stock"] = stock_val
         ctx["current_stock_label"] = {
             "available": "Con stock",
