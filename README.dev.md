@@ -37,6 +37,7 @@ docker compose exec web python3 manage.py collectstatic --noinput
 docker compose exec web python3 manage.py test
 ```
 
+
 # 🐳 Docker Compose
 
 ```bash
@@ -66,6 +67,7 @@ docker compose exec <service> <command>
 docker compose run --rm <service> <command>
 # e.g. docker compose run --rm web python3 manage.py test
 ```
+
 
 # 🐳 Docker (standalone)
 
@@ -98,6 +100,7 @@ docker build --no-cache --progress=plain .
 du -sh * | sort -h
 ```
 
+
 # 🔧 Utilities / Debugging
 
 ```bash
@@ -121,3 +124,35 @@ docker compose build web
 docker system prune -f && docker compose up --build
 ```
 
+
+# Git ([Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary))
+
+| Tipo de commit | Descripción                                          | Ejemplo                                         |
+|----------------|------------------------------------------------------| ------------------------------------------------|
+| **feat**       | Añade una nueva funcionalidad                        | `feat: Añadir soporte para carrito de compras`  |
+| **fix**        | Corrige un error o bug                               | `fix: Corregir error al guardar el carrito`     |
+| **perf**       | Mejora el rendimiento                                | `perf: Optimizar la carga de productos`         |
+| **refactor**   | Reescribe código sin cambiar su comportamiento       | `refactor: Reestructurar el código del carrito` |
+| **docs**       | Modifica la documentación                            | `docs: Actualizar documentación del carrito`    |
+| **style**      | Cambios en el estilo (formato, espacios, etc.)       | `style: Formatear el código con Prettier`       |
+| **test**       | Añade o corrige pruebas                              | `test: Añadir pruebas para el carrito`          |
+| **chore**      | Tareas de mantenimiento (build, dependencias, etc.)  | `chore: Actualizar dependencias`                |
+| **ci**         | Cambios en el proceso de integración continua        | `ci: Configurar GitHub Actions para tests`      |
+| **build**      | Cambios en el proceso de construcción                | `build: Actualizar el script de construcción`   |
+| **rev**        | Reversión de un commit                               | `rev: Revertir commit 'feat: Añadir carrito'`   |
+| **wip**        | Trabajo en progreso (Work in Progress)               | `wip: Implementar carrito de compras`           |
+
+
+## [Modo de Uso](https://www.conventionalcommits.org/en/v1.0.0/#examples)
+
+| Git alias (plugin)                                    | Command                                               |
+|-------------------------------------------------------|-------------------------------------------------------|
+| g style "remove trailing whitespace"                  | git commit -m "style: remove trailing whitespace"     |
+| g wip -a "work in progress"                           | git commit -m "wip!: work in progress"                |
+| g fix -s "router" "correct redirect link"             | git commit -m "fix(router): correct redirect link"    |
+| g rev -s "api" "rollback v2"                          | git commit -m "revert(api): rollback v2"              |
+
+
+*sintaxis:* `g <type>  [-s "<scope>"] [-a] "<message>"`
+
+*sintaxis:* `g style -s "navbar" -a "Cambiando color"`
