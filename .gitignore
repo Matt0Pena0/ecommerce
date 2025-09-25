@@ -68,3 +68,8 @@ pip-delete-this-directory.txt
 # === Other ===
 *.pot
 *.mo
+README.dev.md
+
+# === Bootstrap ===
+node_modules/
+static/bootstrap/

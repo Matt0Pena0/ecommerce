@@ -1,128 +1,95 @@
-{% load filters %}
+{% load productos_filters %}
 {% load static %}
 
-<section>
-  <!-- Botón hamburguesa -->
-  <button class="filters-toggle" aria-label="Mostrar filtros">
-    ☰ Filtros
-  </button>
+<!-- Botón para abrir filtros -->
+<button class="btn btn-primary mb-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
+  ☰ Filtros
+</button>
 
-  <aside class="filters">
-    <div class="product-filters">
-      <form method="get" class="filtros-form">
+<!-- Offcanvas -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Filtros</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body">
 
-        <!-- Orden -->
-        <div class="filter" data-name="order">
-          <input type="checkbox" id="filter-order" class="filter-toggle">
-          <label for="filter-order" class="select-trigger">
-            {{ order_fields|get_label:current_order }}
-          </label>
-          <div class="options">
-            {% for opt in order_fields %}
-              <div class="option" data-value="{{ opt.key }}">
-                {{ opt.label }}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
+    <form method="get" class="filtros-form">
 
-        <!-- Buscar nombre -->
-        <div class="s">
-          <input class="search" type="text" name="q" placeholder="Buscar nombre…" value="{{ request.GET.q }}">
-        </div>
+      <!-- Orden -->
+      <div class="mb-3">
+        <label class="form-label">{{ order_fields|get_label:current_order }}</label>
+        <select class="form-select" name="order">
+          {% for opt in order_fields %}
+          <option value="{{ opt.key }}" {% if opt.key == current_order %}selected{% endif %}>{{ opt.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-        <!-- Buscar código -->
-        <div class="s">
-          <input class="search" type="text" name="codigo" placeholder="Buscar código…" value="{{ request.GET.codigo }}">
-        </div>
+      <!-- Buscar nombre -->
+      <div class="mb-3">
+        <input class="form-control" type="text" name="q" placeholder="Buscar nombre…" value="{{ request.GET.q }}">
+      </div>
 
-        <!-- Marca -->
-        <div class="filter" data-name="marca">
-          <input type="checkbox" id="filter-marca" class="filter-toggle">
-          <label for="filter-marca" class="select-trigger">
-            {% if request.GET.marca %}
-              {{ marcas|get_nombre:request.GET.marca }}
-            {% else %}
-              --Marca--
-            {% endif %}
-          </label>
-          <div class="options">
-            <div class="option" data-value="">--Marca--</div>
-            {% for m in marcas %}
-              <div class="option" data-value="{{ m.id }}">
-                {{ m.nombre }}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
+      <!-- Buscar código -->
+      <div class="mb-3">
+        <input class="form-control" type="text" name="codigo" placeholder="Buscar código…" value="{{ request.GET.codigo }}">
+      </div>
 
-        <!-- Categoría -->
-        <div class="filter" data-name="categoria">
-          <input type="checkbox" id="filter-categoria" class="filter-toggle">
-          <label for="filter-categoria" class="select-trigger">
-            {% if request.GET.categoria %}
-              {{ categorias|get_nombre:request.GET.categoria }}
-            {% else %}
-              --Categoría--
-            {% endif %}
-          </label>
-          <div class="options">
-            <div class="option" data-value="">--Categoría--</div>
-            {% for c in categorias %}
-              <div class="option" data-value="{{ c.id }}">
-                {{ c.nombre }}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
+      <!-- Marca -->
+      <div class="mb-3">
+        <label class="form-label">Marca</label>
+        <select class="form-select" name="marca">
+          <option value="">--Marca--</option>
+          {% for m in marcas %}
+          <option value="{{ m.id }}" {% if m.id|stringformat:"s" == request.GET.marca %}selected{% endif %}>{{ m.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-        <!-- Góndola -->
-        <div class="filter" data-name="gondola">
-          <input type="checkbox" id="filter-gondola" class="filter-toggle">
-          <label for="filter-gondola" class="select-trigger">
-            {% if request.GET.gondola %}
-              {{ gondolas|get_nombre:request.GET.gondola }}
-            {% else %}
-              --Góndola--
-            {% endif %}
-          </label>
-          <div class="options">
-            <div class="option" data-value="">--Góndola--</div>
-            {% for g in gondolas %}
-              <div class="option" data-value="{{ g.id }}">
-                {{ g.nombre }}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
+      <!-- Categoría -->
+      <div class="mb-3">
+        <label class="form-label">Categoría</label>
+        <select class="form-select" name="categoria">
+          <option value="">--Categoría--</option>
+          {% for c in categorias %}
+          <option value="{{ c.id }}" {% if c.id|stringformat:"s" == request.GET.categoria %}selected{% endif %}>{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-        <!-- Stock -->
-        <div class="filter" data-name="stock">
-          <input type="checkbox" id="filter-stock" class="filter-toggle">
-          <label for="filter-stock" class="select-trigger">
-            {% if request.GET.stock == "available" %}
-              Con stock
-            {% elif request.GET.stock == "out" %}
-              Sin stock
-            {% else %}
-              --Stock--
-            {% endif %}
-          </label>
-          <div class="options">
-            <div class="option" data-value="">--Stock--</div>
-            <div class="option" data-value="available">Con stock</div>
-            <div class="option" data-value="out">Sin stock</div>
-          </div>
-        </div>
+      <!-- Góndola -->
+      <div class="mb-3">
+        <label class="form-label">Góndola</label>
+        <select class="form-select" name="gondola">
+          <option value="">--Góndola--</option>
+          {% for g in gondolas %}
+          <option value="{{ g.id }}" {% if g.id|stringformat:"s" == request.GET.gondola %}selected{% endif %}>{{ g.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-        <button type="submit" class="button">Aplicar</button>
-        <a href="{% url 'productos:listar' %}" class="button">Limpiar filtros</a>
+      <!-- Stock -->
+      <div class="mb-3">
+        <label class="form-label">Stock</label>
+        <select class="form-select" name="stock">
+          <option value="" {% if not request.GET.stock %}selected{% endif %}>--Stock--</option>
+          <option value="available" {% if request.GET.stock == "available" %}selected{% endif %}>Con stock</option>
+          <option value="out" {% if request.GET.stock == "out" %}selected{% endif %}>Sin stock</option>
+        </select>
+      </div>
 
-      </form>
-    </div>
-  </aside>
-</section>
+      <!-- Botones -->
+      <div class="d-flex justify-content-between mt-3">
+        <button type="submit" class="btn btn-primary">Aplicar</button>
+        <a href="{% url 'productos:listar' %}" class="btn btn-secondary">Limpiar filtros</a>
+      </div>
+
+    </form>
+
+  </div>
+</div>
 
 {% block head %}
-  <script src="{% static 'js/filters.js' %}"></script>
+<script src="{% static 'js/filters.js' %}"></script>
 {% endblock head %}

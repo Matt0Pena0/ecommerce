@@ -19,6 +19,22 @@ class CustomUserAuthenticationForm(AuthenticationForm):
     }
 
 
+### Se puede usar para modificar los campos
+# class CustomPasswordChangeForm(PasswordChangeForm):
+#     # Sobrescribir el campo new_password1
+#     new_password1 = forms.CharField(
+#         label="Nueva contraseña",
+#         widget=forms.PasswordInput(),
+#         # 💡 Anula el help_text con tu propio texto o déjalo en blanco:
+#         help_text="Ingresa tu nueva clave. Debe ser segura.", 
+#     )
+#     # new_password2 no necesita help_text
+#     new_password2 = forms.CharField(
+#         label="Confirma la nueva contraseña",
+#         widget=forms.PasswordInput(),
+#     )
+
+
 class UserRegisterForm(forms.Form):
     """
     Formulario de registro de usuario.
@@ -46,6 +62,26 @@ class UserRegisterForm(forms.Form):
 
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Contraseña")
     password2 = forms.CharField(widget=forms.PasswordInput(), label="Repite tu contraseña")
+
+    def clean(self):
+        """
+        Realiza validaciones de unicidad de username y email.
+        """
+        cleaned_data = super().clean()
+
+        username = cleaned_data.get("username")
+        email = cleaned_data.get("email")
+
+        # Comprobar username (Solo si ya pasó la validación de CharField)
+        if username and User.objects.filter(username=username).exists():
+            # Usar self.add_error() asocia el mensaje al campo y fuerza la falla de is_valid()
+            self.add_error('username', "El nombre de usuario ya existe. Por favor, elige otro.")
+
+        # Comprobar email (Solo si ya pasó la validación de EmailField)
+        if email and User.objects.filter(email=email).exists():
+            self.add_error('email', "El email ya está en uso.")
+
+        return cleaned_data
 
     def clean_password2(self):
         """
