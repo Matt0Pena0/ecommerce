@@ -22,6 +22,8 @@ local_settings.py
 .env
 .secrets/
 *.env
+.env.prod
+*.env.prod
 
 # === Docker ===
 *.pid
