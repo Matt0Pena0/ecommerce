@@ -5,7 +5,7 @@ from .base import *
 
 DEBUG = config("DEBUG", cast=bool)
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mymecommerce.themattdev.com', 'www.mymecommerce.themattdev.com', '200.45.208.202', '127.0.0.1']
 
 # INSTALLED_APPS += []
 
