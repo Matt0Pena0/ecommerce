@@ -3,13 +3,14 @@ from django.urls import path
 
 from accounts.views import BasePasswordChangeView
 
+
 urlpatterns = [
     path("", BasePasswordChangeView.as_view(), name="change"),
     path(
-        "done/",
+        "complete/",
         PasswordChangeDoneView.as_view(
-            template_name="accounts/password_change/done.html"
+            template_name="accounts/password_change/Complete.html"
         ),
-        name="done",
+        name="complete",
     ),
 ]

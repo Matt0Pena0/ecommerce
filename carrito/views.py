@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 import json
 
+
 from carrito.models import Carrito, ItemCarrito
 from productos.models import Producto
 from ordenes.services.crear_orden_service import OrdenService
@@ -38,7 +39,7 @@ def agregar_al_carrito_api(request):
             defaults={'cantidad': cantidad}
         )
 
-        cantidad_final = item.cantidad + cantidad if not creado else cantidad
+        cantidad_final = cantidad
 
         if cantidad_final > producto.stock:
             return JsonResponse({
@@ -52,13 +53,14 @@ def agregar_al_carrito_api(request):
         return JsonResponse({
             "status": "ok",
             "message": f"'{producto.nombre}' agregado al carrito.",
-            "total_items_carrito": carrito.items.count() # Para actualizar un contador en la UI
+            "total_items_carrito": carrito.items.count(), # Para actualizar un contador en la UI
+            "cantidad_producto_en_carrito": cantidad_final # Para el display del producto
         })
 
     except Exception as e:
 
         import traceback
-        traceback.print_exc()  # Muestra el error completo en consola
+        traceback.print_exc() # Muestra el error completo en consola
         return JsonResponse({"error": str(e)}, status=500)
 
 

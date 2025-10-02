@@ -1,41 +1,97 @@
 {% extends "LayoutBase.html" %}
-{% block page_title %}Pedidos asignados{% endblock %}
+
+{% block page_title %}Detalle del Pedido{% endblock %}
 
 {% block head %} 
   {% load static %}
-  <script src="{% static 'js/copy_orden.js' %}"></script>
+  <script src="{% static 'js/copiar-orden.js' %}"></script>
 {% endblock head %}
 
-
 {% block page_content %}
-  <h1>Detalle de la Orden #{{ orden.id }}</h1>
-  <p>Solicitante: {{ orden.solicitante.username }}</p>
-  <p>Fecha: {{ orden.creado }}</p>
 
-  <h2>Items del pedido:</h2>
-  <ul>
-      {% for item in orden.items.all %}
-        <li>
-          {{ item.cantidad }} x {{ item.producto.nombre }} 
-          {% if item.producto.marca %}
-          {{ item.producto.marca }}
-          {% endif %} -
-          {% if item.producto.unidad_medida %}
+<div class="card shadow-sm p-2 p-md-3 border rounded-3">
+
+  <!-- Encabezado -->
+  <div>
+    <h2>Detalle de la Orden #{{ orden.id }}</h2>
+    <p>Solicitante: {{ orden.solicitante.username }}</p>
+    <p>Fecha: {{ orden.creado }}</p>
+    
+    <div class="card-header">
+      <h4 class="mb-0">
+        <i class="bi bi-box-seam"></i>
+        Items del pedido
+      </h4>
+    </div>
+  </div>
+  
+  <div class="table-responsive">
+    <table class="table table-striped table-sm table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>
+            Cantidad x 
+            Producto  
+            Marca -
+            Unidad - 
+            Descripcion
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in orden.items.all %}
+        <tr>
+          <td>
+            {{ item.cantidad }} x {{ item.producto.nombre }} 
+            {% if item.producto.marca %}
+            {{ item.producto.marca }}
+            {% endif %} -
+            {% if item.producto.unidad_medida %}
             {{ item.producto.unidad_medida }}
-          {% endif %}
-          {% if item.producto.descripcion %}
+            {% endif %}
+            {% if item.producto.descripcion %}
             {{ item.producto.descripcion }}
-          {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-        </li>
-      {% endfor %}
-  </ul>
+  <!-- Acciones para exportar -->
+  <div class="container mt-4">
+    <h3>Opciones de exportación:</h3>
+    <div class="row row-cols-1 row-cols-md-4 justify-content-between g-2 gx-md-4">
 
-  <h3>Opciones de exportación:</h3>
-  <a href="{% url 'ordenes:exportar_txt' orden.id %}">Exportar a TXT</a>
-  <a href="{% url 'ordenes:exportar_excel' orden.id %}">Exportar a Excel</a>
-  <button id="copiar-txt-btn" data-url-copy-orden="{% url 'ordenes:exportar_copia' orden.id %}">Exportar copia</button>
-  {% comment %} <a href="{% url 'ordenes:exportar_pdf' orden.id %}">Exportar a PDF</a> {% endcomment %}
+      <div class="col">
+        <a class="btn btn-outline-success w-100" 
+        href="{% url 'ordenes:exportar_txt' orden.id %}">Exportar a TXT</a>
+      </div>
+      
+      <div class="col">
+        <a class="btn btn-outline-success w-100" 
+        href="{% url 'ordenes:exportar_excel' orden.id %}">Exportar a Excel</a>
+      </div>
 
-  <a href="{% url 'ordenes:listar' %}">Volver a la lista de órdenes</a>
+      <div class="col">
+        <button class="btn btn-outline-success w-100" 
+        id="copiar-txt-btn" 
+        data-url-copy-orden="{% url 'ordenes:exportar_copia' orden.id %}">Exportar Copia</button>
+      </div>
+
+      {% comment %}
+      <a href="{% url 'ordenes:exportar_pdf' orden.id %}">Exportar a PDF</a>
+      {% endcomment %}
+
+      <div class="col">
+        <a class="btn btn-outline-primary w-100" 
+        href="{% url 'ordenes:listar' %}">Volver a la Lista</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 {% endblock %}
+

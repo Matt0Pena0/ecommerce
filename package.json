@@ -1,0 +1,26 @@
+{
+  "name": "mym_ecommerce",
+  "version": "1.0.0",
+  "description": "```bash # Run development server on 0.0.0.0:8000 docker compose exec web python3 manage.py runserver 0.0.0.0:8000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "sass --load-path=node_modules static/css/scss:static/css/dist --no-source-map --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatttttaM/mym_pedidos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatttttaM/mym_pedidos/issues"
+  },
+  "homepage": "https://github.com/MatttttaM/mym_pedidos#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "sass": "^1.93.2"
+  }
+}
