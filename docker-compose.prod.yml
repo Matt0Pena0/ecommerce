@@ -1,0 +1,36 @@
+version: '3.12'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: myecommerce_db_prod
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - myecommerce_mysql_data:/var/lib/mysql
+
+  web:
+    build: .
+    container_name: myecommerce_web_prod
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - myecommerce_static_volume:/app/staticfiles
+      - myecommerce_media_volume:/app/mediafiles
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  myecommerce_mysql_data:
+  myecommerce_static_volume:
+  myecommerce_media_volume:

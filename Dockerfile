@@ -15,9 +15,12 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# Copiar y instalar dependencias de Python
-COPY requirements/ requirements/
-RUN pip install --no-cache-dir -r requirements/dev.txt
+# ---- Optimización del Caché ----
+# Copiar solo los archivos de requeriments
+COPY requirements/ app/requirements/
+
+# Instalar los requeriments de producción
+RUN pip install --no-cache-dir -r requirements/prod.txt
 
 # Copiar código de la aplicación
 COPY . /app/
