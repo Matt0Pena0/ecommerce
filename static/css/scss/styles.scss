@@ -20,6 +20,8 @@
 
 @use "bootstrap/scss/bootstrap" as *;
 
+@import "bootstrap/font/bootstrap-icons.css";
+
 // Option 2
 //
 // // Place variable overrides first, then import just the styles you need. Note that some stylesheets are required no matter what.
@@ -116,9 +118,9 @@ $success: #7952b3;
 
 // @import "icon-list";
 
-body {
-//   padding: 1.5rem;
-}
+// body {
+// //   padding: 1.5rem;
+// }
 
 .bi {
   width: 1em;
