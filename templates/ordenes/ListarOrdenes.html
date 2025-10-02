@@ -1,39 +1,67 @@
 {% extends "LayoutBase.html" %}
-{% block page_title %}Pedidos asignados{% endblock %}
+
+{% block page_title %}Pedidos Realizados{% endblock %}
 
 {% block page_content %}
 
-<table>
-  <tr>
-    <th>ID</th>
-    <th>Fecha</th>
-    <th>Solicitante</th>
-    <th>Estado</th>
-    <th>Acciones</th>
-  </tr>
-  {% for orden in ordenes %}
-  <tr>
-    <td>{{ orden.id }}</td>
-    <td>{{ orden.creado|date:"d/m/Y H:i" }}</td>
-    <td>{{ orden.solicitante.username }}</td>
-    <td>{{ orden.estado }}</td>
-    <td><a href="{% url 'ordenes:detalle' orden.id %}">Detalle de la Orden</td>
-  </tr>
-  {% empty %}
-    <tr><td colspan="4">No se encontraron ordenes de compra.</td></tr>
-  {% endfor %}
-</table>
+<div class="card shadow-sm p-2 p-md-3 border rounded-3">
+
+  <!-- Encabezado -->
+  <div class="card-header">
+    <h4 class="mb-0">
+      <i class="bi bi-truck me-1"></i>
+      Lista de Pedidos
+    </h4>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-responsive">
+    <table class="table table-striped table-sm table-hover align-middle mb-0">
+      <thead class="table">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Solicitante</th>
+          <th scope="col">Estado</th>
+          <th scope="col" class="text-center">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- Contenido de la tabla -->
+        {% for orden in ordenes %}
+        <tr class="row-gap-5">
+          <td>{{ orden.id }}</td>
+          <td>{{ orden.creado|date:"d/m/Y H:i" }}</td>
+          <td>{{ orden.solicitante.username }}</td>
+          <td>
+            <span class="badge 
+              {% if orden.estado == 'Pendiente' %} bg-warning text-dark
+              {% elif orden.estado == 'Completado' %} bg-success
+              {% elif orden.estado == 'Cancelado' %} bg-danger
+              {% else %} bg-secondary
+              {% endif %}">
+              {{ orden.estado }}
+            </span>
+          </td>
+
+          <td class="text-center">
+            <a href="{% url 'ordenes:detalle' orden.id %}" 
+            class="btn btn-sm btn-outline-primary">
+            Ver detalle
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <!-- Si no hay contenido -->
+        <tr>
+          <td colspan="5" class="text-center text-muted py-3">
+            No se encontraron órdenes de compra.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}
-
-  {% comment %}
-  <form method="get">
-    <label for="orden.estado">Filtrar por estado:</label>
-    <select name="orden.estado" onchange="this.form.submit()">
-      <option value="">-- Todos --</option>
-      {% for orden.estado in orden.estados %}
-        <option value="{{ orden.estado.nombre }}">{{ orden.estado.nombre }}</option>
-      {% endfor %}
-    </select>
-  </form> {% endcomment %}
-
-  

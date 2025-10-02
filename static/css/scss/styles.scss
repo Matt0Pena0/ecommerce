@@ -1,0 +1,159 @@
+// Override Bootstrap's Sass default variables
+//
+// Nearly all variables in Bootstrap are written with the `!default` flag.
+// This allows you to override the default values of those variables before
+// // you import Bootstrap's source Sass files.
+//
+// Overriding the default variable values is the best way to customize your
+// CSS without writing _new_ styles. For example, you can either change
+// `$body-color` or write more CSS that override's Bootstrap's CSS like so:
+// `body { color: red; }`.
+
+
+//
+// Bring in Bootstrap
+//
+
+// Option 1
+//
+// // Import all of Bootstrap's CSS
+
+@use "bootstrap/scss/bootstrap" as *;
+
+// Option 2
+//
+// // Place variable overrides first, then import just the styles you need. Note that some stylesheets are required no matter what.
+
+
+// $font-size-base-desktop: 1rem;
+// $font-size-base-tablet: 0.85rem;
+// $font-size-base-mobile: 0.50rem;
+
+// // Aplicar tamaño de fuente base
+// body {
+//   font-size: $font-size-base-desktop;
+// }
+
+// // Aplicar tamaño de fuente base para tablets
+// @media (max-width: 991.98px) {
+//   body {
+//     font-size: $font-size-base-tablet;
+//   }
+// }
+
+// // Aplicar tamaño de fuente base para móviles
+// @media (max-width: 767.98px) {
+//   body {
+//     font-size: $font-size-base-mobile;
+//   }
+// }
+
+
+// Toggle global options
+$enable-gradients: true;
+$enable-shadows: true;
+
+$offcanvas-box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175);
+
+// Include functions first
+// @import "bootstrap/scss/_functions";
+
+// Customize some defaults
+$body-color: #333;
+$body-bg: #fff;
+$border-radius: .4rem;
+$success: #7952b3;
+
+// Required
+// @import "bootstrap/scss/_variables";
+// @import "bootstrap/scss/variables-dark";
+// @import "bootstrap/scss/_maps";
+// @import "bootstrap/scss/_mixins";
+// @import "bootstrap/scss/_utilities";
+// @import "bootstrap/scss/_root";
+// @import "bootstrap/scss/_reboot";
+
+// @import "bootstrap/scss/_type";
+// // @import "bootstrap/scss/images";
+// @import "bootstrap/scss/_containers";
+// @import "bootstrap/scss/_grid";
+// // @import "bootstrap/scss/tables";
+// // @import "bootstrap/scss/forms";
+// @import "bootstrap/scss/_buttons";
+// @import "bootstrap/scss/_transitions";
+// @import "bootstrap/scss/_dropdown";
+// // @import "bootstrap/scss/button-group";
+// // @import "bootstrap/scss/nav";
+// // @import "bootstrap/scss/navbar"; // Requires nav
+// // @import "bootstrap/scss/card";
+// // @import "bootstrap/scss/breadcrumb";
+// // @import "bootstrap/scss/accordion";
+// // @import "bootstrap/scss/pagination";
+// // @import "bootstrap/scss/badge";
+// // @import "bootstrap/scss/alert";
+// // @import "bootstrap/scss/progress";
+// // @import "bootstrap/scss/list-group";
+// @import "bootstrap/scss/_close";
+// // @import "bootstrap/scss/toasts";
+// @import "bootstrap/scss/_modal"; // Requires transitions
+// // @import "bootstrap/scss/tooltip";
+// @import "bootstrap/scss/_popover";
+// // @import "bootstrap/scss/carousel";
+// // @import "bootstrap/scss/spinners";
+// @import "bootstrap/scss/_offcanvas"; // Requires transitions
+// // @import "bootstrap/scss/placeholders";
+
+// Helpers
+// // @import "bootstrap/scss/helpers";
+
+// Utilities
+// @import "bootstrap/scss/utilities/_api";
+
+
+//
+// Custom styles
+//
+
+// @import "icon-list";
+
+body {
+//   padding: 1.5rem;
+}
+
+.bi {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}
+
+.color-modes {
+  .dropdown-menu {
+    padding: .25rem;
+
+    li + li {
+      margin-top: .125rem;
+    }
+  }
+
+  .dropdown-item {
+    @include border-radius(.25rem);
+  }
+
+  .active {
+    font-weight: 600;
+
+    .bi {
+    // //   display: block !important; // stylelint-disable-line declaration-no-important
+    }
+  }
+}
+
+/* Asegura que los selects y dropdowns dentro del offcanvas no se corten */
+.offcanvas-body {
+overflow: visible !important;
+}
+
+/* Opcional: margenes internos más cómodos */
+.offcanvas-body .mb-3:last-child {
+margin-bottom: 1.5rem;
+}

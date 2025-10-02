@@ -77,7 +77,7 @@ class OrdenTxtCopyView(View):
         # Serializamos los datos de la orden
         rows = OrdenSerializer.serialize(orden)
         
-        # Usamos el mismo exportador para generar el texto
+        # Usar el mismo exportador para generar el texto
         exporter = TxtExporter()
         data = exporter.export(rows)
         

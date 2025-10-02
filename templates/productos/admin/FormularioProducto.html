@@ -1,19 +1,87 @@
 {% extends "LayoutBase.html" %}
 
-{% block head_title %}{% if object %}Editar{% else %}Nuevo{% endif %} Producto{% endblock %}
-{% block page_title %}{% if object %}Editar{% else %}Crear{% endif %} Producto{% endblock %}
+{% block page_title %}
+{% if object %}Editar{% else %}Crear{% endif %} Producto
+{% endblock %}
 
 {% block page_content %}
-  <form method="post">
+
+{% load static %}
+{% load productos_filters %}
+
+<div class="card shadow-sm p-2 p-md-3 border rounded-3">
+
+  <!-- Encabezado -->
+  <div class="text-start mb-4">
+
+    <h4 class="mb-3 fw-semibold text-center">
+      <i class="bi bi-bag-plus"></i>
+      Ingrese los datos,
+      para {% if object %}editar{% else %}crear{% endif %} el producto
+    </h4>
+  </div>
+
+  <form method="post" novalidate>
     {% csrf_token %}
-    {% comment %} <p>
-      <label for="id_codigo">Código</label><br>
-      {{ form.codigo }}  {# esto ya es <input list="codigos_list" …> #}
-    </p> {% endcomment %}
-    {{ form.as_p }}
 
+    <!-- 1. MANEJO DE ERRORES GLOBALES (non_field_errors) -->
+    {% if form.non_field_errors %}
+      <!-- Estilo ajustado que replica el de Login/Registro -->
+      <div class="alert alert-danger py-1 px-2 mt-0 mb-3 small text-start">
+          <ul class="list-unstyled m-0"> 
+              {% for error in form.non_field_errors %}
+                  <li class="mb-0">{{ error }}</li> 
+              {% endfor %}
+          </ul>
+      </div>
+    {% endif %}
 
-    <button type="submit">
+    <!-- 2. BUCLE MODERNO PARA CAMPOS FLOTANTES -->
+    {% for field in form %}
+      {% if field.field.widget.input_type != 'checkbox' %}
+
+      <div class="form-floating mt-2">
+          <!-- CAMPO INPUT CON FILTRO product_add_attributes -->
+          <!-- Esto genera el <input class="form-control is-invalid" placeholder="."> -->
+          {{ field|product_add_attributes:"class:form-control|placeholder:." }}
+
+          <!-- CAMPO LABEL -->
+          <label for="{{ field.id_for_label }}" 
+          {% if field.errors %}
+            class="text-danger"
+          {% endif %}>{{ field.label }}
+          </label>
+        </div>
+
+        <!-- 3. MANEJO DE ERRORES DE CAMPO (field.errors) -->
+        {% if field.errors %}
+          <div class="alert alert-danger py-1 px-2 mt-0 mb-3 small text-start">
+            <ul class="list-unstyled m-0"> 
+              {% for error in field.errors %}
+                <li class="mb-0">{{ error }}</li> 
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <!-- 4. HELP TEXT -->
+        {% if field.help_text %}
+            <small class="text-muted d-block mt-1 mb-3">{{ field.help_text }}</small>
+        {% endif %}
+
+      {% else %}
+        <!-- Si es un checkbox, lo renderizamos de forma básica fuera del floating -->
+        <div class="form-check mt-3 mb-2">
+            {{ field }} 
+            <label class="form-check-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+            </label>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <!-- BOTÓN DE SUBMIT (Ajustamos el estilo Bootstrap) -->
+    <button type="submit" class="btn btn-primary w-100 my-4">
       {% if object %}Guardar Cambios{% else %}Crear Producto{% endif %}
     </button>
   </form>
@@ -21,33 +89,34 @@
   {# DATALISTS PARA AUTOCOMPLETE #}
   <datalist id="codigos_list">
     {% for c in codigos %}
-      <option value="{{ c }}"></option>
+    <option value="{{ c }}"></option>
     {% endfor %}
   </datalist>
-
+  
   <datalist id="marcas_list">
     {% for m in marcas %}
-      <option value="{{ m }}"></option>
+    <option value="{{ m }}"></option>
     {% endfor %}
   </datalist>
-
+  
   <datalist id="categorias_list">
     {% for c in categorias %}
-      <option value="{{ c }}"></option>
+    <option value="{{ c }}"></option>
     {% endfor %}
   </datalist>
-
+  
   <datalist id="gondolas_list">
     {% for g in gondolas %}
-      <option value="{{ g }}"></option>
+    <option value="{{ g }}"></option>
     {% endfor %}
   </datalist>
-
+  
   <datalist id="unidades_list">
     {% for u in unidades %}
-      <option value="{{ u }}"></option>
+    <option value="{{ u }}"></option>
     {% endfor %}
   </datalist>
-
-<a href="{% url 'productos:listar' %}">← Volver a la lista</a>
+  
+  <a href="{% url 'productos:listar' %}">← Volver a la lista</a>
+</div>
 {% endblock %}

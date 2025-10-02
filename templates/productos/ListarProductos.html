@@ -1,77 +1,208 @@
 {% extends "LayoutBase.html" %}
 {% load static %}
 
-{% block head_title %}Catálogo de Productos{% endblock %}
-{% block page_title %}Todos los Productos{% endblock %}
+{% block page_title %}Catálogo de Productos{% endblock %}
 
 {% block head %} 
-  <link rel="stylesheet" href="{% static 'css/card.css' %}">
-  <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
-  <script src="{% static 'js/agregar_al_carrito.js' %}" defer></script>
+  <script src="{% static 'js/agregar-al-carrito.js' %}" defer></script>
 {% endblock head %}
 
 {% block page_content %}
   {% if request.user.is_superuser %}
-  <div class="new-product">
-    <button class="btn-new-product">
-      <a href="{% url 'productos:crear' %}">➕ Nuevo Producto</a>
-    </button>
+  <div class="mb-3">
+    <a href="{% url 'productos:crear' %}" class="btn btn-primary">
+      ➕ Nuevo Producto
+    </a>
   </div>
   {% endif %}
 
   {% include '_includes/_filters.html' %}
 
-  <div class="product-container">
+  <div class="row row-cols-2 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-4 g-sm-1">
     {% for p in productos %}
-    <div class="card">
-      <div class="badge">HOT SALE</div>
-      <div class="img">
-        <img src="" alt="">
-      </div>
+    <div class="col">
+      <div class="card h-100 d-flex flex-column shadow-sm m-1 p-sm-2">
 
-      <div class="info">
-        <h2 class="title">{{ p.nombre }}</h2>
-        <div class="cat">
-          <span class="sub-cat">{{ p.categoria.nombre }}</span>
-          <span class="sub-cat">{{ p.gondola.nombre }}</span>
-        </div>
+        <!-- Imagen -->
+        <img src= {% if p.imagen.url %} "{{ p.imagen.url}}" {% else %} "{% static 'img/producto.png' %}" {% endif %}
+            class="card-img-top" 
+            style="height:100px; object-fit:cover;" 
+            alt="{{ p.nombre }}">
 
-        <div class="bottom">
-          <div class="price">
+        <!-- Cuerpo de la card -->
+        <div class="card-body d-flex flex-column">
+
+          <!-- Badge de oferta -->
+          {% if p.onSale %}
+            <span class="badge bg-danger mb-1">HOT SALE</span>
+          {% endif %}
+
+          <!-- Zona nombre y categoría -->
+          <div class="mb-1" style="min-height:3.5rem;">
+            <h6 class="card-title mb-0" style="text-align: justify;">{{ p.nombre }}</h6>
+            <small class="text-muted">
+              {% if p.categoria.nombre and p.gondola.nombre %}
+                {{ p.categoria.nombre }} - {{ p.gondola.nombre }}
+              {% else %}
+                {{ p.categoria.nombre }}{{ p.gondola.nombre }}
+              {% endif %}
+            </small>
+          </div>
+
+          <!-- Zona precio -->
+          <div class="mb-2" style="min-height:2rem;">
             {% if p.onSale %}
-              <span class="old">precio sin descuento</span>
-              <span class="new">precio con descuento</span>
+              <span class="text-decoration-line-through text-muted medium">${{ p.precio_unitario }}</span>
+              <span class="fw-bold text-success medium">${{ p.precio_oferta }}</span>
             {% else %}
-              <span class="price">${{ p.precio_unitario }}</span>
+              <span class="fw-bold medium">${{ p.precio_unitario }}</span>
             {% endif %}
           </div>
 
-          <div class="stock">
-            {% if p.stock > 0 %}
-              En stock
-            {% else %}
-              Sin stock
-            {% endif %}
-          </div>
+          <!-- Zona acción carrito -->
+          <form class="add-to-cart-form d-flex flex-column flex-md-row mx-auto align-items-md-center justify-content-between mt-auto"
+                method="POST" data-codigo="{{ p.codigo }}">
+            {% csrf_token %}
+
+            <!-- Stepper -->
+            <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
+              <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad">−</button>
+
+              <div class="qty-display mx-2 text-center"
+                  data-min="1"
+                  data-max="{{ p.stock }}">
+              </div>
+
+              <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad">+</button>
+            </div>
+
+            <!-- Hidden input -->
+            <input type="hidden" name="quantity" class="quantity" value="1" />
+
+            <!-- Botón Agregar al carrito -->
+            <button type="submit"
+                    class="btn btn-sm btn-primary add-to-cart-btn mx-auto mx-md-0"
+                    aria-label="Agregar al carrito">
+              <i class="bi bi-cart4"></i>
+            </button>
+          </form>
+
+
+            
+            {% comment %}
+            <div class="btn-stepper d-flex align-items-center me-2" role="group" aria-label="Cantidad">
+              <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad">−</button>
+
+              <!-- display; min y max controlan límites -->
+              <div class="qty-display mx-2 text-center"
+                  data-min="1"
+                  data-max="{{ p.stock }}">
+              </div>
+
+              <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad">+</button>
+            </div>
+
+            <!-- hidden input que enviamos por AJAX -->
+            <input type="hidden" name="quantity" class="quantity" value="1" />
+
+            <!-- botón enviar (AJAX) -->
+            <button type="submit" class="btn btn-sm btn-primary add-to-cart-btn" aria-label="Agregar al carrito">
+              <i class="bi bi-cart4"></i>
+            </button>
+          </form> 
+          {% endcomment %}
+
         </div>
 
-        {% if request.user.is_authenticated %}
-        <div class="action-orden">
-          <form class="add-to-cart-form" method="POST" data-codigo="{{ p.codigo }}">
-              {% csrf_token %}
-              <input class="quantity" type="number" value="0" min="1" max="{{ p.stock }}">
-              <label for="quantity">{{p.unidad_medida}}</label>
-              <div add-to-cart>
-                  <button class="btn" type="submit">
-                      <span class="btn-text">Agregar al carrito</span>
-                  </button>
-              </div>
-          </form>
+        <!-- Opciones admin -->
+        {% if request.user.is_superuser %}
+        <div class="card-footer py-1">
+          <a href="{% url 'productos:actualizar' p.pk %}" class="btn btn-outline-secondary btn-sm w-100">Editar</a>
         </div>
         {% endif %}
+
       </div>
-      <a href="{% url 'productos:actualizar' p.pk %}">editar</a>
     </div>
     {% endfor %}
   </div>
-{% endblock %} 
+{% endblock %}
+
+
+  {% comment %} 
+  <div class="row row-cols-sm-3 row-cols-sm-4 row-cols-md-5 row-cols-md-5 g-4">
+    {% for p in productos %}
+    <div class="col">
+      <div class="card h-70 shadow-sm">
+        {% if p.imagen %}
+          <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">
+        {% else %}
+          <img src="{% static 'img/producto.png' %}" class="card-img-top" alt="Sin imagen">
+        {% endif %}
+
+        <div class="card-body py-2 px-2">
+          <!-- Badge de oferta -->
+          {% if p.onSale %}
+            <span class="badge bg-danger mb-2">HOT SALE</span>
+          {% endif %}
+
+          <h6 class="card-title mb-1">{{ p.nombre }}</h5>
+          <p class="card-text small mb-1">
+            {% if p.categoria.nombre and p.gondola.nombre%}
+              {{ p.categoria.nombre }} - {{ p.gondola.nombre }}
+            {% else %}
+              {{ p.categoria.nombre }}{{ p.gondola.nombre }}
+            {% endif %}
+          </p>
+
+          <!-- Precios -->
+          <div class="mb-2">
+            {% if p.onSale %}
+              <span class="text-decoration-line-through text-muted sm-1">
+                ${{ p.precio_unitario }}
+              </span>
+              <span class="fw-bold text-success">
+                ${{ p.precio_oferta }}
+              </span>
+            {% else %}
+              <span class="fw-bold">
+                ${{ p.precio_unitario }}
+              </span>
+            {% endif %}
+          </div>
+
+          <!-- Stock -->
+          <p class="mb-3 {{ p.stock > 0|yesno:'text-success,text-danger' }}">
+            {% if p.stock > 0 %}
+              En stock ({{ p.stock }})
+            {% else %}
+              Sin stock
+            {% endif %}
+          </p>
+
+          <!-- Acción carrito -->
+          {% if request.user.is_authenticated %}
+          <form class="mt-auto add-to-cart-form" method="POST" data-codigo="{{ p.codigo }}">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <input type="number" name="quantity" value="1" min="1" max="{{ p.stock }}" class="form-control form-control-sm">
+              <span class="input-group-text">{{ p.unidad_medida }}</span>
+            </div>
+            <button class="btn btn-outline-primary btn-small" type="submit">
+              🛒 Agregar al carrito
+            </button>
+          </form>
+          {% endif %}
+        </div>
+
+        <!-- Opciones de admin -->
+        {% if request.user.is_superuser %}
+          <div class="card-footer py-1">
+            <a href="{% url 'productos:actualizar' p.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endblock %}
+{% endcomment %}

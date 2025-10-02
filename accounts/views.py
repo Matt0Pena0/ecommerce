@@ -68,7 +68,11 @@ class BaseUserRegisterView(FormView):
 # Cambio de contraseña
 class BasePasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = "accounts/password_change/Change.html"
-    success_url = reverse_lazy("accounts:password_change:done")
+    success_url = reverse_lazy("accounts:password_change:complete")
+
+    def form_invalid(self, form):
+        messages.error(self.request, "El email ingresado no es válido o no está registrado.")
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         messages.success(self.request, "Contraseña actualizada correctamente.")
@@ -104,10 +108,14 @@ class BasePasswordResetView(PasswordResetView):
     subject_template_name = "accounts/password_reset/subject.txt"
     success_url = reverse_lazy("accounts:password_reset:done")
 
+    def form_invalid(self, form):
+        messages.error(self.request, "El email ingresado no es válido o no está registrado.")
+        return super().form_invalid(form) 
+
     def form_valid(self, form):
         messages.success(
             self.request,
-            "Correo enviado correctamente.",
+            "Correo de recuperación enviado correctamente.",
         )
         return super().form_valid(form)
 

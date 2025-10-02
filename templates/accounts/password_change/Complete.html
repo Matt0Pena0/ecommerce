@@ -1,12 +1,10 @@
 {% extends 'LayoutBase.html' %}
 
-{% block page_title %}Contraseña Actualizada{% endblock %}
+{% block page_title %}Contraseña Cambiada{% endblock %}
 
 {% block page_content %}
-
   <h2 class="mb-3 fw-semibold">¡Listo!</h2>
   <p class="text-body-secondary">Tu contraseña fue actualizada.
-    <a class="link-underline-primary" 
-       href="{% url 'accounts:login' %}">Inicia sesión</a>
+    <a class="link-underline-primary" href="{% url 'accounts:login' %}">Iniciar sesión</a>
   </p>
 {% endblock %}

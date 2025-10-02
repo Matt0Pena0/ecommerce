@@ -1,47 +1,25 @@
+// static/js/toast.js
+export function showToast(message) {
+    const toastEl = document.createElement('div');
+    toastEl.className = 'toast align-items-center text-bg-primary border-0 show position-fixed bottom-0 end-0 m-3';
+    toastEl.setAttribute('role', 'alert');
+    toastEl.setAttribute('aria-live', 'assertive');
+    toastEl.setAttribute('aria-atomic', 'true');
 
-function showToast(message, type = 'info') {
-    // Verifica si ya existe el contenedor de toasts
-    let container = document.getElementById('toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toast-container';
-        container.style.position = 'fixed';
-        container.style.top = '20px';
-        container.style.right = '20px';
-        container.style.zIndex = '9999';
-        container.style.display = 'flex';
-        container.style.flexDirection = 'column';
-        container.style.gap = '10px';
-        document.body.appendChild(container);
-    }
+    const body = document.createElement('div');
+    body.className = 'd-flex';
+    body.innerHTML = `
+        <div class="toast-body">${message}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    `;
 
-    // Crea el toast individual
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.textContent = message;
+    toastEl.appendChild(body);
+    document.body.appendChild(toastEl);
 
-    // Estilo básico inline (puedes moverlo a CSS luego)
-    toast.style.padding = '10px 15px';
-    toast.style.borderRadius = '6px';
-    toast.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
-    toast.style.color = 'white';
-    toast.style.fontSize = '14px';
-    toast.style.backgroundColor = {
-        'info': '#2d9cdb',
-        'success': '#27ae60',
-        'error': '#e74c3c',
-        'warning': '#f39c12'
-    }[type] || '#333';
+    const bsToast = new bootstrap.Toast(toastEl, { delay: 3000 });
+    bsToast.show();
 
-    // Agrega el toast al contenedor
-    container.appendChild(toast);
-
-    // Remueve luego de 3 segundos
-    setTimeout(() => {
-        toast.remove();
-        // Si no quedan más, eliminamos el contenedor
-        if (container.childElementCount === 0) {
-            container.remove();
-        }
-    }, 3000);
+    toastEl.addEventListener('hidden.bs.toast', () => {
+        toastEl.remove();
+    });
 }

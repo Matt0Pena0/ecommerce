@@ -1,18 +1,89 @@
 {% extends 'LayoutBase.html' %}
 
-{% block head_title %}Iniciar Sesión{% endblock %}
+{% block page_title %}Iniciar Sesión{% endblock %}
 
 {% block page_content %}
-    <h1>This is the login page.</h1>
 
-  {% if error_message %}
-    <p>{{ error_message }}</p>
-  {% endif %}
+{% load static %}
+{% load accounts_filters %}
 
-    <form action="" method="POST">
+<div class="d-flex align-items-center py-0 bg-body-tertiary">
+  <div class="card shadow-lg form-signin m-auto p-2 p-md-3 px-md-4 rounded-3" style="width: 400px;">
+
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+      <img src="{% static 'img/Logo_MattDev_DjangoBase.png' %}" alt="Logo" width="100" class="mb-0">
+
+      <h3 class="mb-3 fw-semibold text-center">Bienvenido a</h3>
+      <h2 class="mb-3 fw-semibold text-center">M&M eCommerce</h2>
+      <p class="text-body-secondary my-3">Disfruta la experiencia de realizar tus compras desde tu casa!</p>
+    </div>
+
+    <form method="post" novalidate>
       {% csrf_token %}
-      {{ form.as_p}}
 
-      <button type="submit">Acceder</button>
+      <!-- Manejo de errores globales -->
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger py-1 px-2 mt-0 mb-3 small text-start">
+              <!-- Itera los errores de {{ form.non_field_errors }} para personalizar estilo -->
+            <ul class="list-unstyled m-0"> 
+                {% for error in form.non_field_errors %}
+                    <li class="mb-0">{{ error }}</li> 
+                {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+
+      <!-- Iterar sobre los campos del form -->
+      {% for field in form %}
+        {% if field.field.widget.input_type == 'checkbox' %}
+        {% else %}
+
+          <!-- Contenedor para cada field, que maneja el estilo form floating.
+          Utilizando accounts_filters -->
+          <div class="form-floating mt-2">
+            <!-- Añadir campo usando accounts_filters para aplicar clases y placeholder -->
+            {{ field|add_attributes:"class:form-control|placeholder:." }}
+
+            <!-- Campo / field -->
+            <label for="{{ field.id_for_label }}" 
+            {% if field.errors %}
+              class="text-danger"
+            {% endif %}>{{ field.label }}
+            </label>
+          </div>
+
+          <!-- Manejo de errores para cada campo fuera del form floating -->
+          {% if field.errors %}
+            <div class="alert alert-danger py-1 px-0 mt-1 mb-3 small text-start">
+              <!-- Itera los errores de {{ field.errors }} para personalizar estilo -->v
+              <ul class="m-0"> 
+                {% for error in field.errors %}
+                  <li class="mb-0">{{ error }}</li> 
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+        {% endif %}
+      {% endfor %}
+
+      <button type="submit" class="btn btn-outline-primary w-100 my-3 mt-2">Iniciar Sesión</button>
     </form>
+
+    <!-- Pie de links -->
+    <div class="text-center my-2">
+      <a class="link-underline-primary my-0"
+         href="{% url 'accounts:password_reset:reset' %}">¿Has olvidado la contraseña?
+      </a>
+      <p class="text-body-secondary my-0">¿No tienes una cuenta?
+        <a class="link-underline-primary my-0"
+           href="{% url 'accounts:register' %}">Regístrate
+        </a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
 {% endblock %}

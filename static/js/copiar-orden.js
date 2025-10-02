@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // The key is to use the camelCase version in JavaScript
             // for a kebab-case data attribute.
             const url = copyButton.dataset.urlCopyOrden;
-            
+
             try {
                 // Fetch the text content from the URL
                 const response = await fetch(url);
