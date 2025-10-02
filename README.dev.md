@@ -2,8 +2,9 @@
 
 ### EN EL SERVIDOR SIEMPRE PULL ###
 
-```bash
-docker compose -f docker-compose.prod.yml exec mymecommerce_web_prod python manage.py migrate
+
+docker compose --env-file .env.prod -f docker-compose.prod.yml up --build
+docker compose -f docker-compose.prod.yml exec web python manage.py migrate
 
 # Run development server on 0.0.0.0:8000
 docker compose exec web python3 manage.py runserver 0.0.0.0:8000

@@ -1,7 +1,30 @@
-# 1. Base
+# --- ETAPA 1: El "Constructor" de Frontend ---
+# Usamos una imagen ligera de Node.js para compilar nuestros assets.
+# Le ponemos el alias "builder" para poder referirnos a ella más tarde.
+FROM node:20-alpine AS builder
+
+# Establecemos el directorio de trabajo
+WORKDIR /app
+
+# Copiamos solo los archivos de dependencias para aprovechar el caché
+COPY package*.json ./
+
+# Instalamos las dependencias de npm
+RUN npm install
+
+# Copiamos el resto de los archivos del proyecto (scss, etc.)
+COPY . .
+
+# Ejecutamos el script de build que compila nuestro SCSS a CSS
+RUN npm run build
+
+
+# --- ETAPA 2: La Imagen Final de Python ---
+# Empezamos de nuevo desde una imagen limpia de Python.
+# Todo lo de la etapa "builder" se descartará, excepto lo que copiemos explícitamente.
 FROM python:3.12-slim
 
-# Evitar archivos .pyc y buffered IO
+# Variables de entorno estándar
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
@@ -15,18 +38,20 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# ---- Optimización del Caché ----
-# Copiar solo los archivos de requeriments
-COPY requirements/ app/requirements/
-
-# Instalar los requeriments de producción
+# Copiamos e instalamos las dependencias de Python
+COPY requirements/ ./requirements/
 RUN pip install --no-cache-dir -r requirements/prod.txt
 
-# Copiar código de la aplicación
+# Copiamos el código de la aplicación (Python, templates, etc.)
 COPY . /app/
 
-# Exponer puerto Django
+# *** LA MAGIA DEL MULTI-STAGE BUILD ***
+# Copiamos SOLO los archivos compilados (el CSS final) desde la etapa "builder"
+# a la carpeta de estáticos de nuestra aplicación final.
+COPY --from=builder /app/static/css/dist/ /app/static/css/
+
+# Exponer puerto (documentación)
 EXPOSE 8000
 
 # Comando por defecto
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "themattdev.wsgi:application"]
