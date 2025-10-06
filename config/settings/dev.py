@@ -7,10 +7,10 @@ ALLOWED_HOSTS = ["https://00e029f881b7.ngrok-free.app", '.ngrok-free.app',"local
 CSRF_TRUSTED_ORIGINS = [
     "https://00e029f881b7.ngrok-free.app",
 ]
+
 INSTALLED_APPS = [
     "debug_toolbar",
     "grappelli",
-    "django_extensions",
     "django.contrib.admindocs",
 ] + INSTALLED_APPS
 

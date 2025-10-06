@@ -5,7 +5,6 @@ mysqlclient==2.2.4
 
 # Debug y herramientas de desarrollo
 django-debug-toolbar==4.4.2
-django-extensions==3.2.3
 django-grappelli==4.0.2
 
 # Test y utilidade

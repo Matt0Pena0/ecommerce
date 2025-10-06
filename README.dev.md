@@ -2,8 +2,10 @@
 
 ### EN EL SERVIDOR SIEMPRE PULL ###
 
-
 docker compose --env-file .env.prod -f docker-compose.prod.yml up --build
+
+docker compose -f docker-compose.prod.yml exec web python manage.py runscript productos.scripts.load_data 
+
 docker compose -f docker-compose.prod.yml exec web python manage.py migrate
 
 # Run development server on 0.0.0.0:8000
