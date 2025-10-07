@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 
 from productos.models import Producto, Marca, Categoria, Gondola
+from carrito.models import Carrito, ItemCarrito
 
 
 class ProductoListView(LoginRequiredMixin, ListView):
@@ -127,6 +128,32 @@ class ProductoListView(LoginRequiredMixin, ListView):
             "available": "Con stock",
             "out": "Sin stock"
         }.get(stock_val, "--Stock--")
+
+        # Carrito
+        productos_en_carrito = {}
+
+        # 2. SOLO si el usuario está autenticado, busca su carrito
+        if self.request.user.is_authenticated:
+            try:
+                # Buscamos el carrito del usuario. 
+                # Es crucial que esta sea una sola consulta.
+                carrito_usuario = Carrito.objects.get(usuario=self.request.user)
+                
+                # 3. Consulta de Items y prefetch_related/select_related para eficiencia
+                # Select related para obtener los datos del producto en la misma consulta
+                items = ItemCarrito.objects.filter(carrito=carrito_usuario).select_related('producto')
+                
+                # 4. Rellenar el diccionario
+                for item in items:
+                    # Usamos el código del producto como clave para búsqueda rápida en la plantilla
+                    productos_en_carrito[item.producto.codigo] = item.cantidad
+
+            except Carrito.DoesNotExist:
+                # Si el usuario no tiene carrito, el diccionario queda vacío {}
+                pass
+        
+        # 5. Añadir el diccionario al contexto
+        ctx['productos_en_carrito'] = productos_en_carrito
 
         return ctx
 

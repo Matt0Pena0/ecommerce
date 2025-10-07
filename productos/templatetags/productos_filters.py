@@ -70,3 +70,11 @@ def get_stock_label(value):
         None: '--Stock--'
     }
     return mapping.get(value, '--Stock--')
+
+@register.filter(name='get_item')
+def get_item(dictionary, key):
+    """
+    Permite acceder a un valor en un diccionario usando una clave.
+    Ejemplo de uso en plantilla: {{ diccionario|get_item:clave|default:0 }}
+    """
+    return dictionary.get(key)

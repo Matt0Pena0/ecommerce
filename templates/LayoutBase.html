@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block page_title %}{% endblock page_title %}</title>
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -13,43 +14,48 @@
     <link rel="stylesheet" href="{% static 'bootstrap/fonts/bootstrap-icons.woff' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/fonts/bootstrap-icons.woff2' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
     {% block head %}{% endblock %}
   </head>
+
   <body 
   {% comment %} // Data attributes for JS {% endcomment %}
-  data-url-agregar-carrito="{% url 'carrito:agregar_al_carrito_api'%}"
+  data-url-agregar-carrito="{% url 'carrito:agregar_item_carrito_api'%}"
+  data-url-eliminar-carrito="{% url 'carrito:agregar_item_carrito_api'%}"
   >
   
     <div class="main-content">
       {% include '_includes/_navbar.html' %}
       
-      <div class="page-content p-2 mt-3">
-      {% block page_content %}
-      <pre>{{ messages }}</pre>
+      <div class="page-content p-2 p-md-4" style="max-width: 1000px; position: relative; margin: auto;">
+        {% block page_content %}
+          <pre>{{ messages }}</pre>
 
-      {% if messages %}
-      <div id="alert-container" class="alert-container">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-          {{ message }}
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-      {% endblock %}
+          {% if messages %}
+          <div id="alert-container" class="alert-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        {% endblock %}
       </div>
 
+      {% include '_includes/_footer.html' %}
     </div>
 
-    {% include '_includes/_footer.html' %}
-    
+
+    <!-- JS -->
     <!-- Bootstrap JS -->
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    
+
     <!-- Scripts personalizados -->
     {% include '_includes/_toast.html' %}
     <script src="{% static 'js/main.js' %}"></script>
-    {% block extra_scripts %}
-    {% endblock extra_scripts %}
+
+    {% block extra_scripts %}{% endblock extra_scripts %}
+
   </body>
 </html>

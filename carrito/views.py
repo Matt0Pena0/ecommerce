@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
+from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from django.contrib import messages
-import json
+from django.db.models import Sum
 
+import json
 
 from carrito.models import Carrito, ItemCarrito
 from productos.models import Producto
@@ -17,51 +19,69 @@ def obtener_carrito_usuario(request):
 
     return carrito, creado
 
-
+@require_http_methods(["POST"])
 @login_required
-def agregar_al_carrito_api(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=405)
-
+def agregar_item_carrito_api(request):
     try:
-        # Leer el cuerpo de la petición, llega dentro de JSON
         data = json.loads(request.body)
         producto_codigo = data.get('producto_codigo')
-        cantidad = int(data.get('cantidad', 1))
-        if not producto_codigo or cantidad <= 0:
-            return JsonResponse({"error": "Datos inválidos"}, status=400)
+        cantidad = data.get('cantidad')
 
-        producto = get_object_or_404(Producto, codigo=producto_codigo)
+        if not producto_codigo or cantidad is None:
+            return JsonResponse({"status": "error", "message": "Datos de producto o cantidad faltantes."}, status=400)
+
+        # 1. Obtener Carrito y Producto
         carrito, creado = obtener_carrito_usuario(request)
-        item, creado = ItemCarrito.objects.get_or_create(
-            carrito=carrito,
-            producto=producto,
-            defaults={'cantidad': cantidad}
-        )
+        producto = get_object_or_404(Producto, codigo=producto_codigo)
+        
+        # 2. Intentar obtener el ítem (simplifica la lógica posterior)
+        item = ItemCarrito.objects.filter(carrito=carrito, producto=producto).first()
+        
+        # --- LÓGICA CLAVE (Manejo de 0 y > 0) ---
+        
+        if cantidad == 0:
+            # CASO 1: ELIMINACIÓN (newQty = 0)
+            if item:
+                item.delete()
+                mensaje = "Producto eliminado del carrito."
+            else:
+                mensaje = "El producto no estaba en el carrito."
+            
+        elif cantidad > 0:
+            # CASO 2: CREACIÓN / ACTUALIZACIÓN (newQty > 0)
+            
+            if item:
+                # Actualización
+                item.cantidad = cantidad
+                item.save()
+                mensaje = "Cantidad de producto actualizada."
+            else:
+                # Creación
+                ItemCarrito.objects.create(
+                    carrito=carrito,
+                    producto=producto,
+                    cantidad=cantidad
+                )
+                mensaje = "Producto agregado al carrito."
 
-        cantidad_final = cantidad
 
-        if cantidad_final > producto.stock:
-            return JsonResponse({
-                "status": "error",
-                "message": f"Stock insuficiente para {producto.nombre}. Disponible: {producto.stock}"
-            }, status=400)
-
-        item.cantidad = cantidad_final
-        item.save()
+        # 3. Recalcular el total para actualizar el contador global (opcional)
+        total_items_carrito = ItemCarrito.objects.filter(carrito=carrito).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
 
         return JsonResponse({
-            "status": "ok",
-            "message": f"'{producto.nombre}' agregado al carrito.",
-            "total_items_carrito": carrito.items.count(), # Para actualizar un contador en la UI
-            "cantidad_producto_en_carrito": cantidad_final # Para el display del producto
-        })
+            "status": "ok", 
+            "message": mensaje,
+            "total_items_carrito": total_items_carrito
+        }, status=200)
 
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Datos JSON inválidos."}, status=400)
+    except Producto.DoesNotExist:
+        return JsonResponse({"status": "error", "message": "El producto no existe."}, status=404)
     except Exception as e:
-
-        import traceback
-        traceback.print_exc() # Muestra el error completo en consola
-        return JsonResponse({"error": str(e)}, status=500)
+        # Esto captura cualquier error interno (DB, etc.)
+        print(f"Error fatal en la API de carrito: {e}")
+        return JsonResponse({"status": "error", "message": f"Error interno del servidor: {e}"}, status=500)
 
 
 @login_required
@@ -99,6 +119,33 @@ def actualizar_carrito(request):
 
     # El redirect debe ser a la vista que muestra el carrito
     return redirect("carrito:ver_carrito") 
+
+
+@require_http_methods(["POST"]) 
+@login_required
+def eliminar_item_carrito_api(request, producto_codigo):
+    # La validación de que sea POST es mejor aquí, pero para fines de AJAX simple se omite
+    
+    carrito, creado = obtener_carrito_usuario(request)
+    item = carrito.items.filter(producto__codigo=producto_codigo).first()
+    
+    if item:
+        # Aquí eliminamos el ítem
+        item.delete()
+        
+        # Opcional: Recalcular el total de ítems en el carrito
+        total_items_carrito = carrito.items.aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+
+        return JsonResponse({
+            "status": "ok", 
+            "message": "Producto eliminado.",
+            "total_items_carrito": total_items_carrito
+        }, status=200)
+
+    return JsonResponse({
+        "status": "error", 
+        "message": "Producto no encontrado en el carrito."
+    }, status=404)
 
 
 @login_required
