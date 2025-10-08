@@ -18,8 +18,10 @@ INSTALLED_APPS = [
 
     # Apps externas comunes
     "import_export",
+    "django_extensions",
     "core",
     "accounts",
+    "core",
     "productos",
     "ordenes",
     "carrito",
@@ -69,6 +71,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
 
 # Modelo de usuario personalizado
 AUTH_USER_MODEL = "accounts.UsuarioBase"

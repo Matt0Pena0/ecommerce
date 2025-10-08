@@ -1,5 +1,5 @@
 {
-  "name": "mym_ecommerce",
+  "name": "ecommerce",
   "version": "1.0.0",
   "description": "```bash # Run development server on 0.0.0.0:8000 docker compose exec web python3 manage.py runserver 0.0.0.0:8000",
   "main": "index.js",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MatttttaM/mym_pedidos.git"
+    "url": "git+https://github.com/MatttttaM/pedidos.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MatttttaM/mym_pedidos/issues"
+    "url": "https://github.com/MatttttaM/pedidos/issues"
   },
-  "homepage": "https://github.com/MatttttaM/mym_pedidos#readme",
+  "homepage": "https://github.com/MatttttaM/pedidos#readme",
   "dependencies": {
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1"

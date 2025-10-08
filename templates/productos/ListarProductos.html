@@ -5,7 +5,7 @@
 {% block page_title %}Catálogo de Productos{% endblock %}
 
 {% block head %} 
-  <script src="{% static 'js/agregar-al-carrito.js' %}" defer></script>
+  <script src="{% static 'js/actualizar-carrito.js' %}" defer></script>
 {% endblock head %}
 
 {% block page_content %}
@@ -20,100 +20,103 @@
 
   {% include '_includes/_filters.html' %}
 
-  <div class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 p-2">
-  {% for p in productos %}
+  <div class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-lg-6">
+    {% for p in productos %}
 
-  {% with p.codigo as codigo %}
-    {% with productos_en_carrito|get_item:codigo|default:0 as qty_en_carrito %}
+    {% with p.id as id %}
+      {% with productos_en_carrito|get_item:id|default:0 as qty_en_carrito %}
 
-    <div class="col g-1 g-sm-1 g-md-2 g-xl-4">
-          <div class="card d-flex flex-column shadow-sm p-1 p-sm-2">
+      <div class="col g-1 g-sm-1 g-md-2 g-xl-4">
+        <div class="card d-flex flex-column shadow-sm p-1 p-md-2 h-100">
 
-            <!-- Imagen -->
-            <div class="d-flex justify-content-center align-items-center">
-              <img src= {% if p.img.url %} "{{ p.img.url}}" {% else %} "{% static 'img/producto.png' %}" {% endif %}
-                  class="card-img-top w-auto img-fluid" 
-                  style="object-fit:contain; max-height: 80px;" 
-                  alt="{{ p.nombre }}">
-            </div>
+          <!-- Imagen -->
+          <div class="d-flex justify-content-center align-items-center h-100" style="height: 80px;">
+            <img src= {% if p.img.url %} "{{ p.img.url}}" {% else %} "{% static 'img/producto.png' %}" {% endif %}
+                class="card-img-top w-auto img-fluid" 
+                style="object-fit:contain; max-height: 80px; min-height: 80px;" 
+                alt="{{ p.nombre }}"
+                onerror="this.onerror=null; this.src='{% static 'img/producto.png' %}'">
+          </div>
 
-            <!-- Cuerpo de la card -->
-            <div class="card-body d-flex flex-column">
+          <!-- Cuerpo de la card -->
+          <div class="card-body d-flex flex-column p-1 h-100">
 
-              <!-- Badge de oferta -->
-              {% if p.onSale %}
-                <span class="badge bg-danger mb-1">HOT SALE</span>
-              {% endif %}
-
-              <!-- Zona nombre y categoría -->
-              <div class="mb-1" style="min-height:1.5rem;">
-                <h6 class="card-title mb-0" style="text-align: justify;">{{ p.nombre }}</h6>
-                <small class="text-muted">
-                  {% if p.categoria.nombre and p.gondola.nombre %}
-                    {{ p.categoria.nombre }} - {{ p.gondola.nombre }}
-                  {% else %}
-                    {{ p.categoria.nombre }}{{ p.gondola.nombre }}
-                  {% endif %}
-                </small>
-              </div>
-
-              <!-- Zona precio -->
-              <div class="mb-2" style="min-height:1rem;">
-                {% if p.onSale %}
-                  <span class="text-decoration-line-through text-muted medium">${{ p.precio_unitario }}</span>
-                  <span class="fw-bold text-success medium">${{ p.precio_oferta }}</span>
-                {% else %}
-                  <span class="fw-bold medium">${{ p.precio_unitario }}</span>
-                {% endif %}
-              </div>
-
-              <!-- Zona acción carrito -->
-              <form class="add-to-cart-form d-flex flex-column flex-md-row mx-auto align-items-md-center justify-content-between mt-auto"
-                    method="POST" data-codigo="{{ p.codigo }}"
-                    action="{% url 'carrito:agregar_item_carrito_api' %}">
-                {% csrf_token %}
-
-                <!-- INPUTS DE CONTROL (SIEMPRE VISIBLES) -->
-                <!-- La cantidad debe ser 0 si no está en carrito, o la cantidad real -->
-                <input type="hidden" name="quantity" class="quantity" value="{{ qty_en_carrito }}"/>
-
-                <!-- CONTENEDOR DE ACCIONES: ESTE ES EL ÚNICO BLOQUE QUE EL JS REEMPLAZARÁ -->
-                <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
-
-                  {% if qty_en_carrito > 0 %}
-                    <!-- ESTADO 1: Stepper Completo - Renderizado Inicial por Django -->
-                    <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
-                      <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad" {% if qty_en_carrito <= 0 %}disabled{% endif %}>−</button>
-
-                        <div class="qty-display mx-2 text-center" data-min="1" data-max="{{ p.stock }}">
-                          <span class="fw-semibold">{{ qty_en_carrito }}</span>
-                        </div>
-
-                      <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad" {% if qty_en_carrito >= p.stock %}disabled{% endif %}>+</button>
-                    </div>
-
-                  {% else %}
-                    <!-- ESTADO 0: Solo Botón Agregar - Renderizado Inicial por Django -->
-                    <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
-                        <button type="button" class="btn btn-sm btn-primary stepper-incr" aria-label="Agregar al carrito">
-                          <i class="bi bi-cart-plus"></i>
-                        </button>
-                    </div>
-                  {% endif %}
-
-                </div>
-              </form>
-            <!-- Opciones admin -->
-            {% if request.user.is_superuser %}
-            <div class="card-footer py-1">
-              <a href="{% url 'productos:actualizar' p.pk %}" class="btn btn-outline-secondary btn-sm w-100">Editar</a>
-            </div>
+            <!-- Badge de oferta -->
+            {% if p.onSale %}
+              <span class="badge bg-danger mb-1">HOT SALE</span>
             {% endif %}
 
+            <!-- Zona nombre y categoría -->
+            <div class="mb-1" style="min-height:3.5em;">
+              <h6 class="card-title mb-0 text-truncate-2" title="{{ p.nombre }}">
+                  {{ p.nombre }}
+              </h6>
+              <small class="text-muted">
+                {% if p.categoria.nombre and p.gondola.nombre %}
+                  {{ p.categoria.nombre }} - {{ p.gondola.nombre }}
+                {% else %}
+                  {{ p.categoria.nombre }}{{ p.gondola.nombre }}
+                {% endif %}
+              </small>
+            </div>
+
+            <!-- Zona precio -->
+            <div class="mb-2" style="min-height:1.5rem;">
+              {% if p.onSale %}
+                <span class="text-decoration-line-through text-muted medium">${{ p.precio_unitario }}</span>
+                <span class="fw-bold text-success medium">${{ p.precio_oferta }}</span>
+              {% else %}
+                <span class="fw-bold medium">${{ p.precio_unitario }}</span>
+              {% endif %}
+            </div>
+
+            <!-- Zona acción carrito -->
+            <form class="add-to-cart-form d-flex flex-column flex-md-row mx-auto align-items-md-center justify-content-between mt-auto"
+                  method="POST" data-id="{{ p.id }}"
+                  action="{% url 'carrito:agregar_item_carrito_api' %}">
+              {% csrf_token %}
+
+              <!-- INPUTS DE CONTROL (SIEMPRE VISIBLES) -->
+              <!-- La cantidad debe ser 0 si no está en carrito, o la cantidad real -->
+              <input type="hidden" name="quantity" class="quantity" value="{{ qty_en_carrito }}"/>
+
+              <!-- CONTENEDOR DE ACCIONES: ESTE ES EL ÚNICO BLOQUE QUE EL JS REEMPLAZARÁ -->
+              <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
+
+                {% if qty_en_carrito > 0 %}
+                  <!-- ESTADO 1: Stepper Completo - Renderizado Inicial por Django -->
+                  <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
+                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad" {% if qty_en_carrito <= 0 %}disabled{% endif %}>−</button>
+
+                      <div class="qty-display mx-2 text-center" data-min="1" data-max="{{ p.stock }}">
+                        <span class="fw-semibold">{{ qty_en_carrito }}</span>
+                      </div>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad" {% if qty_en_carrito >= p.stock %}disabled{% endif %}>+</button>
+                  </div>
+
+                {% else %}
+                  <!-- ESTADO 0: Solo Botón Agregar - Renderizado Inicial por Django -->
+                  <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
+                      <button type="button" class="btn btn-sm btn-primary stepper-incr" aria-label="Agregar al carrito">
+                        <i class="bi bi-cart-plus"></i>
+                      </button>
+                  </div>
+                {% endif %}
+
+              </div>
+            </form>
+          <!-- Opciones admin -->
+          {% if request.user.is_superuser %}
+          <div class="card-footer py-1">
+            <a href="{% url 'productos:actualizar' p.pk %}" class="btn btn-outline-secondary btn-sm w-100">Editar</a>
           </div>
+          {% endif %}
+
         </div>
       </div>
       {% endwith %}
     {% endwith %}
+  </div>
   {% endfor %}
 {% endblock %}

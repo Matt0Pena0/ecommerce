@@ -5,7 +5,7 @@ from .base import *
 
 DEBUG = config("DEBUG", cast=bool)
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ecommerce.themattdev.com', 'www.ecommerce.themattdev.com', '200.45.208.202', '127.0.0.1']
 
 # INSTALLED_APPS += []
 
@@ -29,6 +29,13 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://www.ecommerce.themattdev.com',
+    'https://ecommerce.themattdev.com'
+]
 
 # EMAIL_HOST = config("EMAIL_HOST")
 # EMAIL_HOST_USER = config("EMAIL_HOST_USER")

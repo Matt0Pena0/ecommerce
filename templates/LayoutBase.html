@@ -9,24 +9,27 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    {% comment %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/fonts/bootstrap-icons.woff' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/fonts/bootstrap-icons.woff2' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/fonts/bootstrap-icons.woff2' %}"> {% endcomment %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     {% block head %}{% endblock %}
   </head>
 
-  <body 
+  <body class="d-flex flex-column min-vh-100"
   {% comment %} // Data attributes for JS {% endcomment %}
   data-url-agregar-carrito="{% url 'carrito:agregar_item_carrito_api'%}"
   data-url-eliminar-carrito="{% url 'carrito:agregar_item_carrito_api'%}"
   >
   
-    <div class="main-content">
-      {% include '_includes/_navbar.html' %}
+  {% include '_includes/_navbar.html' %}
+    <div class="p-2 p-sm-2 p-md-0 m-auto">
       
-      <div class="page-content p-2 p-md-4" style="max-width: 1000px; position: relative; margin: auto;">
+      <div class="page-content p-2 p-md-0 pt-md-4 m-auto" 
+      style="max-width: 1000px;">
         {% block page_content %}
           <pre>{{ messages }}</pre>
 
@@ -40,11 +43,13 @@
           </div>
           {% endif %}
         {% endblock %}
-      </div>
 
-      {% include '_includes/_footer.html' %}
+      </div>
     </div>
 
+    <div class="container-fluid p-0">
+      {% include '_includes/_footer.html' %}
+    </div>
 
     <!-- JS -->
     <!-- Bootstrap JS -->

@@ -42,11 +42,11 @@
             <td>{{ item.producto.descripcion }}</td>
             <td>{{ item.producto.stock }}</td>
             <td>
-              <input type="number" name="cantidad_{{ item.producto.codigo }}" value="{{ item.cantidad }}" max="{{ item.producto.stock }}" class="form-control small">
+              <input type="number" name="cantidad_{{ item.producto.id }}" value="{{ item.cantidad }}" max="{{ item.producto.stock }}" class="form-control small">
             </td>
             <td>${{ item.subtotal }}</td>
             <td>
-              <a href="{% url 'carrito:eliminar' item.producto.codigo %}" class="btn btn-danger btn-sm">❌</a>
+              <a href="{% url 'carrito:eliminar' item.producto.id %}" class="btn btn-danger btn-sm">❌</a>
             </td>
           </tr>
           {% empty %}

@@ -1,2 +1,64 @@
-<hr>
-<p>©️ El Footer 2025</p>
+{% load static %}
+
+<!-- Contenedor principal -->
+<footer class="absolute-bottom pb-1 mt-auto pt-3 bg-body-tertiary border-top border-3 border-opacity-75">
+  <div class="container justify-content-between">
+    
+    <div class="row align-items-center">
+
+      <!-- COLUMNA 1: LOGO (Centrada en móvil, Izquierda en desktop) -->
+      <div class="col-12 col-md-4 align-items-center justify-content-md-start">
+        <a class="logo d-flex align-items-center justify-content-center justify-content-md-start mx-auto" href="#">
+          <img 
+            id="logo"
+            src="{% static 'img/Logo_MattDev_DjangoBase.png' %}" 
+            alt="Logo"
+          >
+        </a>
+      </div>
+
+      <!-- COLUMNA 2: COPYRIGHT / INFO (Centrada) -->
+      <!-- text-center: Centrado en todos los tamaños -->
+      <div class="col-12 col-md-4 text-center my-3 my-md-0">
+        <ul class="nav flex-column align-items-center list-unstyled">
+
+          <!-- Icono de Inicio de sesión -->
+          <li class="nav-item mb-2">
+            <a href="https://github.com/Matt0Pena0/ecommerce" class="text-body-secondary text-decoration-none">
+              <i class="bi bi-github" style="font-size: 1.5rem"></i>
+            </a>
+          </li>
+
+          <!-- Copyright -->
+          <li class="nav-item">
+            <p class="text-body-secondary mb-0">
+              &copy; 2025
+              <a href="https://themattdev.com" class="text-body-secondary text-decoration-none">TheMattDev</a>
+            </p>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-4 text-center text-md-end">
+        <ul class="nav flex-column list-unstyled d-inline-block"> 
+          
+          <li class="nav-item mb-1"><a href="#" class="text-body-secondary text-decoration-none">Inicio</a></li>
+          <li class="nav-item mb-1"><a href="/productos/listar/" class="text-body-secondary text-decoration-none">Productos</a></li>
+          <li class="nav-item mb-1"><a href="/core/Contact" class="text-body-secondary text-decoration-none">Contacto</a></li>
+
+          <li class="nav-item mt-2 d-flex justify-content-center justify-content-md-end">
+            <a href="#" class="text-body-secondary mx-2" aria-label="Instagram">
+              <i class="bi bi-instagram" style="font-size: 1.5rem"></i>
+            </a>
+            <a href="#" class="text-body-secondary mx-2" aria-label="Facebook">
+              <i class="bi bi-facebook" style="font-size: 1.5rem"></i>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>

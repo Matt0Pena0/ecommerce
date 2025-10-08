@@ -24,15 +24,15 @@ def obtener_carrito_usuario(request):
 def agregar_item_carrito_api(request):
     try:
         data = json.loads(request.body)
-        producto_codigo = data.get('producto_codigo')
+        producto_id = data.get('producto_id')
         cantidad = data.get('cantidad')
 
-        if not producto_codigo or cantidad is None:
+        if not producto_id or cantidad is None:
             return JsonResponse({"status": "error", "message": "Datos de producto o cantidad faltantes."}, status=400)
 
         # 1. Obtener Carrito y Producto
         carrito, creado = obtener_carrito_usuario(request)
-        producto = get_object_or_404(Producto, codigo=producto_codigo)
+        producto = get_object_or_404(Producto, id=producto_id)
         
         # 2. Intentar obtener el ítem (simplifica la lógica posterior)
         item = ItemCarrito.objects.filter(carrito=carrito, producto=producto).first()
@@ -63,7 +63,6 @@ def agregar_item_carrito_api(request):
                     cantidad=cantidad
                 )
                 mensaje = "Producto agregado al carrito."
-
 
         # 3. Recalcular el total para actualizar el contador global (opcional)
         total_items_carrito = ItemCarrito.objects.filter(carrito=carrito).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
@@ -98,7 +97,7 @@ def actualizar_carrito(request):
     if request.method == "POST":
         for item in carrito.items.select_related('producto'):
             # Construir el nombre del campo dinámicamente, igual que en el template
-            nombre_campo = f"cantidad_{item.producto.codigo}"
+            nombre_campo = f"cantidad_{item.producto.id}"
             
             # Usar .get() para obtener el dato
             cantidad_str = request.POST.get(nombre_campo)
@@ -123,11 +122,11 @@ def actualizar_carrito(request):
 
 @require_http_methods(["POST"]) 
 @login_required
-def eliminar_item_carrito_api(request, producto_codigo):
+def eliminar_item_carrito_api(request, producto_id):
     # La validación de que sea POST es mejor aquí, pero para fines de AJAX simple se omite
     
     carrito, creado = obtener_carrito_usuario(request)
-    item = carrito.items.filter(producto__codigo=producto_codigo).first()
+    item = carrito.items.filter(producto_id=producto_id).first()
     
     if item:
         # Aquí eliminamos el ítem
@@ -149,9 +148,9 @@ def eliminar_item_carrito_api(request, producto_codigo):
 
 
 @login_required
-def eliminar_item_carrito(request, producto_codigo):
+def eliminar_item_carrito(request, producto_id):
     carrito, creado = obtener_carrito_usuario(request)
-    item = carrito.items.filter(producto__codigo=producto_codigo).first()
+    item = carrito.items.filter(producto_id=producto_id).first()
     if item:
         item.delete()
 
