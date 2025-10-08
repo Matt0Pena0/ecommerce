@@ -6,15 +6,18 @@ Este proyecto demuestra el ciclo de vida completo del desarrollo de una aplicaci
 
 ## ✨ Stack Tecnológico
 
+_Las tecnologías para este proyecto fueron seleccionadas con un doble propósito:_
 * **Backend:** Python, Django
 * **Base de Datos:** MySQL
-* **Frontend:** HTML, SCSS, Bootstrap 5, NPM
-* **Infraestructura:** Docker, Docker Compose, Nginx (como Proxy Inverso), VPS (Ubuntu)
+    Fueron elegidos para solidificar y poner en práctica conocimientos previos, así como adquirir experiencia y sumar nuevos conoscimientos.
+
+* **Frontend e Infraestructura (HTML, Bootstrap 5, JS, Docker, Nginx, VPS):**
+    Este stack representó un desafío de "aprender haciendo", con el objetivo de adquirir y aplicar desde cero un flujo de trabajo DevOps moderno.
 
 ## 🚀 Características Principales
 
 * Gestión de Productos.
-* Sistema de Autenticación de Usuarios (Registro, Login, Cambio y recuperación de Contraseña).
+* Sistema de Autenticación de Usuarios (Registro, Login, Cambio y Recuperación de Contraseña).
 * Carrito de Compras funcional, asíncrono y con una interfaz mínimamente agradable.
 * Creación y visualización de Órdenes de Compra.
 * Estructura que permite mejoras y nuevas funcionalidades.
@@ -32,11 +35,22 @@ El núcleo de este proyecto es la implementación de un flujo de trabajo DevOps:
     * Gestión de secretos y configuraciones de entorno a través de archivos `.env`.
 * **Build de Frontend:** Se utiliza un `Dockerfile` multi-etapa que compila los assets de SASS usando un contenedor de Node.js, optimizando la imagen de producción final, a modo de prueba y aprendizaje de por medio, en bootstrap.
 * **Flujo de Trabajo Git:** Se sigue un modelo Git-Flow simplificado con ramas `main` (producción), `dev` (desarrollo) y `feature` (nuevas funcionalidades). 
-    Se sigue un modelo Git-Flow simplificado con ramas main (producción), dev (desarrollo) y feature (nuevas funcionalidades). Durante el despliegue inicial, me encontré con dificultades, perdiendo las buenas prácticas que intentaba seguir.
 
-    Un archivo .env con secretos se filtró accidentalmente al repositorio, lo que motivó una limpieza profunda del historial utilizando la herramienta BFG Repo-Cleaner (a pesar de ser un proyecto de aprendizaje, fue una buena excusa para intentar aprender del error, y pensar en las consecuencias). A esto se sumó el desafío de gestionar por primera vez Git en un VPS y el proceso de despliegie en sí.
+## Aprendizajes, entre otros desafíos
 
-    Lejos de ser un error catastrófico, fue una valiosa oportunidad de aprendizaje que sentó las bases para futuros proyectos.
+* **Investigación del Framework:**  
+Un desafío clave fue la personalización de los forms de Django para integrarlos con Bootstrap. Esto requirió una comprensión profunda de cómo el framework gestiona la renderización de formularios y la customización de los error_messages.  
+El proceso implicó una inmersión en partes del código fuente de Django para rastrear el manejo de errores, permitiendo una personalización precisa.  
+Lejos de un dominio completo, esta investigación fue una experiencia de aprendizaje invaluable, que fortaleció la confianza y ayudó a consolidar conceptos importantes, como por ej, el manejo de instancias.
+
+* **Reafirmar buenas prácticas y manejo de Git & GitHub:**  
+Durante el despliegue inicial, me encontré con dificultades, perdiendo las buenas prácticas que intentaba seguir.  
+Un archivo .env con secretos se filtró accidentalmente al repositorio, lo que motivó una limpieza profunda del historial utilizando la herramienta BFG Repo-Cleaner (a pesar de ser un proyecto de aprendizaje, fue una buena excusa para intentar aprender del error, y pensar en las consecuencias). A esto se sumó el desafío de gestionar por primera vez Git en un VPS y el proceso de despliegie en sí.  
+Lejos de ser un error catastrófico, fue una valiosa oportunidad de aprendizaje que sentó las bases para futuros proyectos.
+
+* **Integración de JavaScript Asíncrono (AJAX):**  
+Explorar la comunicación dinámica entre el frontend y el backend. Esto implicó la implementación de peticiones asíncronas (Fetch API) desde JavaScript.  
+Para interactuar con las vistas de Django sin recargar la página y lograr una mejor experiencia de usuario, al navejar e interactuar por los productos.
 
 ## 🛠️ Instalación y Uso Local
 
@@ -44,3 +58,74 @@ El núcleo de este proyecto es la implementación de un flujo de trabajo DevOps:
 2.  Crear y configurar el archivo de entorno de desarrollo: `cp .env.example .env.dev`
 3.  Levantar los contenedores: `docker compose up --build`
 4.  La aplicación estará disponible en `http://localhost:8000`.
+
+## 📦 Carga de Datos Iniciales (Fixtures)
+
+Para poblar la base de datos con datos de ejemplo, existen dos métodos disponibles. Debes ejecutar estos comandos después de haber levantado los contenedores con `docker compose up`.
+
+Antes de poblar la db, asegúrate de que las migraciones de la base de datos se hayan aplicado correctamente con los comandos:
+``` bash
+docker compose exec web python3 manage.py makemigrations
+
+docker compose exec web python3 manage.py migrate
+```
+
+### Método 1: Usando un Archivo Fixture (`loaddata`)
+
+Este método utiliza un archivo de datos predefinido para cargar información específica en la base de datos. Es ideal para cargar un catálogo de productos inicial.
+
+1.  **Prepara tu archivo de datos:**
+    Crea un archivo `data.json`. 
+    El archivo debe seguir la estructura de fixtures de Django:
+
+    ```json
+    [
+      {
+        "model": "productos.producto",
+        "pk": 1,
+        "fields": {
+          "codigo": "string",
+          "nombre": "producto",
+          "unidad_medida": "unidad",
+          "marca": "marca",
+          "descripcion": "descrpición",
+          "precio_unitario": "float",
+          "stock": [positiveint]
+        }
+      },
+      {
+        "model": "productos.producto",
+        "pk": 2,
+        "fields": {
+          "codigo": "string",
+          "nombre": "producto",
+          "unidad_medida": "unidad",
+          "marca": "marca",
+          "descripcion": "descrpición",
+          "precio_unitario": "float",
+          "stock": [positiveint]
+        }
+      }
+    ]
+    ```
+
+2.  **Ejecuta el comando `loaddata`:**
+    Este comando de Django buscará y cargará el archivo.
+
+    ```bash
+    docker compose exec web python manage.py loaddata data/data.json
+    ```
+
+### Método 2: Usando un Script Personalizado
+
+Este método es ideal para generar una gran cantidad de datos aleatorios para pruebas de rendimiento o para poblar la base de datos de desarrollo.
+
+1.  **Utilizando el script:**
+    El proyecto incluye un script en `productos/scripts/create_random_data.py`.
+
+2.  **Ejecuta el comando `runscript`:**
+    Este comando parte de `django-extensions` ejecuta el script.
+
+    ```bash
+    docker compose exec web python manage.py runscript productos.scripts.create_random_data
+    ```
