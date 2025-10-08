@@ -3,7 +3,7 @@ services:
     image: ${DB_IMAGE_NAME}
     container_name: ${DB_CONTAINER_NAME}
     volumes:
-      - mym_db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD:   ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE:        ${DB_NAME}
@@ -23,8 +23,7 @@ services:
     container_name: ${WEB_CONTAINER_NAME}
     command: >
       sh -c "
-        python manage.py makemigrations &&
-        python manage.py migrate &&
+
         python manage.py runserver 0.0.0.0:8000
       "
     volumes:
@@ -47,4 +46,4 @@ services:
         condition: service_healthy
 
 volumes:
-  mym_db_data:
+  db_data:

@@ -4,7 +4,7 @@ services:
     container_name: ecommerce_db_prod
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.prod
     environment:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
@@ -20,7 +20,7 @@ services:
     environment:
       DJANGO_ENV: prod
     env_file:
-      - .env
+      - .env.prod
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - mysql_data:

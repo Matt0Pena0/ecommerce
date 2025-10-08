@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad" ${isDisabled ? 'disabled' : ''}>+</button>
                 </div>
                 
-                <!-- El botón de submit ya no se genera aquí -->
             </div>
         `;
     };
@@ -134,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
      * Envía la solicitud AJAX para actualizar/eliminar el carrito.
      */
     const handleCartUpdate = (form, cantidad) => {
-        const productoCodigo = form.dataset.codigo;
+        const productoId = form.dataset.id;
         const csrfInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
         const csrfToken = csrfInput ? csrfInput.value : getCookie('csrftoken') || '';
 
@@ -171,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRFToken': csrfToken
             },
             body: JSON.stringify({
-                producto_codigo: productoCodigo,
+                producto_id: productoId,
                 cantidad: finalCantidad 
             })
         })
@@ -220,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!incrBtn && !decrBtn) return;
         
         const targetBtn = incrBtn || decrBtn;
-        const form = targetBtn.closest('form[data-codigo]');
+        const form = targetBtn.closest('form[data-id]');
         if (!form) return;
 
         // Intentar leer la cantidad del SPAN dentro del display
@@ -258,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const submitHandler = (e) => {
          e.preventDefault();
-         const form = e.target.closest('form[data-codigo]');
+         const form = e.target.closest('form[data-id]');
          const hidden = form.querySelector('input[name="quantity"]');
          const cantidad = hidden ? parseInt(hidden.value) : 1;
          
@@ -283,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', stepperHandler);
 
     // Inicialización de todas las tarjetas y binding de Submit
-    document.querySelectorAll('form[data-codigo]').forEach(form => {
+    document.querySelectorAll('form[data-id]').forEach(form => {
         const hidden = form.querySelector('input[name="quantity"]');
         const display = form.querySelector('.qty-display');
         

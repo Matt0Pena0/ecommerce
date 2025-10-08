@@ -5,7 +5,7 @@ from .base import *
 
 DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ['mymecommerce.themattdev.com', 'www.mymecommerce.themattdev.com', '200.45.208.202', '127.0.0.1']
+ALLOWED_HOSTS = ['ecommerce.themattdev.com', 'www.ecommerce.themattdev.com', '200.45.208.202', '127.0.0.1']
 
 # INSTALLED_APPS += []
 
@@ -34,8 +34,8 @@ SESSION_COOKIE_SECURE = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://www.mymecommerce.themattdev.com',
-    'https://mym-ecommerce.themattdev.com'
+    'https://www.ecommerce.themattdev.com',
+    'https://ecommerce.themattdev.com'
 ]
 
 # EMAIL_HOST = config("EMAIL_HOST")

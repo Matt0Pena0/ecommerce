@@ -3,8 +3,7 @@
 ### EN EL SERVIDOR SIEMPRE PULL ###
 
 docker compose --env-file .env.prod -f docker-compose.prod.yml up --build
-
-docker compose -f docker-compose.prod.yml exec web python manage.py runscript productos.scripts.load_data 
+docker compose -f docker-compose.prod.yml exec web python manage.py runscript productos.scripts.load_data
 
 docker compose -f docker-compose.prod.yml exec web python manage.py migrate
 
@@ -15,6 +14,8 @@ docker compose exec web python3 manage.py runserver 0.0.0.0:8000
 docker compose exec web python3 manage.py makemigrations
 
 # Apply migrations to the database
+docker compose -f docker-compose.prod.yml exec web python manage.py migrate
+
 docker compose exec web python3 manage.py migrate
 
 # Create a new app
@@ -28,14 +29,23 @@ docker compose exec web python3 manage.py dbshell
 
 # Open database directamente
 docker compose exec db mysql -u root -p
+docker compose -f docker-compose.dev.yml exec db mysql -u root -p
+
 
 # Create a new Django superuser (admin account)
 docker compose exec web python3 manage.py createsuperuser
 
+# LoadData
+docker compose --env-file .env.dev -f docker-compose.dev.yml python manage.py loaddata data/backup.json
+
+# DumpData
+docker compose --env-file .env.dev -f docker-compose.dev.yml python manage.py dumpdata --format=json --indent=4 --output=backup.json
+
 # Run a custom script (django-extensions)
 docker compose exec web python3 manage.py runscript <app>.scripts.<script_name>
-
 docker compose exec web python3 manage.py runscript productos.scripts.load_data 
+
+docker compose -f docker-compose.prod.yml exec web python manage.py runscript productos.scripts.load_data 
 
 # Collect static files into STATIC_ROOT
 docker compose exec web python3 manage.py collectstatic --noinput
@@ -48,6 +58,13 @@ docker compose exec web python3 manage.py test
 # 🐳 Docker Compose
 
 ```bash
+
+### Build on prod mode
+docker compose -f docker-compose.prod.yml up --build
+
+### Build on dev mode
+docker compose --env-file .env.dev -f docker-compose.dev.yml up --build
+
 # Build images and start all services
 docker compose up --build
 

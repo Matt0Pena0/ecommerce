@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
+from django.db.models import Sum
 
 from productos.models import Producto, Marca, Categoria, Gondola
 from carrito.models import Carrito, ItemCarrito
@@ -36,7 +37,13 @@ class ProductoListView(LoginRequiredMixin, ListView):
     }
 
     def get_queryset(self):
-        qs = super().get_queryset().order_by("nombre")
+        qs = super().get_queryset().select_related(
+            'categoria', 
+            'gondola', 
+            'marca', 
+            'unidad_medida'
+        ).order_by('nombre')
+
         params = self.request.GET
 
         # Búsqueda por nombre o código
@@ -139,14 +146,18 @@ class ProductoListView(LoginRequiredMixin, ListView):
                 # Es crucial que esta sea una sola consulta.
                 carrito_usuario = Carrito.objects.get(usuario=self.request.user)
                 
+                # Recalcular el total para actualizar el contador global
+                total_items_carrito = ItemCarrito.objects.filter(carrito=carrito_usuario).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+
                 # 3. Consulta de Items y prefetch_related/select_related para eficiencia
                 # Select related para obtener los datos del producto en la misma consulta
-                items = ItemCarrito.objects.filter(carrito=carrito_usuario).select_related('producto')
-                
+                items_data = ItemCarrito.objects.filter(carrito=carrito_usuario).values_list(
+                    'producto_id', # Campo FK (int), que es la PK del producto
+                    'cantidad'
+                )
+
                 # 4. Rellenar el diccionario
-                for item in items:
-                    # Usamos el código del producto como clave para búsqueda rápida en la plantilla
-                    productos_en_carrito[item.producto.codigo] = item.cantidad
+                productos_en_carrito = dict(items_data) 
 
             except Carrito.DoesNotExist:
                 # Si el usuario no tiene carrito, el diccionario queda vacío {}
@@ -154,33 +165,6 @@ class ProductoListView(LoginRequiredMixin, ListView):
         
         # 5. Añadir el diccionario al contexto
         ctx['productos_en_carrito'] = productos_en_carrito
+        ctx['total_items_carrito'] = total_items_carrito
 
         return ctx
-
-
-
-    # def get_context_data(self, **kwargs):
-    #     ctx = super().get_context_data(**kwargs)
-    #     # Para poblar los dropdowns
-    #     ctx["marcas"]     = Marca.objects.all()
-    #     ctx["categorias"] = Categoria.objects.all()
-    #     ctx["gondolas"]   = Gondola.objects.all()
-
-    #     ctx["order_fields"] = [
-    #         {"key": k, "label": lbl} for k, lbl in [
-    #             ("codigo",      "Código ↑"),
-    #             ("-codigo",      "Código ↓"),
-    #             ("nombre",      "Nombre ↑"),
-    #             ("-nombre",     "Nombre ↓"),
-    #             ("precio_asc",  "Precio ↑"),
-    #             ("precio_desc", "Precio ↓"),
-    #             ("stock_asc",   "Stock ↑"),
-    #             ("stock_desc",  "Stock ↓"),
-    #             ("marca",       "Marca ↑"),
-    #             ("-marca",      "Marca ↓"),
-    #         ]
-    #     ]
-    #     # Guardamos la selección actual
-    #     ctx["current_order"] = self.request.GET.get("order", "nombre")
-
-    #     return ctx

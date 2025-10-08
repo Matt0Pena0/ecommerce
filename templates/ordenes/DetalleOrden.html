@@ -45,8 +45,8 @@
             {{ item.cantidad }} x {{ item.producto.nombre }} 
             {% if item.producto.marca %}
             {{ item.producto.marca }}
-            {% endif %} -
-            {% if item.producto.unidad_medida %}
+            {% endif %}
+            {% if item.producto.unidad_medida and item.producto.unidad_medida is not null %} - 
             {{ item.producto.unidad_medida }}
             {% endif %}
             {% if item.producto.descripcion %}

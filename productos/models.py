@@ -72,7 +72,8 @@ class Producto(models.Model):
     Incluye información como nombre, marca, categoría, ubicación, unidad de medida,
     precio, descripción y stock disponible.
     """
-    codigo = models.OneToOneField(Codigo, on_delete=models.CASCADE, primary_key=True, blank=True)
+    id = models.BigAutoField(primary_key=True)
+    codigo = models.OneToOneField(Codigo, on_delete=models.CASCADE, blank=True, null=True)
     nombre = models.CharField(max_length=100)
     marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True)

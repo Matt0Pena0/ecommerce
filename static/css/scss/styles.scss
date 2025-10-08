@@ -121,6 +121,14 @@ $success: #7952b3;
 // body {
 // //   padding: 1.5rem;
 // }
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Número de líneas a mostrar */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Para navegadores compatibles */
+    min-height: 2em; /* Asegura un espacio mínimo para dos líneas */
+}
 
 .bi {
   width: 1em;
