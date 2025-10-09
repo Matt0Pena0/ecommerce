@@ -29,7 +29,6 @@ class OrdenDetailView(LoginRequiredMixin, RolRequeridoMixin, PermisosDatosMixin,
         return qs
 
     def get_context_data(self, **kwargs):
-        # Obtener el contexto de la vista
         context = super().get_context_data(**kwargs)
 
         orden_obj = context.get("orden")
@@ -66,10 +65,13 @@ class OrdenExcelView(View):
     def get(self, request, pk):
         orden = get_object_or_404(Orden.objects.select_related('solicitante'), pk=pk)
 
+        # Crea una instancia del exportador.
         exporter_excel = ExcelExporter()
 
+        # Crea una instancia del servicio y le inyecta el exportador.
         service = OrdenExportService(exporter=exporter_excel)
 
+        # Llama al método `generate` del servicio.
         return service.generate(
             orden,
             filename=f"pedido_{pk}.xlsx",
@@ -82,14 +84,14 @@ class OrdenPortapapelesView(View):
     def get(self, request, pk):
         orden = get_object_or_404(Orden.objects.select_related('solicitante'), pk=pk)
         
+        # Crea una instancia del exportador.
+        exporter = TxtExporter()
+
         # Serializamos los datos de la orden
         data_serializada = OrdenSerializer.serialize(orden)
         
-        # Usar el mismo exportador para generar el texto
-        # Serializamos los datos de la orden
-        exporter = TxtExporter()
         data = exporter.export(data_serializada)
         
-        # Devolvemos el texto como una respuesta HTTP.
-        # No usamos la cabecera 'Content-Disposition' para evitar la descarga.
+        # Devuelve el texto como una respuesta HTTP.
+        # No usa cabecera 'Content-Disposition' para evitar la descarga.
         return HttpResponse(data, content_type="text/plain")
