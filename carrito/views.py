@@ -15,9 +15,10 @@ from ordenes.services.crear_orden_service import OrdenService
 
 @login_required
 def obtener_carrito_usuario(request):
-    carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
+    carrito = Carrito.objects.get_or_create(usuario=request.user)
 
-    return carrito, creado
+    return carrito
+
 
 @require_http_methods(["POST"])
 @login_required
@@ -30,26 +31,21 @@ def agregar_item_carrito_api(request):
         if not producto_id or cantidad is None:
             return JsonResponse({"status": "error", "message": "Datos de producto o cantidad faltantes."}, status=400)
 
-        # 1. Obtener Carrito y Producto
+        # Obtiene Carrito y Producto
         carrito, creado = obtener_carrito_usuario(request)
         producto = get_object_or_404(Producto, id=producto_id)
-        
-        # 2. Intentar obtener el ítem (simplifica la lógica posterior)
+
+        # Intenta obtener el ítem
         item = ItemCarrito.objects.filter(carrito=carrito, producto=producto).first()
         
-        # --- LÓGICA CLAVE (Manejo de 0 y > 0) ---
-        
-        if cantidad == 0:
-            # CASO 1: ELIMINACIÓN (newQty = 0)
-            if item:
-                item.delete()
-                mensaje = "Producto eliminado del carrito."
-            else:
-                mensaje = "El producto no estaba en el carrito."
-            
+        # Para eliminar desde "Disminuir cantidad"
+        if cantidad == 0 and item:
+            item.delete()
+            mensaje = "Producto eliminado del carrito."
+
+        # Añade o actualiza productos al carrito
         elif cantidad > 0:
-            # CASO 2: CREACIÓN / ACTUALIZACIÓN (newQty > 0)
-            
+
             if item:
                 # Actualización
                 item.cantidad = cantidad
@@ -64,7 +60,7 @@ def agregar_item_carrito_api(request):
                 )
                 mensaje = "Producto agregado al carrito."
 
-        # 3. Recalcular el total para actualizar el contador global (opcional)
+        # Recalcula el total para actualizar el contador global
         total_items_carrito = ItemCarrito.objects.filter(carrito=carrito).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
 
         return JsonResponse({
@@ -78,7 +74,6 @@ def agregar_item_carrito_api(request):
     except Producto.DoesNotExist:
         return JsonResponse({"status": "error", "message": "El producto no existe."}, status=404)
     except Exception as e:
-        # Esto captura cualquier error interno (DB, etc.)
         print(f"Error fatal en la API de carrito: {e}")
         return JsonResponse({"status": "error", "message": f"Error interno del servidor: {e}"}, status=500)
 
@@ -96,38 +91,33 @@ def actualizar_carrito(request):
 
     if request.method == "POST":
         for item in carrito.items.select_related('producto'):
-            # Construir el nombre del campo dinámicamente, igual que en el template
+            # Construye el nombre del campo dinámicamente, igual que en el template
             nombre_campo = f"cantidad_{item.producto.id}"
-            
-            # Usar .get() para obtener el dato
+            # Usar .get() para obtener la cantidad
             cantidad_str = request.POST.get(nombre_campo)
             if cantidad_str:
                 try:
                     cantidad = int(cantidad_str)
                     if cantidad > 0:
-                        # Opcional: validar que la cantidad no exceda el stock
+                        # Valida que la cantidad no exceda el stock
                         if cantidad <= item.producto.stock:
                             item.cantidad = cantidad
                             item.save()
                     else:
-                        # Si la cantidad es 0 o menos, eliminamos el ítem
+                        # Si la cantidad es 0 o menos, elimina el ítem
                         item.delete()
                 except (ValueError, TypeError):
-                    # Ignorar si el valor no es un número válido
                     pass
 
-    # El redirect debe ser a la vista que muestra el carrito
     return redirect("carrito:ver_carrito") 
 
 
 @require_http_methods(["POST"]) 
 @login_required
 def eliminar_item_carrito_api(request, producto_id):
-    # La validación de que sea POST es mejor aquí, pero para fines de AJAX simple se omite
-    
     carrito, creado = obtener_carrito_usuario(request)
     item = carrito.items.filter(producto_id=producto_id).first()
-    
+
     if item:
         # Aquí eliminamos el ítem
         item.delete()

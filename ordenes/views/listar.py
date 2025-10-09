@@ -12,14 +12,12 @@ class OrdenListView(LoginRequiredMixin, RolRequeridoMixin, PermisosDatosMixin, L
     rol_requerido = ["cliente", "admin"]
 
     # Paginación
-    paginate_by = 20  # 20 órdenes por página
+    paginate_by = 20
 
     def get_queryset(self):
-        # Queryset base
         qs = super().get_queryset()
 
-        # Optimización de consultas:
-        # - select_related: trae al mismo tiempo datos del solicitante (usuario)
+        # select_related: trae al mismo tiempo datos del solicitante
         qs = qs.select_related("solicitante")
 
         return qs

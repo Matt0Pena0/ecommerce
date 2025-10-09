@@ -15,7 +15,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
     - :template:`productos/ListarProductos.html`  
     
     """
-    redirect_url = "usuarios:login"
+    redirect_url = "accounts:login"
     model = Producto
     template_name = "productos/ListarProductos.html"
     context_object_name = "productos"
@@ -69,7 +69,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
         elif stock == "out":
             qs = qs.filter(stock__lte=0)
 
-        # — Aplicar ordering dinámico —
+        # Aplica ordering dinámico
         order_key = params.get("order")
         order_by  = self.ORDER_FIELDS.get(order_key, "nombre")
         
@@ -138,32 +138,30 @@ class ProductoListView(LoginRequiredMixin, ListView):
 
         # Carrito
         productos_en_carrito = {}
+        total_items_carrito = {}
 
-        # 2. SOLO si el usuario está autenticado, busca su carrito
         if self.request.user.is_authenticated:
             try:
-                # Buscamos el carrito del usuario. 
-                # Es crucial que esta sea una sola consulta.
-                carrito_usuario = Carrito.objects.get(usuario=self.request.user)
-                
-                # Recalcular el total para actualizar el contador global
-                total_items_carrito = ItemCarrito.objects.filter(carrito=carrito_usuario).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+                # Busca el carrito del usuario. 
+                if Carrito:
+                    carrito_usuario = Carrito.objects.get(usuario=self.request.user)
 
-                # 3. Consulta de Items y prefetch_related/select_related para eficiencia
-                # Select related para obtener los datos del producto en la misma consulta
-                items_data = ItemCarrito.objects.filter(carrito=carrito_usuario).values_list(
-                    'producto_id', # Campo FK (int), que es la PK del producto
-                    'cantidad'
-                )
+                    # Calcula el total para actualizar de items para el contador global
+                    total_items_carrito = ItemCarrito.objects.filter(carrito=carrito_usuario).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
 
-                # 4. Rellenar el diccionario
-                productos_en_carrito = dict(items_data) 
+                    items_data = ItemCarrito.objects.filter(carrito=carrito_usuario).values_list(
+                        'producto_id',
+                        'cantidad'
+                    )
+
+                    # Rellena el diccionario
+                    productos_en_carrito = dict(items_data) 
 
             except Carrito.DoesNotExist:
                 # Si el usuario no tiene carrito, el diccionario queda vacío {}
                 pass
-        
-        # 5. Añadir el diccionario al contexto
+
+        # Añade el diccionario al contexto
         ctx['productos_en_carrito'] = productos_en_carrito
         ctx['total_items_carrito'] = total_items_carrito
 

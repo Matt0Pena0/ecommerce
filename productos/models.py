@@ -14,11 +14,11 @@ class Codigo(models.Model):
         # Primera pasada: guardamos para obtener self.pk
         super().save(*args, **kwargs)
 
-        # Si es nuevo y aún no definieron un código, lo asignamos = pk
+        # Si es nuevo y aún no se definio un código, le asigna = pk
         if is_new and not self.codigo:
-            # Usamos el pk numérico como código, convertido a string
+            # Usas el pk numérico como código, convertido a string
             self.codigo = str(self.pk)
-            # Actualizar sólo este campo con save()
+            # Actualiza sólo este campo
             super().save(update_fields=["codigo"])
 
     def __str__(self):

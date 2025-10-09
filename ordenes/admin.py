@@ -10,6 +10,6 @@ class EstadoOrdenAdmin(admin.ModelAdmin):
 
 @admin.register(Orden)
 class OrdenAdmin(admin.ModelAdmin):
-    list_display = ("id", "solicitante", "estado")
-    list_filter = ("estado", "solicitante")
+    list_display = ("id", "solicitante", "estado", "creado")
+    list_filter = ("estado", "solicitante", "creado")
     search_fields = ("solicitante__username", "solicitante__email",)

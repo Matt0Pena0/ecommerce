@@ -1,3 +1,5 @@
+import { showToast } from './toast.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     // URL principal para agregar/actualizar/eliminar del carrito.
     const urlParaAgregar = document.body.dataset.urlAgregarCarrito || null;
@@ -31,7 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return `
             <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
-                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad" ${decrDisabled ? 'disabled' : ''}>−</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad" ${decrDisabled ? 'disabled' : ''}>
+                        <i class="bi bi-dash-square-fill"></i>
+                    </button>
 
                     <div class="qty-display mx-2 text-center"
                         data-min="0"
@@ -39,7 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="fw-semibold">${qty}</span>
                     </div>
 
-                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad" ${isDisabled ? 'disabled' : ''}>+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad" ${isDisabled ? 'disabled' : ''}>
+                        <i class="bi bi-plus-square-fill"></i>
+                    </button>
                 </div>
                 
             </div>
@@ -54,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
                     <button type="button" class="btn btn-sm btn-primary stepper-incr" aria-label="Agregar al carrito">
-                        <i class="bi bi-cart-plus"></i>
+                        <i class="bi bi-plus-square-fill"></i>
                     </button>
                 </div>
             </div>
@@ -115,10 +121,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // NOTA: EL submit button ya no existe en el estado Stepper, este feedback debe ir al +
         const submitBtn = form.querySelector('.stepper-incr');
         if (submitBtn) {
-            submitBtn.innerHTML = newQty > 0 ? `+` : `<i class="bi bi-cart-plus"></i>`;
+            submitBtn.innerHTML = newQty > 0 ? `<i class="bi bi-plus-square-fill"></i>` : `<i class="bi bi-plus-square-fill"></i>`;
             setTimeout(() => {
-                 if(newQty > 0) submitBtn.innerHTML = `+`;
-                 else if (newQty === 0) submitBtn.innerHTML = `<i class="bi bi-cart-plus"></i>`;
+                if(newQty > 0) submitBtn.innerHTML = `<i class="bi bi-plus-square-fill"></i>`;
+                else if (newQty === 0) submitBtn.innerHTML = `<i class="bi bi-plus-square-fill"></i>`;
             }, 500);
         }
     };
@@ -205,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (targetBtn) {
                  targetBtn.disabled = false;
                  if (targetBtn !== submitBtn) {
-                     targetBtn.innerHTML = targetBtn.classList.contains('stepper-decr') ? '−' : '+';
+                     targetBtn.innerHTML = targetBtn.classList.contains('stepper-decr') ? '<i class="bi bi-plus-minus-fill"></i>' : '<i class="bi bi-plus-square-fill"></i>';
                  }
             }
         });

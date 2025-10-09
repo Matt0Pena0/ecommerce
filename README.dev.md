@@ -36,10 +36,10 @@ docker compose -f docker-compose.dev.yml exec db mysql -u root -p
 docker compose exec web python3 manage.py createsuperuser
 
 # LoadData
-docker compose --env-file .env.dev -f docker-compose.dev.yml python manage.py loaddata data/backup.json
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec web python manage.py loaddata data/backup.json
 
 # DumpData
-docker compose --env-file .env.dev -f docker-compose.dev.yml python manage.py dumpdata --format=json --indent=4 --output=backup.json
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec web python manage.py dumpdata --format=json --indent=4 --output=backup.json
 
 # Run a custom script (django-extensions)
 docker compose exec web python3 manage.py runscript <app>.scripts.<script_name>

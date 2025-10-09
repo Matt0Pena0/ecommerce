@@ -1,17 +1,11 @@
 -r base.txt
 
-# Database
-mysqlclient==2.2.4
-
 # Debug y herramientas de desarrollo
 django-debug-toolbar==4.4.2
-django-grappelli==4.0.2
 
-# Test y utilidade
+# Test y utilidades
 pytest==8.2.1
 pytest-django==4.8.0
-
-# Herramientas de calidad de código
 black==25.1.0
 isort==5.13.2
 flake8==7.0.0

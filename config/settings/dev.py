@@ -2,15 +2,14 @@ from decouple import config
 
 from .base import *
 
-ALLOWED_HOSTS = ["https://b3fe1aec269b.ngrok-free.app", '.ngrok-free.app',"localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["https://da0a92a2e15b.ngrok-free.app", '.ngrok-free.app',"localhost", "127.0.0.1", "0.0.0.0"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://b3fe1aec269b.ngrok-free.app",
+    "https://da0a92a2e15b.ngrok-free.app",
 ]
 
 INSTALLED_APPS = [
     "debug_toolbar",
-    "grappelli",
     "django.contrib.admindocs",
 ] + INSTALLED_APPS
 

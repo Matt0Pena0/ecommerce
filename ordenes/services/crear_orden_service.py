@@ -10,13 +10,13 @@ class OrdenService(IOrdenesService):
         se utiliza bulk_create para reducir N consultas INSERT a 1 consulta.
         """
 
-        # 1. Crear la orden principal (1 INSERT)
+        # Crea la orden principal
         orden = Orden.objects.create(solicitante=solicitante)
 
-        # 2. Preparar los objetos ItemOrden en memoria
+        # Prepara los objetos ItemOrden en memoria
         items_a_crear = []
         for prod, cantidad in items:
-            # Creamos la instancia del modelo, pero NO la guardamos en la DB todavía
+            # Crea la instancia del modelo, pero NO la guardamos en la DB todavía
             item_orden = ItemOrden(
                 orden=orden,
                 producto=prod,
@@ -24,8 +24,7 @@ class OrdenService(IOrdenesService):
             )
             items_a_crear.append(item_orden)
 
-        # 3. Insertar todos los ítems de la orden en una sola consulta (1 INSERT)
-        # Esto reduce drásticamente la latencia en la finalización del carrito.
+        # Inserta todos los ítems de la orden en una sola consulta
         ItemOrden.objects.bulk_create(items_a_crear)
-        
+
         return orden

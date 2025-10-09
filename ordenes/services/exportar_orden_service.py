@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 
-from ordenes.services.exporters.serializers import OrdenSerializer
+from ordenes.services.serializers import OrdenSerializer
 
 
 class OrdenExportService:

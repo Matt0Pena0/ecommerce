@@ -72,6 +72,7 @@ pip-delete-this-directory.txt
 *.pot
 *.mo
 README.dev.md
+data/*
 
 # === Bootstrap ===
 node_modules/
