@@ -6,14 +6,14 @@ from datetime import date
 
 
 def run():
-    # Crea códigos 1…10
+    # 1) Crear códigos 1…10
     codigo_objs = []
     for i in range(1, 11):
         c = Codigo.objects.create(codigo=str(i))
         codigo_objs.append(c)
     print(f"✔️ 10 Códigos creados (1–10)")
 
-    # Crea Marcas (5 ejemplos)
+    # 2) Crear Marcas (5 ejemplos)
     marcas = []
     for i in range(1, 6):
         marcas.append(Marca(nombre=f"Marca {i}"))
@@ -21,7 +21,7 @@ def run():
     marcas = list(Marca.objects.all())
     print(f"✔️ {len(marcas)} Marcas creadas")
 
-    # Crea Categorías (5 ejemplos)
+    # 3) Crear Categorías (5 ejemplos)
     categorias = []
     for i in range(1, 6):
         categorias.append(Categoria(nombre=f"Categoría {i}"))
@@ -29,7 +29,7 @@ def run():
     categorias = list(Categoria.objects.all())
     print(f"✔️ {len(categorias)} Categorías creadas")
 
-    # Crea Góndolas (3 ejemplos)
+    # 4) Crear Góndolas (3 ejemplos)
     gondolas = []
     for i in range(1, 4):
         gondolas.append(Gondola(nombre=f"Góndola {i}"))
@@ -37,14 +37,14 @@ def run():
     gondolas = list(Gondola.objects.all())
     print(f"✔️ {len(gondolas)} Góndolas creadas")
 
-    # Crea Unidades de Medida (ejemplos comunes)
+    # 5) Crear Unidades de Medida (ejemplos comunes)
     nombres_unidad = ["kg", "g", "l", "ml", "unidad"]
     unidades = [UnidadMedida(nombre=n) for n in nombres_unidad]
     UnidadMedida.objects.bulk_create(unidades)
     unidades = list(UnidadMedida.objects.all())
     print(f"✔️ {len(unidades)} Unidades de Medida creadas")
 
-    # Crea un Producto por cada Código
+    # 6) Crear un Producto por cada Código
     productos = []
     for idx, codigo in enumerate(codigo_objs, start=1):
         prod = Producto(
@@ -61,4 +61,4 @@ def run():
         productos.append(prod)
 
     Producto.objects.bulk_create(productos)
-    print(f"✔️ {len(productos)} Productos creados con valores asignados")
+    print(f"✔️ {len(productos)} Productos creados con códigos asignados")

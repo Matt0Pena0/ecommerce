@@ -2,30 +2,24 @@
 {% load static %}
 
 <!-- Botón para abrir filtros -->
-<div class="d-flex justify-content-start">
-  <button class="filters-toggle btn btn-primary btn-sm mb-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
-    <i class="bi bi-menu-button-wide-fill me-1"></i>Filtros
-  </button>
-</div>
-
+<button class="btn btn-primary mb-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
+  ☰ Filtros
+</button>
 
 <!-- Offcanvas -->
-
-<!-- Header -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Filtros</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
   </div>
-
-<!-- Body -->
   <div class="offcanvas-body">
+
     <form method="get" class="filtros-form">
 
       <!-- Orden -->
       <div class="mb-3">
         <label class="form-label">{{ order_fields|get_label:current_order }}</label>
-        <select class="form-select" name="order" data-bs-strategy="fixed">
+        <select class="form-select" name="order">
           {% for opt in order_fields %}
           <option value="{{ opt.key }}" {% if opt.key == current_order %}selected{% endif %}>{{ opt.label }}</option>
           {% endfor %}
@@ -45,7 +39,7 @@
       <!-- Marca -->
       <div class="mb-3">
         <label class="form-label">Marca</label>
-        <select class="form-select" name="marca" data-bs-strategy="fixed">
+        <select class="form-select" name="marca">
           <option value="">--Marca--</option>
           {% for m in marcas %}
           <option value="{{ m.id }}" {% if m.id|stringformat:"s" == request.GET.marca %}selected{% endif %}>{{ m.nombre }}</option>
@@ -56,7 +50,7 @@
       <!-- Categoría -->
       <div class="mb-3">
         <label class="form-label">Categoría</label>
-        <select class="form-select" name="categoria" data-bs-strategy="fixed">
+        <select class="form-select" name="categoria">
           <option value="">--Categoría--</option>
           {% for c in categorias %}
           <option value="{{ c.id }}" {% if c.id|stringformat:"s" == request.GET.categoria %}selected{% endif %}>{{ c.nombre }}</option>
@@ -67,7 +61,7 @@
       <!-- Góndola -->
       <div class="mb-3">
         <label class="form-label">Góndola</label>
-        <select class="form-select" name="gondola" data-bs-strategy="fixed">
+        <select class="form-select" name="gondola">
           <option value="">--Góndola--</option>
           {% for g in gondolas %}
           <option value="{{ g.id }}" {% if g.id|stringformat:"s" == request.GET.gondola %}selected{% endif %}>{{ g.nombre }}</option>
@@ -78,7 +72,7 @@
       <!-- Stock -->
       <div class="mb-3">
         <label class="form-label">Stock</label>
-        <select class="form-select" name="stock" data-bs-strategy="fixed">
+        <select class="form-select" name="stock">
           <option value="" {% if not request.GET.stock %}selected{% endif %}>--Stock--</option>
           <option value="available" {% if request.GET.stock == "available" %}selected{% endif %}>Con stock</option>
           <option value="out" {% if request.GET.stock == "out" %}selected{% endif %}>Sin stock</option>
@@ -92,5 +86,10 @@
       </div>
 
     </form>
+
   </div>
 </div>
+
+{% block head %}
+<script src="{% static 'js/filters.js' %}"></script>
+{% endblock head %}

@@ -27,10 +27,10 @@ class ProductosAdminCreateView(LoginRequiredMixin, RolRequeridoMixin, CreateView
     success_url = reverse_lazy("productos:listar")
 
     def form_valid(self, form):
-        # Instanciar sin guardar
+        # 1) instanciar sin guardar
         producto = form.save(commit=False)
 
-        # Obtener o crear el código
+        # 2) obtener o crear el código
         codigo_str = form.cleaned_data["codigo"]
         
         if codigo_str:
@@ -40,18 +40,16 @@ class ProductosAdminCreateView(LoginRequiredMixin, RolRequeridoMixin, CreateView
 
         producto.codigo = codigo_obj
 
-        # Guarda el producto
+        # 3) guardar el producto con su FK a Codigo
         producto.save()
 
         return redirect(self.success_url)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-
         ctx["codigos"]    = Codigo.objects.values_list("codigo", flat=True)
         ctx["marcas"]     = Marca.objects.values_list("nombre", flat=True)
         ctx["categorias"] = Categoria.objects.values_list("nombre", flat=True)
         ctx["gondolas"]   = Gondola.objects.values_list("nombre", flat=True)
         ctx["unidades"]   = UnidadMedida.objects.values_list("nombre", flat=True)
-
         return ctx

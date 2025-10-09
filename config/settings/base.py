@@ -9,7 +9,6 @@ DEBUG = config("DEBUG", cast=bool, default=True)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 INSTALLED_APPS = [
-    "grappelli",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -19,9 +18,8 @@ INSTALLED_APPS = [
 
     # Apps externas comunes
     "import_export",
-    "django_extensions",
-    "accounts",
     "core",
+    "accounts",
     "productos",
     "ordenes",
     "carrito",
@@ -72,7 +70,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Modelo de usuario personalizado
 AUTH_USER_MODEL = "accounts.UsuarioBase"
 
@@ -88,7 +85,6 @@ DATABASES = {}
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    BASE_DIR / "node_modules/bootstrap-icons/font/",
 ]
 STATIC_ROOT = str(BASE_DIR / "staticfiles")
 

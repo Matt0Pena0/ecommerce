@@ -1,35 +1,50 @@
-.logo img {
-  height: 120px;
-  width: auto;
-  object-fit: cover;
+:root{
+  --primary-color: #18181b;
+  --secondary-color: #27272a;
+  --accent-color: #3f3f46;
+  --text-color: #081c15;
+  --background-card: #f4f4f5;
+  --background-color: #111827;
+
+  --space-xxs:      0.25rem;    /* 4x */
+  --space-xs:       0.5rem;     /* 8x */
+  --space-sm:       0.75rem;    /* 12px */
+  --space-df:       1rem;       /* 16px */
+  --space-df-md:    1.25rem;    /* 20px */
+  --space-md:       1.50rem;    /* 24px */
+  --space-md-lg:    1.75rem;    /* 28px */
+  --space-lg:       2rem;       /* 32px */
+  --space-lg-bg:    2.50rem;    /* 40px */
+  --space-bg:       3rem;       /* 48px */
+}
+
+.page-content {
+  position: relative;
+  max-width: 1000px;
+  margin: auto;
+  /* padding-top: 5rem; */
+  padding-bottom: 1rem;
+  padding-inline-start: 0%;
+  border-bottom: 1px solid #ccc;
 }
 
 .logo {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
-  height: 50px;
+  height: 60px;
 }
 
-/* .page-content {
-  margin: auto;
-  margin-bottom: 0px;
-  max-width: 1000px;
-} */
-
-.text-truncate-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Número de líneas a mostrar */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Para navegadores compatibles */
-    min-height: 2em; /* Asegura un espacio mínimo para dos líneas */
+.logo img {
+  height: 150px;
+  width: auto;
+  object-fit: contain;
 }
-
-  /*
-  .alert-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
+.alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
 }
 
 .alert {
@@ -55,4 +70,3 @@
 .errorlist {
   color:brown;
 }
-*/

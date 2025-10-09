@@ -5,7 +5,7 @@ from .views.detalle import (
     OrdenDetailView,
     OrdenTxtView,
     OrdenExcelView,
-    OrdenPortapapelesView,
+    OrdenTxtCopyView,
 )
 
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path("listar/", OrdenListView.as_view(), name="listar"),
     path("detalle/<int:pk>/", OrdenDetailView.as_view(), name="detalle"),
     path('exportar/txt/<int:pk>/', OrdenTxtView.as_view(), name='exportar_txt'),
-    path('exportar/copia/<int:pk>/', OrdenPortapapelesView.as_view(), name='exportar_copia'),
+    path('exportar/copiar/<int:pk>/', OrdenTxtCopyView.as_view(), name='exportar_copia'),
     path('exportar/excel/<int:pk>/', OrdenExcelView.as_view(), name='exportar_excel'),
     # path('exportar/pdf/<int:pk>/', OrdenPDFView.as_view(), name='exportar_pdf'),
 ]

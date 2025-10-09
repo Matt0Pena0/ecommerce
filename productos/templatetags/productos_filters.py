@@ -1,5 +1,5 @@
 from django import template
-
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -9,38 +9,40 @@ def product_add_attributes(field, attrs):
     Añade clases CSS, otros atributos y la clase 'is-invalid' si hay errores.
     Uso: {{ field|add_attributes:"class:form-control|placeholder:." }}
     """
+    # Solo aplicamos esto si el objeto tiene el método as_widget (es un campo de formulario)
     if hasattr(field, 'as_widget'):
         final_attrs = {}
         
-        # Parsea los atributos pasados (class, placeholder, etc.)
+        # 1. Parsear los atributos pasados (class, placeholder, etc.)
         for pair in attrs.split('|'):
             if ':' in pair:
                 key, value = pair.split(':', 1)
                 final_attrs[key] = value
 
-        # Copia los atributos originales del widget que no se sobrescribieron
+        # 2. Copiar los atributos originales del widget que no se sobrescribieron
         for key, value in field.field.widget.attrs.items():
             if key not in final_attrs:
                 final_attrs[key] = value
 
-        # Manejo de errores: Añade 'is-invalid' si el campo tiene errores
+        # 3. MANEJO CLAVE DE ERRORES: Añadir 'is-invalid' si el campo tiene errores
         current_classes = final_attrs.get('class', '')
         
+        # Aseguramos que 'form-control' esté presente
         if 'form-control' not in current_classes:
             current_classes += ' form-control'
-
-        # Añade 'is-invalid' si el campo tiene errores para destacar el campo con rojo.
+            
+        # Añadimos 'is-invalid' si el campo tiene errores
+        # Esto es crucial para que el borde se ponga rojo.
         if field.errors:
             if 'is-invalid' not in current_classes:
                 current_classes += ' is-invalid'
-
+                
         final_attrs['class'] = current_classes.strip()
 
-        # Renderiza el campo con los atributos finales
+        # 4. Renderizar el campo con los atributos finales
         return field.as_widget(attrs=final_attrs)
-
-    return field
-
+        
+    return field # Si no es un campo de widget, devuélvelo sin cambios
 
 @register.filter
 def get_label(options, selected_key):
@@ -50,7 +52,6 @@ def get_label(options, selected_key):
             return opt.get('label')
     return ''
 
-
 @register.filter
 def get_nombre(queryset, selected_id):
     """Busca 'nombre' en un queryset o lista de objetos con id."""
@@ -58,7 +59,6 @@ def get_nombre(queryset, selected_id):
         if str(obj.id) == str(selected_id):
             return getattr(obj, 'nombre', '')
     return ''
-
 
 @register.filter
 def get_stock_label(value):
@@ -70,12 +70,3 @@ def get_stock_label(value):
         None: '--Stock--'
     }
     return mapping.get(value, '--Stock--')
-
-
-@register.filter(name='get_item')
-def get_item(dictionary, key):
-    """
-    Permite acceder a un valor en un diccionario usando una clave.
-    Ejemplo de uso en plantilla: {{ diccionario|get_item:clave|default:0 }}
-    """
-    return dictionary.get(key)

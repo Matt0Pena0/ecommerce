@@ -35,7 +35,6 @@ class GondolaAdmin(admin.ModelAdmin):
 @admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
     list_display = (
-        "id",
         "nombre",
         "codigo",
         "marca",
@@ -51,10 +50,8 @@ class ProductoAdmin(admin.ModelAdmin):
         "categoria",
         "gondola",
         "unidad_medida",
-        "stock",
     )
     search_fields = (
-        "id",
         "nombre",
         "codigo__codigo",
         "marca__nombre",

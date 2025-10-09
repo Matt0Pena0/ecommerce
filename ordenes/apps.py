@@ -14,8 +14,8 @@ class OrdenesConfig(AppConfig):
         #     with connection.cursor() as cursor:
         #         tables = connection.introspection.table_names()
         #         if "ordenes_estadoorden" in tables:
-        #             for id, _ in EstadoOrden.S:
-        #                 EstadoOrden.objects.get_or_create(nombre=id)
+        #             for codigo, _ in EstadoOrden.S:
+        #                 EstadoOrden.objects.get_or_create(nombre=codigo)
 
         # post_migrate.connect(crear_estados, sender=self)
 

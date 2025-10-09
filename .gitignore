@@ -22,7 +22,6 @@ local_settings.py
 .env
 .secrets/
 *.env
-.env.dev
 .env.prod
 *.env.prod
 
@@ -72,7 +71,6 @@ pip-delete-this-directory.txt
 *.pot
 *.mo
 README.dev.md
-data/*
 
 # === Bootstrap ===
 node_modules/

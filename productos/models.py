@@ -14,11 +14,11 @@ class Codigo(models.Model):
         # Primera pasada: guardamos para obtener self.pk
         super().save(*args, **kwargs)
 
-        # Si es nuevo y aún no se definio un código, le asigna = pk
+        # Si es nuevo y aún no definieron un código, lo asignamos = pk
         if is_new and not self.codigo:
-            # Usas el pk numérico como código, convertido a string
+            # Usamos el pk numérico como código, convertido a string
             self.codigo = str(self.pk)
-            # Actualiza sólo este campo
+            # Actualizar sólo este campo con save()
             super().save(update_fields=["codigo"])
 
     def __str__(self):
@@ -72,8 +72,7 @@ class Producto(models.Model):
     Incluye información como nombre, marca, categoría, ubicación, unidad de medida,
     precio, descripción y stock disponible.
     """
-    id = models.BigAutoField(primary_key=True)
-    codigo = models.OneToOneField(Codigo, on_delete=models.CASCADE, blank=True, null=True)
+    codigo = models.OneToOneField(Codigo, on_delete=models.CASCADE, primary_key=True, blank=True)
     nombre = models.CharField(max_length=100)
     marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True)

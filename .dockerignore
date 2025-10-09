@@ -4,6 +4,8 @@ __pycache__/
 *.pyd
 *.sqlite3
 *.log
+*.env
+.env*
 asdmedia/
 staticfiles/
 node_modules/
@@ -11,4 +13,8 @@ node_modules/
 venv/
 .idea/
 .vscode/
+*.png
+*.jpg
+*.jpeg
+*.svg
 README.dev.md

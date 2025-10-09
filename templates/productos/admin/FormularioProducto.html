@@ -1,74 +1,122 @@
 {% extends "LayoutBase.html" %}
-{% load static %}
 
 {% block page_title %}
-  {% if object %}Editar Producto{% else %}Crear Nuevo Producto{% endif %}
-{% endblock page_title %}
+{% if object %}Editar{% else %}Crear{% endif %} Producto
+{% endblock %}
 
 {% block page_content %}
-<div class="d-flex align-items-center py-4 bg-body-tertiary">
-  <div class="card shadow-lg form-signin m-auto p-2 p-md-3 px-md-4 rounded-3">
 
-    <div class="text-center mb-4">
-      <h3 class="mb-3 fw-semibold">
-        <i class="bi bi-bag-plus"></i>
-        {% if object %}Editar Producto{% else %}Crear Nuevo Producto{% endif %}
-      </h3>
-      <p class="text-body-secondary my-3">Ingresa los datos del producto</p>
-    </div>
+{% load static %}
+{% load productos_filters %}
 
-    <form method="post" novalidate>
-      {% csrf_token %}
+<div class="card shadow-sm p-2 p-md-3 border rounded-3">
 
-      {% if form.non_field_errors %}
-        <div class="alert alert-danger py-1 px-2 mb-3 small text-start">
+  <!-- Encabezado -->
+  <div class="text-start mb-4">
+
+    <h4 class="mb-3 fw-semibold text-center">
+      <i class="bi bi-bag-plus"></i>
+      Ingrese los datos,
+      para {% if object %}editar{% else %}crear{% endif %} el producto
+    </h4>
+  </div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    <!-- 1. MANEJO DE ERRORES GLOBALES (non_field_errors) -->
+    {% if form.non_field_errors %}
+      <!-- Estilo ajustado que replica el de Login/Registro -->
+      <div class="alert alert-danger py-1 px-2 mt-0 mb-3 small text-start">
           <ul class="list-unstyled m-0"> 
-            {% for error in form.non_field_errors %}
-              <li class="mb-0">{{ error }}</li> 
-            {% endfor %}
+              {% for error in form.non_field_errors %}
+                  <li class="mb-0">{{ error }}</li> 
+              {% endfor %}
           </ul>
-        </div>
-      {% endif %}
+      </div>
+    {% endif %}
 
-      {% for field in form %}
-        {% if field.widget.input_type == 'checkbox' %}
-          <div class="form-check my-3">
-            {{ field }}
-            <label class="form-check-label" for="{{ field.id_for_label }}">
-                {{ field.label }}
-            </label>
-          </div>
-        {% else %}
+    <!-- 2. BUCLE MODERNO PARA CAMPOS FLOTANTES -->
+    {% for field in form %}
+      {% if field.field.widget.input_type != 'checkbox' %}
 
-          <div class="form-floating mb-2">
-            {{ field }}
+      <div class="form-floating mt-2">
+          <!-- CAMPO INPUT CON FILTRO product_add_attributes -->
+          <!-- Esto genera el <input class="form-control is-invalid" placeholder="."> -->
+          {{ field|product_add_attributes:"class:form-control|placeholder:." }}
 
-            <label for="{{ field.id_for_label }}" 
-            {% if field.errors %}
-              class="text-danger"
-            {% endif %}>{{ field.label }}
-            </label>
-          </div>
-
-          <!-- Manejo de errores fuera del form floating -->
+          <!-- CAMPO LABEL -->
+          <label for="{{ field.id_for_label }}" 
           {% if field.errors %}
-            <div class="alert alert-danger py-1 px-0 mt-1 mb-3 small text-start">
-              <ul class="m-0">
+            class="text-danger"
+          {% endif %}>{{ field.label }}
+          </label>
+        </div>
+
+        <!-- 3. MANEJO DE ERRORES DE CAMPO (field.errors) -->
+        {% if field.errors %}
+          <div class="alert alert-danger py-1 px-2 mt-0 mb-3 small text-start">
+            <ul class="list-unstyled m-0"> 
               {% for error in field.errors %}
                 <li class="mb-0">{{ error }}</li> 
               {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-
+            </ul>
+          </div>
         {% endif %}
-      {% endfor %} 
 
-      <button type="submit" class="btn btn-primary w-100 my-4">
-        {% if object %}Guardar Cambios{% else %}Crear Producto{% endif %}
-      </button>
+        <!-- 4. HELP TEXT -->
+        {% if field.help_text %}
+            <small class="text-muted d-block mt-1 mb-3">{{ field.help_text }}</small>
+        {% endif %}
 
-    </form>
-  </div>
+      {% else %}
+        <!-- Si es un checkbox, lo renderizamos de forma básica fuera del floating -->
+        <div class="form-check mt-3 mb-2">
+            {{ field }} 
+            <label class="form-check-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+            </label>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <!-- BOTÓN DE SUBMIT (Ajustamos el estilo Bootstrap) -->
+    <button type="submit" class="btn btn-primary w-100 my-4">
+      {% if object %}Guardar Cambios{% else %}Crear Producto{% endif %}
+    </button>
+  </form>
+
+  {# DATALISTS PARA AUTOCOMPLETE #}
+  <datalist id="codigos_list">
+    {% for c in codigos %}
+    <option value="{{ c }}"></option>
+    {% endfor %}
+  </datalist>
+  
+  <datalist id="marcas_list">
+    {% for m in marcas %}
+    <option value="{{ m }}"></option>
+    {% endfor %}
+  </datalist>
+  
+  <datalist id="categorias_list">
+    {% for c in categorias %}
+    <option value="{{ c }}"></option>
+    {% endfor %}
+  </datalist>
+  
+  <datalist id="gondolas_list">
+    {% for g in gondolas %}
+    <option value="{{ g }}"></option>
+    {% endfor %}
+  </datalist>
+  
+  <datalist id="unidades_list">
+    {% for u in unidades %}
+    <option value="{{ u }}"></option>
+    {% endfor %}
+  </datalist>
+  
+  <a href="{% url 'productos:listar' %}">← Volver a la lista</a>
 </div>
 {% endblock %}
