@@ -1,6 +1,6 @@
 .timeline-container {
   position: relative;
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
 }
 
@@ -43,7 +43,7 @@
 css
 .timeline-item {
   position: absolute;
-  width: 45%;
+  width: 30%;
   padding: 20px;
   background: #fff;
   border-radius: 8px;
@@ -69,23 +69,24 @@ css
 }
 
 .timeline-item {
-  padding: 20px 20px;
+  max-width: 400px;
+  padding: 10px 10px;
   position: relative;
   width: 50%;
 }
 
 .timeline-item.left {
-  left: 0;
+  left: 6%;
 }
 
 .timeline-item.right {
-  left: 50%;
+  left: 51%;
 }
 
 .timeline-marker {
   position: absolute;
-  top: 30px;
-  right: -14px;
+  top: 8px;
+  right: -30px;
   width: 20px;
   height: 20px;
   background: #ccc;
@@ -112,6 +113,21 @@ css
   margin: 8px;
   position: relative;
   border-radius: 8px;
+}
+
+.timeline-content {
+  padding: 5px;
+  margin: 8px;
+  position: relative;
+  border-radius: 8px;
+  max-height: 300px;
+  overflow: hidden; 
+  transition: max-height 0.5s ease-out;
+}
+
+.timeline-content.expanded {
+  max-height: 350px;
+  transition: max-height 0.5s ease-in;
 }
 
 .icon-box {

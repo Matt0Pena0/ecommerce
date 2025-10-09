@@ -1,4 +1,3 @@
-// static/js/toast.js
 export function showToast(message) {
     const toastEl = document.createElement('div');
     toastEl.className = 'toast align-items-center text-bg-primary border-0 show position-fixed bottom-0 end-0 m-3';

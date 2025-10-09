@@ -9,7 +9,7 @@ from ordenes.models import Orden
 from ordenes.services.exportar_orden_service import OrdenExportService
 from ordenes.services.exporters.excel_exporter import ExcelExporter
 from ordenes.services.exporters.txt_exporter import TxtExporter
-from ordenes.services.exporters.serializers import OrdenSerializer
+from ordenes.services.serializers import OrdenSerializer
 
 
 class OrdenDetailView(LoginRequiredMixin, RolRequeridoMixin, PermisosDatosMixin, DetailView):
@@ -18,11 +18,7 @@ class OrdenDetailView(LoginRequiredMixin, RolRequeridoMixin, PermisosDatosMixin,
     context_object_name = "orden"
     rol_requerido = ["cliente", "admin"]
 
-    # Paginación
-    paginate_by = 20  # 20 órdenes por página
-
     def get_queryset(self):
-        # Queryset base
         qs = super().get_queryset()
 
         # Optimización de consultas:
@@ -32,20 +28,32 @@ class OrdenDetailView(LoginRequiredMixin, RolRequeridoMixin, PermisosDatosMixin,
 
         return qs
 
+    def get_context_data(self, **kwargs):
+        # Obtener el contexto de la vista
+        context = super().get_context_data(**kwargs)
+
+        orden_obj = context.get("orden")
+
+        if orden_obj:
+            data_serializada = OrdenSerializer.serialize(orden_obj)
+
+        context['orden_data'] = data_serializada
+
+        return context
+
 
 # Vista para txt
 class OrdenTxtView(View):
     def get(self, request, pk):
-        orden = get_object_or_404(Orden, pk=pk)
-        
-        # Aquí es donde ocurre la magia de la inyección de dependencias:
-        # 1. Creamos una instancia del exportador (la dependencia).
+        orden = get_object_or_404(Orden.objects.select_related('solicitante'), pk=pk)
+
+        # Crea una instancia del exportador.
         exporter_txt = TxtExporter()
         
-        # 2. Creamos una instancia del servicio y le "inyectamos" el exportador.
+        # Crea una instancia del servicio y le inyecta el exportador.
         service = OrdenExportService(exporter=exporter_txt)
         
-        # 3. Llamamos al método `generate` del servicio, el cual se encargará del resto.
+        # Llama al método `generate` del servicio.
         return service.generate(
             orden=orden,
             filename=f"pedido_{pk}.txt",
@@ -56,7 +64,7 @@ class OrdenTxtView(View):
 # Vista para Excel
 class OrdenExcelView(View):
     def get(self, request, pk):
-        orden = get_object_or_404(Orden, pk=pk)
+        orden = get_object_or_404(Orden.objects.select_related('solicitante'), pk=pk)
 
         exporter_excel = ExcelExporter()
 
@@ -69,17 +77,18 @@ class OrdenExcelView(View):
         )
 
 
-class OrdenTxtCopyView(View):
+class OrdenPortapapelesView(View):
     """Vista que devuelve el contenido de la orden en texto plano, sin descarga."""
     def get(self, request, pk):
-        orden = get_object_or_404(Orden, pk=pk)
+        orden = get_object_or_404(Orden.objects.select_related('solicitante'), pk=pk)
         
         # Serializamos los datos de la orden
-        rows = OrdenSerializer.serialize(orden)
+        data_serializada = OrdenSerializer.serialize(orden)
         
         # Usar el mismo exportador para generar el texto
+        # Serializamos los datos de la orden
         exporter = TxtExporter()
-        data = exporter.export(rows)
+        data = exporter.export(data_serializada)
         
         # Devolvemos el texto como una respuesta HTTP.
         # No usamos la cabecera 'Content-Disposition' para evitar la descarga.

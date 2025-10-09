@@ -51,6 +51,7 @@ class ProductoAdmin(admin.ModelAdmin):
         "categoria",
         "gondola",
         "unidad_medida",
+        "stock",
     )
     search_fields = (
         "id",

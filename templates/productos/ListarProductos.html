@@ -5,20 +5,27 @@
 {% block page_title %}Catálogo de Productos{% endblock %}
 
 {% block head %} 
-  <script src="{% static 'js/actualizar-carrito.js' %}" defer></script>
+  <script type="module" src="{% static 'js/actualizar-carrito.js' %}" defer></script>
 {% endblock head %}
 
 {% block page_content %}
-  {% if request.user.is_superuser %}
-  <div class="mb-3">
-    <a href="{% url 'productos:crear' %}" class="btn btn-primary btn-sm">
-      <i class="bi bi-plus"></i>
-      Nuevo Producto
-    </a>
-  </div>
-  {% endif %}
 
-  {% include '_includes/_filters.html' %}
+  <div class="container my-2 mx-0">
+
+    {% if request.user.is_superuser %}
+    <div class="mb-1">
+      <a href="{% url 'productos:crear' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus"></i>
+        Nuevo Producto
+      </a>
+    </div>
+    {% endif %}
+
+    <div class="mb-1">
+      {% include '_includes/_filters.html' %}
+    </div>
+
+  </div>
 
   <div class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-lg-6">
     {% for p in productos %}
@@ -27,10 +34,10 @@
       {% with productos_en_carrito|get_item:id|default:0 as qty_en_carrito %}
 
       <div class="col g-1 g-sm-1 g-md-2 g-xl-4">
-        <div class="card d-flex flex-column shadow-sm p-1 p-md-2 h-100">
+        <div class="card d-flex flex-column shadow-sm p-1 p-md-2 m-0" style="height: 316px;">
 
           <!-- Imagen -->
-          <div class="d-flex justify-content-center align-items-center h-100" style="height: 80px;">
+          <div class="d-flex justify-content-center align-items-start" style="height: 80px;">
             <img src= {% if p.img.url %} "{{ p.img.url}}" {% else %} "{% static 'img/producto.png' %}" {% endif %}
                 class="card-img-top w-auto img-fluid" 
                 style="object-fit:contain; max-height: 80px; min-height: 80px;" 
@@ -39,7 +46,7 @@
           </div>
 
           <!-- Cuerpo de la card -->
-          <div class="card-body d-flex flex-column p-1 h-100">
+          <div class="card-body d-flex flex-column px-2 pt-1 pb-0">
 
             <!-- Badge de oferta -->
             {% if p.onSale %}
@@ -47,21 +54,21 @@
             {% endif %}
 
             <!-- Zona nombre y categoría -->
-            <div class="mb-1" style="min-height:3.5em;">
-              <h6 class="card-title mb-0 text-truncate-2" title="{{ p.nombre }}">
+            <div class="my-0" style="min-height:3.5em;">
+              <p class="card-title my-0 text-truncate-2" title="{{ p.nombre }}">
                   {{ p.nombre }}
-              </h6>
-              <small class="text-muted">
-                {% if p.categoria.nombre and p.gondola.nombre %}
-                  {{ p.categoria.nombre }} - {{ p.gondola.nombre }}
+              </p>
+              <small class=" my-0 text-muted text-truncate-2" title="{{ p.nombre }}">
+                {% if p.marca.nombre and p.descripcion %}
+                  {{ p.marca.nombre }} - {{ p.descripcion }}
                 {% else %}
-                  {{ p.categoria.nombre }}{{ p.gondola.nombre }}
+                  {{ p.marca.nombre }}{{ p.descripcion }}
                 {% endif %}
               </small>
             </div>
 
             <!-- Zona precio -->
-            <div class="mb-2" style="min-height:1.5rem;">
+            <div class="align-items-end mx-1 mt-auto" style="height:1rem;">
               {% if p.onSale %}
                 <span class="text-decoration-line-through text-muted medium">${{ p.precio_unitario }}</span>
                 <span class="fw-bold text-success medium">${{ p.precio_oferta }}</span>
@@ -76,41 +83,62 @@
                   action="{% url 'carrito:agregar_item_carrito_api' %}">
               {% csrf_token %}
 
-              <!-- INPUTS DE CONTROL (SIEMPRE VISIBLES) -->
-              <!-- La cantidad debe ser 0 si no está en carrito, o la cantidad real -->
+              <!-- INPUTS DE CONTROL (ocultos) -->
               <input type="hidden" name="quantity" class="quantity" value="{{ qty_en_carrito }}"/>
 
-              <!-- CONTENEDOR DE ACCIONES: ESTE ES EL ÚNICO BLOQUE QUE EL JS REEMPLAZARÁ -->
+              <!-- CONTENEDOR DE ACCIONES: Este bloque, lo remplazará js por el correspondiente -->
               <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
 
                 {% if qty_en_carrito > 0 %}
-                  <!-- ESTADO 1: Stepper Completo - Renderizado Inicial por Django -->
+                  <!-- ESTADO 1: Stepper Completo -->
                   <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
-                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad" {% if qty_en_carrito <= 0 %}disabled{% endif %}>−</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad"
+                    {% if qty_en_carrito <= 0 %}disabled{% endif %}>
+                      <i class="bi bi-dash-square-fill"></i>
+                    </button>
 
                       <div class="qty-display mx-2 text-center" data-min="1" data-max="{{ p.stock }}">
                         <span class="fw-semibold">{{ qty_en_carrito }}</span>
                       </div>
 
-                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad" {% if qty_en_carrito >= p.stock %}disabled{% endif %}>+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm stepper-incr" aria-label="Aumentar cantidad"
+                    {% if qty_en_carrito >= p.stock %}disabled{% endif %}>
+                      <i class="bi bi-plus-square-fill"></i>
+                    </button>
                   </div>
 
                 {% else %}
-                  <!-- ESTADO 0: Solo Botón Agregar - Renderizado Inicial por Django -->
+                  <!-- ESTADO 0: Solo Botón Agregar -->
                   <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
                       <button type="button" class="btn btn-sm btn-primary stepper-incr" aria-label="Agregar al carrito">
-                        <i class="bi bi-cart-plus"></i>
+                        <i class="bi bi-plus-square-fill"></i>
                       </button>
                   </div>
                 {% endif %}
 
               </div>
             </form>
+
           <!-- Opciones admin -->
           {% if request.user.is_superuser %}
-          <div class="card-footer py-1">
-            <a href="{% url 'productos:actualizar' p.pk %}" class="btn btn-outline-secondary btn-sm w-100">Editar</a>
-          </div>
+            {% include 'productos/admin/EliminarProducto.html' %}
+
+            <div class="card-footer d-flex justify-content-between gap-2 py-1">
+              <a href="{% url 'productos:actualizar' p.pk %}" class="ms-1 btn btn-outline-secondary btn-sm">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+              <button type="button" class="me-1 btn btn-outline-danger btn-sm delete-btn" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#confirmDeleteModal"
+                      data-product-name="{{ p.nombre }}"
+                      data-delete-url="{% url 'productos:eliminar' p.pk %}">
+                <i class="bi bi-trash3-fill"></i>
+              </button>
+            </div>
+
+            {% block extra_scripts %}
+              <script type="module" src="{% static 'js/eliminar-producto.js' %}"></script>
+            {% endblock extra_scripts %}
           {% endif %}
 
         </div>

@@ -1,4 +1,6 @@
 from ordenes.models import Orden
+from typing import Any 
+
 
 class OrdenSerializer:
     """Convierte una Orden en una lista de dicts listos para exportar, optimizando queries."""
@@ -11,8 +13,7 @@ class OrdenSerializer:
         return str(value)
 
     @classmethod
-    def serialize(cls, orden: Orden) -> list[dict]:
-        rows = []
+    def serialize(cls, orden: Orden) -> dict[str, Any]:
 
         items = orden.items.select_related(
             'producto', 
@@ -22,10 +23,12 @@ class OrdenSerializer:
             'producto__gondola'
         )
 
+        items_serializadas = []
+
         for item in items:
             prod = item.producto
-            rows.append({
-                "id":           cls._safe(prod.id),
+            items_serializadas.append({
+                "id":               cls._safe(prod.id),
                 "codigo":           cls._safe(prod.codigo),
                 "nombre":           cls._safe(prod.nombre),
                 "cantidad":         cls._safe(item.cantidad),
@@ -36,4 +39,12 @@ class OrdenSerializer:
                 "categoria":        cls._safe(getattr(prod.categoria, "nombre", None)),
                 "descripcion":      cls._safe(prod.descripcion),
             })
-        return rows
+        
+        orden_serializada = {
+            "id": cls._safe(orden.id),
+            "fecha_creacion": cls._safe(orden.creado.strftime('%Y-%m-%d')),
+            "solicitante_username": cls._safe(orden.solicitante.username),
+            "items": items_serializadas
+        }
+
+        return orden_serializada

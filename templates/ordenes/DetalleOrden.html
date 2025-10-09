@@ -13,9 +13,9 @@
 
   <!-- Encabezado -->
   <div>
-    <h2>Detalle de la Orden #{{ orden.id }}</h2>
-    <p>Solicitante: {{ orden.solicitante.username }}</p>
-    <p>Fecha: {{ orden.creado }}</p>
+    <h2>Detalle de la Orden #{{ orden_data.id }}</h2>
+    <p>Solicitante: {{ orden_data.solicitante_username }}</p>
+    <p>Fecha: {{ orden_data.creado }}</p>
     
     <div class="card-header">
       <h4 class="mb-0">
@@ -39,18 +39,18 @@
         </tr>
       </thead>
       <tbody>
-        {% for item in orden.items.all %}
+        {% for item in orden_data.items %}
         <tr>
           <td>
-            {{ item.cantidad }} x {{ item.producto.nombre }} 
-            {% if item.producto.marca %}
-            {{ item.producto.marca }}
+            {{ item.cantidad }} x {{ item.nombre }} 
+            {% if item.marca %}
+            {{ item.marca }}
             {% endif %}
-            {% if item.producto.unidad_medida and item.producto.unidad_medida is not null %} - 
-            {{ item.producto.unidad_medida }}
+            {% if item.unidad %} - 
+            {{ item.unidad }}
             {% endif %}
-            {% if item.producto.descripcion %}
-            {{ item.producto.descripcion }}
+            {% if item.descripcion %}
+            {{ item.descripcion }}
             {% endif %}
           </td>
         </tr>
@@ -66,23 +66,21 @@
 
       <div class="col">
         <a class="btn btn-outline-success w-100" 
-        href="{% url 'ordenes:exportar_txt' orden.id %}">Exportar a TXT</a>
+        href="{% url 'ordenes:exportar_txt' orden_data.id %}">Exportar a TXT</a>
       </div>
       
       <div class="col">
         <a class="btn btn-outline-success w-100" 
-        href="{% url 'ordenes:exportar_excel' orden.id %}">Exportar a Excel</a>
+        href="{% url 'ordenes:exportar_excel' orden_data.id %}">Exportar a Excel</a>
       </div>
 
       <div class="col">
         <button class="btn btn-outline-success w-100" 
         id="copiar-txt-btn" 
-        data-url-copy-orden="{% url 'ordenes:exportar_copia' orden.id %}">Exportar Copia</button>
+        data-url-copy-orden="{% url 'ordenes:exportar_copia' orden_data.id %}">Exportar Copia</button>
       </div>
 
-      {% comment %}
-      <a href="{% url 'ordenes:exportar_pdf' orden.id %}">Exportar a PDF</a>
-      {% endcomment %}
+      {% comment %} <a href="{% url 'ordenes:exportar_pdf' orden_data.id %}">Exportar a PDF</a> {% endcomment %}
 
       <div class="col">
         <a class="btn btn-outline-primary w-100" 

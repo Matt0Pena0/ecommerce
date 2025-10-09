@@ -27,35 +27,34 @@
 // // Place variable overrides first, then import just the styles you need. Note that some stylesheets are required no matter what.
 
 
-// $font-size-base-desktop: 1rem;
-// $font-size-base-tablet: 0.85rem;
-// $font-size-base-mobile: 0.50rem;
+$font-size-base-desktop: 16px;
+$font-size-base-tablet: 12px;
+$font-size-base-mobile: 10px;
 
-// // Aplicar tamaño de fuente base
-// body {
-//   font-size: $font-size-base-desktop;
-// }
+// Aplicar tamaño de fuente base
+body {
+  font-size: $font-size-base-desktop;
+}
 
-// // Aplicar tamaño de fuente base para tablets
-// @media (max-width: 991.98px) {
-//   body {
-//     font-size: $font-size-base-tablet;
-//   }
-// }
+// Aplicar tamaño de fuente base para tablets
+@media (max-width: 991.98px) {
+  body {
+    font-size: $font-size-base-tablet;
+  }
+}
 
-// // Aplicar tamaño de fuente base para móviles
-// @media (max-width: 767.98px) {
-//   body {
-//     font-size: $font-size-base-mobile;
-//   }
-// }
+// Aplicar tamaño de fuente base para móviles
+@media (max-width: 767.98px) {
+  body {
+    font-size: $font-size-base-mobile;
+  }
+}
 
 
 // Toggle global options
 $enable-gradients: true;
 $enable-shadows: true;
 
-$offcanvas-box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175);
 
 // Include functions first
 // @import "bootstrap/scss/_functions";
@@ -123,6 +122,7 @@ $success: #7952b3;
 // }
 .text-truncate-2 {
     display: -webkit-box;
+    line-clamp: 30;
     -webkit-line-clamp: 2; /* Número de líneas a mostrar */
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -158,12 +158,3 @@ $success: #7952b3;
   }
 }
 
-/* Asegura que los selects y dropdowns dentro del offcanvas no se corten */
-.offcanvas-body {
-overflow: visible !important;
-}
-
-/* Opcional: margenes internos más cómodos */
-.offcanvas-body .mb-3:last-child {
-margin-bottom: 1.5rem;
-}
