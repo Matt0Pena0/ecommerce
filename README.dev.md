@@ -21,6 +21,7 @@ docker compose exec web python3 manage.py migrate
 
 # Create a new app
 docker compose exec web python3 manage.py startapp
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec web python startapp
 
 # Open Django shell
 docker compose exec web python3 manage.py shell
@@ -31,7 +32,7 @@ docker compose exec web python3 manage.py dbshell
 # Open database directamente
 docker compose exec db mysql -u root -p
 docker compose -f docker-compose.dev.yml exec db mysql -u root -p
-
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec db mysql -u root -p
 
 # Create a new Django superuser (admin account)
 docker compose exec web python3 manage.py createsuperuser
