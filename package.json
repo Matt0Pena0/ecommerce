@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "sass --load-path=node_modules static/css/scss:static/css/dist --no-source-map"
+    "build": "sass --load-path=node_modules static/css/scss:static/css/dist/ --no-source-map"
   },
   "repository": {
     "type": "git",

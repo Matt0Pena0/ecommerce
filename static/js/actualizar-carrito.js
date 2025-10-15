@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Renderizamos la estructura de 3 partes: [-] [QTY] [+]
         return `
-            <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
+            <div class="action-wrapper w-100 d-flex flex-column justify-content-between align-items-center">
+                <div class="btn-stepper d-flex align-items-center m-1" role="group" aria-label="Cantidad">
                     <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad" ${decrDisabled ? 'disabled' : ''}>
                         <i class="bi bi-dash-square-fill"></i>
                     </button>
@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     const renderAddButton = () => {
         return `
-            <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
+            <div class="action-wrapper w-100 d-flex flex-column justify-content-between align-items-center">
+                <div class="btn-stepper d-flex align-items-center m-1" role="group" aria-label="Cantidad">
                     <button type="button" class="btn btn-sm btn-primary stepper-incr" aria-label="Agregar al carrito">
                         <i class="bi bi-plus-square-fill"></i>
                     </button>

@@ -48,7 +48,7 @@ COPY . /app/
 # *** LA MAGIA DEL MULTI-STAGE BUILD ***
 # Copiamos SOLO los archivos compilados (el CSS final) desde la etapa "builder"
 # a la carpeta de estáticos de nuestra aplicación final.
-COPY --from=builder /app/static/css/dist/ /app/static/css/
+COPY --from=builder /app/static/css/dist/ /app/static/css/dist
 
 # Exponer puerto (documentación)
 EXPOSE 8000

@@ -165,11 +165,16 @@ def finalizar_carrito(request):
         return redirect("productos:listar")
 
     items = [(item.producto, item.cantidad) for item in carrito.items.select_related('producto')]
+
     orden_service = OrdenService()
 
+    orden = orden_service.crear_orden(
+        solicitante=request.user,
+        items=items
+    )
 
     # Limpiar carrito
     carrito.items.all().delete()
 
-    messages.success(request, "Orden generada correctamente.")
+    messages.success(request,f"Orden #{orden.id} generada correctamente.")
     return redirect("ordenes:listar")

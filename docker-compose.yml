@@ -5,11 +5,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASS}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -18,14 +13,13 @@ services:
       timeout: 5s
       retries: 5
 
-
   web:
     build: .
     container_name: ecommerce_web_prod
     restart: unless-stopped
     env_file:
       - .env
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --log-level info
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/mediafiles
