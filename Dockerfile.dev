@@ -40,7 +40,7 @@ WORKDIR /app
 
 # Copiamos e instalamos las dependencias de Python
 COPY requirements/ ./requirements/
-RUN pip install --no-cache-dir -r requirements/prod.txt
+RUN pip install --no-cache-dir -r requirements/dev.txt
 
 # Copiamos el código de la aplicación (Python, templates, etc.)
 COPY . /app/
@@ -54,4 +54,4 @@ COPY --from=builder /app/static/css/dist/ /app/static/css/
 EXPOSE 8000
 
 # Comando por defecto
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "themattdev.wsgi:application"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

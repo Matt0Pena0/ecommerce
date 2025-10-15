@@ -20,7 +20,6 @@ INSTALLED_APPS = [
     # Apps externas comunes
     "import_export",
     "django_extensions",
-    "core",
     "accounts",
     "core",
     "productos",
@@ -51,6 +50,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
+                "carrito.context_processors.get_total_items_carrito",
             ],
         },
     },

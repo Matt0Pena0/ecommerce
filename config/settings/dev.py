@@ -31,11 +31,11 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        "NAME":     config("DB_NAME"),          # Nombre de la base de datos
-        "USER":     config("DB_USER"),          # Usuario creado para la base de datos
-        "PASSWORD": config("DB_PASS"),          # Contraseña del usuario
-        "HOST":     config("DB_HOST"),          # Dirección IP del host (localhost o la  IP de la máquina)
-        'PORT': '3306',                         # Puerto por defecto de MySQL
+        "NAME":     config("DB_NAME"),
+        "USER":     config("DB_USER"),
+        "PASSWORD": config("DB_PASS"),
+        "HOST":     config("DB_HOST"),
+        'PORT': '3306',
         'OPTIONS':{
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
