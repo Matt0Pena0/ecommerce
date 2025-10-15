@@ -13,11 +13,9 @@ class ProductoForm(forms.ModelForm):
             'nombre': 'Nombre del Producto',
             'precio_unitario': 'Precio Unitario',
             'unidad_medida': 'Unidad de Medida',
-            # 'onSale': '¿Está en oferta?',
-            # 'precio_oferta': 'Precio de Oferta',
         }
 
-        # 3. Diccionario de WIDGETS para añadir atributos HTML (clases, placeholders, etc.)
+        # Diccionario de WIDGETS para añadir atributos HTML (clases, placeholders, etc.)
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
             'codigo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Código'}),

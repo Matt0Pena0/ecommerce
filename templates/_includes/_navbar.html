@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary border-bottom border-body border-opacity-75 navbar-height pt-1">
+<nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary border-bottom border-body shadow-lg border-opacity-75 navbar-height pt-1">
   <div class="container-fluid d-flex align-items-center justify-content-between">
 
     <!-- Logo a la izquierda -->
@@ -28,7 +28,7 @@
           </a>
         </li>
 
-        {% if request.user.is_superuser %}
+        {% if request.user.is_authenticated %}
         <!-- Productos -->
         <li class="nav-item mx-2">
           <a class="nav-link" href="{% url 'productos:listar' %}">
@@ -41,17 +41,10 @@
           <a class="nav-link position-relative" href="{% url 'carrito:ver_carrito' %}">
             <i class="bi bi-cart me-1"></i> Carrito
             
-            <!-- ESTRUCTURA DEL BADGE -->
             <span class="badge rounded-pill bg-success position-absolute top-10 start-100 translate-middle"
-                  id="cart-item-count" 
+                  id="carrito-total-items" 
                   style="font-size: 0.75em; padding: 0.35em 0.55em;">
-              
-              <!-- VALOR INICIAL: Usa el total calculado por tu vista -->
-              <!-- Asumo que pasas 'total_items_carrito' al contexto del template -->
               {{ total_items_carrito|default:0 }} 
-              
-              <!-- Si total_items_carrito no está disponible en LayoutBase, usa 0 -->
-              
             </span>
           </a>
         </li>

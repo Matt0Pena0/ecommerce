@@ -129,16 +129,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // ... (El resto del código JS, incluyendo handleCartUpdate y stepperHandler, sigue igual)
-    
-// Finalizamos el bloque de código
-
     // --- Lógica de Envío AJAX Centralizada (Disparada por Stepper o Botón) ---
     
     /**
      * Envía la solicitud AJAX para actualizar/eliminar el carrito.
      */
-    const handleCartUpdate = (form, cantidad) => {
+    const handleCartUpdate = (form, cantidad, targetBtn) => {
         const productoId = form.dataset.id;
         const csrfInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
         const csrfToken = csrfInput ? csrfInput.value : getCookie('csrftoken') || '';
@@ -156,20 +152,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let finalCantidad = parseInt(cantidad, 10);
         if (finalCantidad < 0) finalCantidad = 0; 
         
-        // UI Feedback: Determinar el botón visual a deshabilitar
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : null;
-        
-        const targetBtn = form.querySelector(finalCantidad === 0 ? '.stepper-decr' : '.stepper-incr') || submitBtn;
-        
         if (targetBtn) {
             targetBtn.disabled = true;
-            if (targetBtn !== submitBtn) {
-                 targetBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-            }
+            // La lógica del spinner ahora se aplicará al botón correcto
+            targetBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
         }
         
-        fetch(targetUrl, {
+        fetch(urlParaAgregar, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -180,39 +169,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 cantidad: finalCantidad 
             })
         })
-        .then(res => res.json().catch(() => ({ status: 'error', message: 'Respuesta inválida o error 500' })))
+        .then(res => {
+            if (!res.ok) throw new Error('Error en la respuesta del servidor');
+            return res.json();
+        })
         .then(data => {
             if (data && data.status === 'ok') {
-                showMessage(data.message || (finalCantidad === 0 ? 'Eliminado del carrito' : 'Carrito actualizado'), 'success');
+                showMessage(data.message || 'Carrito actualizado', 'success');
                 
-                const cartCount = document.getElementById('cart-item-count');
-                if (cartCount && (data.total_items_carrito !== undefined)) cartCount.textContent = data.total_items_carrito;
+                const contadorElemento = document.getElementById('carrito-total-items');
+                if (contadorElemento && (data.nuevo_total_productos !== undefined)) {
+                    contadorElemento.textContent = data.nuevo_total_productos;
+                }
                 
-                // Actualizar la UI de la tarjeta local
                 updateCardDisplay(form, finalCantidad);
 
             } else {
-                const msg = (data && data.message) ? data.message : 'Hubo un error en el servidor.';
-                showMessage(msg, 'error');
-                
-                // 💡 CLAVE: Revertir la cantidad a la original si la operación falla
+                showMessage(data.message || 'Hubo un error en el servidor.', 'error');
                 updateCardDisplay(form, originalQty); 
-                window.location.reload(); 
             }
         })
         .catch(error => {
             console.error('Error de red:', error);
             showMessage('Error de conexión con el servidor.', 'error');
-            // Revertir a la cantidad original si hay error de red
             updateCardDisplay(form, originalQty); 
-            window.location.reload();
         })
         .finally(() => {
+            // La lógica para restaurar el botón SÍ va aquí.
             if (targetBtn) {
-                 targetBtn.disabled = false;
-                 if (targetBtn !== submitBtn) {
-                     targetBtn.innerHTML = targetBtn.classList.contains('stepper-decr') ? '<i class="bi bi-plus-minus-fill"></i>' : '<i class="bi bi-plus-square-fill"></i>';
-                 }
+                targetBtn.disabled = false;
+                targetBtn.innerHTML = targetBtn.classList.contains('stepper-decr') ? '<i class="bi bi-dash-square-fill"></i>' : '<i class="bi bi-plus-square-fill"></i>';
             }
         });
     };
@@ -258,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hidden) hidden.value = newQty;
         
         // Llamar a la lógica AJAX para enviar el nuevo valor
-        handleCartUpdate(form, newQty);
+        handleCartUpdate(form, newQty, targetBtn);
     };
 
     const submitHandler = (e) => {

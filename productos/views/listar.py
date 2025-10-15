@@ -138,7 +138,6 @@ class ProductoListView(LoginRequiredMixin, ListView):
 
         # Carrito
         productos_en_carrito = {}
-        total_items_carrito = {}
 
         if self.request.user.is_authenticated:
             try:
@@ -147,7 +146,6 @@ class ProductoListView(LoginRequiredMixin, ListView):
                     carrito_usuario = Carrito.objects.get(usuario=self.request.user)
 
                     # Calcula el total para actualizar de items para el contador global
-                    total_items_carrito = ItemCarrito.objects.filter(carrito=carrito_usuario).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
 
                     items_data = ItemCarrito.objects.filter(carrito=carrito_usuario).values_list(
                         'producto_id',
@@ -163,6 +161,5 @@ class ProductoListView(LoginRequiredMixin, ListView):
 
         # Añade el diccionario al contexto
         ctx['productos_en_carrito'] = productos_en_carrito
-        ctx['total_items_carrito'] = total_items_carrito
 
         return ctx

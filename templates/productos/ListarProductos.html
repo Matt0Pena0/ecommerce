@@ -13,7 +13,7 @@
   <div class="container my-2 mx-0">
 
     {% if request.user.is_superuser %}
-    <div class="mb-1">
+    <div class="row col-2 mb-1">
       <a href="{% url 'productos:crear' %}" class="btn btn-primary btn-sm">
         <i class="bi bi-plus"></i>
         Nuevo Producto
@@ -34,7 +34,7 @@
       {% with productos_en_carrito|get_item:id|default:0 as qty_en_carrito %}
 
       <div class="col g-1 g-sm-1 g-md-2 g-xl-4">
-        <div class="card d-flex flex-column shadow-sm p-1 p-md-2 m-0" style="height: 316px;">
+        <div class="card d-flex flex-column shadow-sm p-1 p-md-2 m-0" style="height: 300px;">
 
           <!-- Imagen -->
           <div class="d-flex justify-content-center align-items-start" style="height: 80px;">
@@ -54,7 +54,7 @@
             {% endif %}
 
             <!-- Zona nombre y categoría -->
-            <div class="my-0" style="min-height:3.5em;">
+            <div class="my-0" style="min-height: 6em;">
               <p class="card-title my-0 text-truncate-2" title="{{ p.nombre }}">
                   {{ p.nombre }}
               </p>
@@ -68,7 +68,7 @@
             </div>
 
             <!-- Zona precio -->
-            <div class="align-items-end mx-1 mt-auto" style="height:1rem;">
+            <div class="align-items-center mx-auto mt-2" style="height: 1.5em;">
               {% if p.onSale %}
                 <span class="text-decoration-line-through text-muted medium">${{ p.precio_unitario }}</span>
                 <span class="fw-bold text-success medium">${{ p.precio_oferta }}</span>
@@ -78,20 +78,20 @@
             </div>
 
             <!-- Zona acción carrito -->
-            <form class="add-to-cart-form d-flex flex-column flex-md-row mx-auto align-items-md-center justify-content-between mt-auto"
+            <form class="add-to-cart-form d-flex flex-column m-0 align-items-center justify-content-between"
                   method="POST" data-id="{{ p.id }}"
-                  action="{% url 'carrito:agregar_item_carrito_api' %}">
+                  action="{% url 'carrito:actualizar_item_carrito_api' %}">
               {% csrf_token %}
 
               <!-- INPUTS DE CONTROL (ocultos) -->
               <input type="hidden" name="quantity" class="quantity" value="{{ qty_en_carrito }}"/>
 
               <!-- CONTENEDOR DE ACCIONES: Este bloque, lo remplazará js por el correspondiente -->
-              <div class="action-wrapper w-100 d-flex flex-column flex-md-row justify-content-between align-items-center">
+              <div class="action-wrapper w-100 d-flex flex-column justify-content-between align-items-center">
 
                 {% if qty_en_carrito > 0 %}
                   <!-- ESTADO 1: Stepper Completo -->
-                  <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
+                  <div class="btn-stepper d-flex align-items-center m-1" role="group" aria-label="Cantidad">
                     <button type="button" class="btn btn-outline-secondary btn-sm stepper-decr" aria-label="Disminuir cantidad"
                     {% if qty_en_carrito <= 0 %}disabled{% endif %}>
                       <i class="bi bi-dash-square-fill"></i>
@@ -109,7 +109,7 @@
 
                 {% else %}
                   <!-- ESTADO 0: Solo Botón Agregar -->
-                  <div class="btn-stepper d-flex align-items-center mb-2 mb-md-0 me-0 me-md-2" role="group" aria-label="Cantidad">
+                  <div class="btn-stepper d-flex align-items-center m-1" role="group" aria-label="Cantidad">
                       <button type="button" class="btn btn-sm btn-primary stepper-incr" aria-label="Agregar al carrito">
                         <i class="bi bi-plus-square-fill"></i>
                       </button>
@@ -123,7 +123,7 @@
           {% if request.user.is_superuser %}
             {% include 'productos/admin/EliminarProducto.html' %}
 
-            <div class="card-footer d-flex justify-content-between gap-2 py-1">
+            <div class="card-footer d-flex justify-content-between align-items-end gap-2 p-0 mt-2">
               <a href="{% url 'productos:actualizar' p.pk %}" class="ms-1 btn btn-outline-secondary btn-sm">
                 <i class="bi bi-pencil-square"></i>
               </a>

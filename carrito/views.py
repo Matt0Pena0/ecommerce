@@ -4,13 +4,13 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from django.contrib import messages
-from django.db.models import Sum
-
+from django.db.models import Count
 import json
 
 from carrito.models import Carrito, ItemCarrito
 from productos.models import Producto
 from ordenes.services.crear_orden_service import OrdenService
+from .utils import total_items_carrito
 
 
 @login_required
@@ -20,13 +20,20 @@ def obtener_carrito_usuario(request):
     return carrito
 
 
+@login_required
+def ver_carrito(request):
+    carrito, creado = obtener_carrito_usuario(request)
+
+    return render(request, "carrito/VerCarrito.html", {"carrito": carrito})
+
+
 @require_http_methods(["POST"])
 @login_required
-def agregar_item_carrito_api(request):
+def actualizar_item_carrito_api(request):
     try:
         data = json.loads(request.body)
         producto_id = data.get('producto_id')
-        cantidad = data.get('cantidad')
+        cantidad = int(data.get('cantidad', 0))
 
         if not producto_id or cantidad is None:
             return JsonResponse({"status": "error", "message": "Datos de producto o cantidad faltantes."}, status=400)
@@ -37,11 +44,17 @@ def agregar_item_carrito_api(request):
 
         # Intenta obtener el ítem
         item = ItemCarrito.objects.filter(carrito=carrito, producto=producto).first()
-        
+
+        mensaje = ""
+
         # Para eliminar desde "Disminuir cantidad"
-        if cantidad == 0 and item:
-            item.delete()
-            mensaje = "Producto eliminado del carrito."
+        if cantidad == 0:
+            if item:
+                item.delete()
+                mensaje = "Producto eliminado del carrito."
+
+            else:
+                mensaje = "El producto no estaba en el carrito"
 
         # Añade o actualiza productos al carrito
         elif cantidad > 0:
@@ -60,13 +73,14 @@ def agregar_item_carrito_api(request):
                 )
                 mensaje = "Producto agregado al carrito."
 
-        # Recalcula el total para actualizar el contador global
-        total_items_carrito = ItemCarrito.objects.filter(carrito=carrito).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+        # Recalcula el total de productos únicos DESPUÉS de cualquier operación.
+        nuevo_total = total_items_carrito(carrito)
 
+        # Devuelve la respuesta JSON
         return JsonResponse({
-            "status": "ok", 
+            "status": "ok",
             "message": mensaje,
-            "total_items_carrito": total_items_carrito
+            "nuevo_total_productos": nuevo_total
         }, status=200)
 
     except json.JSONDecodeError:
@@ -76,13 +90,6 @@ def agregar_item_carrito_api(request):
     except Exception as e:
         print(f"Error fatal en la API de carrito: {e}")
         return JsonResponse({"status": "error", "message": f"Error interno del servidor: {e}"}, status=500)
-
-
-@login_required
-def ver_carrito(request):
-    carrito, creado = obtener_carrito_usuario(request)
-
-    return render(request, "carrito/VerCarrito.html", {"carrito": carrito})
 
 
 @login_required
@@ -118,23 +125,25 @@ def eliminar_item_carrito_api(request, producto_id):
     carrito, creado = obtener_carrito_usuario(request)
     item = carrito.items.filter(producto_id=producto_id).first()
 
-    if item:
-        # Aquí eliminamos el ítem
-        item.delete()
-        
-        # Opcional: Recalcular el total de ítems en el carrito
-        total_items_carrito = carrito.items.aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+    try:
+        if item:
+            # Eliminar el ítem del carrito
+            item.delete()
 
-        return JsonResponse({
-            "status": "ok", 
-            "message": "Producto eliminado.",
-            "total_items_carrito": total_items_carrito
-        }, status=200)
+            # Llamar a la función encargada de calcular los items para el badge
+            nuevo_total = total_items_carrito(carrito)
 
-    return JsonResponse({
-        "status": "error", 
-        "message": "Producto no encontrado en el carrito."
-    }, status=404)
+            return JsonResponse({
+                "status": "ok", 
+                "message": "Producto eliminado.",
+                "nuevo_total_productos": nuevo_total
+            }, status=200)
+
+    except Producto.DoesNotExist:
+        return JsonResponse({"status": "error", "message": "El producto no existe."}, status=404)
+    except Exception as e:
+        print(f"Error fatal en la API de carrito: {e}")
+        return JsonResponse({"status": "error", "message": f"Error interno del servidor: {e}"}, status=500)
 
 
 @login_required
@@ -157,7 +166,7 @@ def finalizar_carrito(request):
 
     items = [(item.producto, item.cantidad) for item in carrito.items.select_related('producto')]
     orden_service = OrdenService()
-    orden_service.crear_orden(request.user, items)
+
 
     # Limpiar carrito
     carrito.items.all().delete()

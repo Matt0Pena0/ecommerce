@@ -27,7 +27,7 @@
 // // Place variable overrides first, then import just the styles you need. Note that some stylesheets are required no matter what.
 
 
-$font-size-base-desktop: 16px;
+$font-size-base-desktop: 14px;
 $font-size-base-tablet: 12px;
 $font-size-base-mobile: 10px;
 
@@ -60,7 +60,7 @@ $enable-shadows: true;
 // @import "bootstrap/scss/_functions";
 
 // Customize some defaults
-$body-color: #333;
+$body-color: #d3c5c5;
 $body-bg: #fff;
 $border-radius: .4rem;
 $success: #7952b3;
