@@ -31,19 +31,20 @@
         {% if request.user.is_authenticated %}
         <!-- Productos -->
         <li class="nav-item mx-2">
-          <a class="nav-link" href="{% url 'productos-listar' %}">
+          <a class="nav-link" href="{% url 'productos:listar' %}">
             <i class="bi bi-box-seam me-1"></i> Productos
           </a>
         </li>
 
         <!-- Carrito -->
         <li class="nav-item mx-2">
-          <a class="nav-link position-relative" href="{% url 'carrito-listar' %}">
+          <a class="nav-link position-relative" href="{% url 'carrito:ver_carrito' %}">
             <i class="bi bi-cart me-1"></i> Carrito
             
-            <span class="d-none badge rounded-pill bg-success position-absolute top-10 start-100 translate-middle"
+            <span class="badge rounded-pill bg-success position-absolute top-10 start-100 translate-middle"
                   id="carrito-total-items" 
                   style="font-size: 0.75em; padding: 0.35em 0.55em;">
+              {{ total_items_carrito|default:0 }} 
             </span>
           </a>
         </li>

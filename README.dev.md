@@ -2,7 +2,6 @@
 
 ### EN EL SERVIDOR SIEMPRE PULL ###
 
-```bash
 docker compose -f docker-compose.yml up --build
 
 docker compose -f docker-compose.yml exec web python manage.py runscript productos.scripts.load_data 
