@@ -1,4 +1,38 @@
 import { showToast } from './toast.js';
+// Dentro de tu DOMContentLoaded
+const cargarProductos = async () => {
+    const container = document.getElementById('productos-container');
+    
+    try {
+        const response = await fetch('/api/productos/');
+        const productos = await response.json();
+        
+        container.innerHTML = productos.map(p => `
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="${p.img}" class="card-img-top">
+                    <div class="card-body">
+                        <h5>${p.nombre}</h5>
+                        <p class="text-muted">${p.marca_nombre}</p>
+                        <p class="fw-bold">$${p.precio_unitario}</p>
+                        
+                        <form class="add-to-cart-form" data-id="${p.id}">
+                            <input type="hidden" name="quantity" value="0">
+                            <div class="action-wrapper">
+                                ${renderAddButton()}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+    } catch (error) {
+        console.error("Error cargando productos:", error);
+    }
+};
+
+cargarProductos();
 
 document.addEventListener('DOMContentLoaded', function() {
     // URL principal para agregar/actualizar/eliminar del carrito.
@@ -299,3 +333,69 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
+
+// --- Lógica de Carga de Productos vía API ---
+
+const fetchAndRenderProducts = async () => {
+    const container = document.getElementById('productos-container');
+    const urlApi = container.dataset.urlProductos;
+    const isSuperuser = container.dataset.isSuperuser === 'true';
+
+    try {
+        // 1. Pedimos los datos al nuevo endpoint de DRF
+        const response = await fetch(urlApi);
+        const productos = await response.json();
+
+        // 2. Limpiamos el spinner
+        container.innerHTML = '';
+
+        // 3. Mapeamos los productos al HTML
+        productos.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'col g-1 g-sm-1 g-md-2 g-xl-4';
+            
+            // Reutilizamos la lógica que ya tenías pero con datos del JSON
+            card.innerHTML = `
+                <div class="card d-flex flex-column shadow-sm p-1 p-md-2 m-0" style="height: 300px;">
+                    <div class="d-flex justify-content-center align-items-start" style="height: 80px;">
+                        <img src="${p.img || '/static/img/producto.png'}" 
+                             class="card-img-top w-auto img-fluid" 
+                             style="max-height: 80px;">
+                    </div>
+                    <div class="card-body d-flex flex-column px-2 pt-1 pb-0">
+                        <div class="my-0" style="min-height: 6em;">
+                            <p class="card-title my-0 text-truncate-2">${p.nombre}</p>
+                            <small class="text-muted">${p.marca_nombre} - ${p.categoria_nombre}</small>
+                        </div>
+                        <div class="mx-auto mt-2" style="height: 1.5em;">
+                            <span class="fw-bold">$${p.precio_unitario}</span>
+                        </div>
+                        
+                        <form class="add-to-cart-form d-flex flex-column m-0 align-items-center"
+                              data-id="${p.id}">
+                            <input type="hidden" name="quantity" value="0">
+                            <div class="action-wrapper w-100 d-flex flex-column align-items-center">
+                                </div>
+                        </form>
+
+                        ${isSuperuser ? renderAdminControls(p.id) : ''}
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        container.innerHTML = '<p class="text-danger">Error al cargar el catálogo.</p>';
+    }
+};
+
+// Función auxiliar para los botones de admin que tenías
+const renderAdminControls = (id) => `
+    <div class="card-footer d-flex justify-content-between p-0 mt-2">
+        <a href="/productos/actualizar/${id}/" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-pencil-square"></i>
+        </a>
+    </div>
+`;

@@ -20,14 +20,12 @@ export const getCookie = (name) => {
     return cookieValue;
 };
 
-export const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
+// Wrapper simple para tus Toasts
+export const showMessage = (msg, type = 'success') => {
+    // Asumiendo que showToast es global o importado de otro lado
+    if (window.showToast) {
+        window.showToast(msg, type);
+    } else {
+        console.log(`[${type.toUpperCase()}]: ${msg}`);
+    }
 };

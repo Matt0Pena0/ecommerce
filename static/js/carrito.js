@@ -1,6 +1,6 @@
 import { ApiService } from './modules/api.js';
 import { UIRenderer } from './modules/ui.js';
-import { showMessage } from './toast.js';
+import { showMessage } from './modules/utils.js';
 
 
 const CartApp = {
@@ -27,8 +27,12 @@ const CartApp = {
             this.container.innerHTML = data.items.map(item => UIRenderer.getCartRowHTML(item)).join('');
             
             // Actualizamos el total general
-            document.dispatchEvent(new Event('cart:updated'));
+            document.getElementById('cart-total-price').textContent = `$${data.total_dinero}`;
             document.getElementById('cart-summary').classList.remove('d-none');
+            
+            // Sincronizamos el badge del navbar
+            const counter = document.getElementById('carrito-total-items');
+            if (counter) counter.textContent = data.total_unidades;
 
         } catch (error) {
             console.error(error);
@@ -86,12 +90,13 @@ const CartApp = {
 
             // CASO 2: Eliminar directamente
             if (btnEliminar) {
-                // if (confirm('¿Eliminar este producto?')) {}
-                try {
-                    await ApiService.eliminarDelCarrito(productoId);
-                    await this.renderCart();
-                } catch (error) {
-                    showMessage(error.message, 'error');
+                if (confirm('¿Eliminar este producto?')) {
+                    try {
+                        await ApiService.eliminarDelCarrito(productoId);
+                        await this.renderCart();
+                    } catch (error) {
+                        showMessage(error.message, 'error');
+                    }
                 }
             }
         });

@@ -4,7 +4,9 @@
 django-debug-toolbar==4.4.2
 
 # Test y utilidades
-pytest==8.2.1
+locust==2.43.1
+
+pytest==9.0
 pytest-django==4.8.0
 black==25.1.0
 isort==5.13.2

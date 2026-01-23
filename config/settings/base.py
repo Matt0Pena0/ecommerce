@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     # Apps externas comunes
     "import_export",
     "django_extensions",
+    "rest_framework",
     "accounts",
     "core",
     "productos",

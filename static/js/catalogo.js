@@ -1,8 +1,8 @@
+import { CONFIG } from './modules/utils.js';
 import { ApiService } from './modules/api.js';
 import { UIRenderer } from './modules/ui.js';
-import { CONFIG, debounce } from './modules/utils.js';
-import { showMessage } from './toast.js';
-import { initDeleteModal, initProductModal } from './modules/admin.js';
+import { showMessage } from './modules/utils.js';
+import { initDeleteModal } from './modules/admin.js';
 
 
 const App = {
@@ -15,22 +15,26 @@ const App = {
     async init() {
         if (!this.container) return;
 
+        // 1. Carga paralela de Metadata y Estado
         try {
             const [metadata, carritoStatus] = await Promise.all([
                 ApiService.getMetadata(),
                 ApiService.getCarritoStatus()
             ]);
-        
+
             this.state.carrito = carritoStatus.items_dict || {};
-        
+            
+            // 2. Pintar Filtros y Navbar
             UIRenderer.populateSelect('filter-marca', metadata.marcas, '-- Marca --');
             UIRenderer.populateSelect('filter-categoria', metadata.categorias, '-- Categoría --');
             UIRenderer.populateSelect('filter-gondola', metadata.gondolas, '-- Góndola --');
+            
+            const counter = document.getElementById('carrito-total-items');
+            if(counter) counter.textContent = carritoStatus.total_items;
 
-            // --- NOTA: Orden de encendido de motores ---
-            this.bindEvents();        // Activa Steppers
-            this.bindFilterEvents();  // Activa Sidebar
-            this.loadCatalog();       // Carga inicial de productos
+            // 3. Cargar catálogo
+            this.loadCatalog();
+            this.bindEvents();
 
         } catch (error) {
             console.error("Error inicializando app:", error);
@@ -38,77 +42,59 @@ const App = {
         }
 
         if (CONFIG.isSuperuser) {
-            initProductModal();
             initDeleteModal();
         }
     },
 
     async loadCatalog(filtros = '') {
         this.container.innerHTML = '<div class="col-12 text-center mt-5"><div class="spinner-border text-primary"></div></div>';
-
         try {
-        const data = await ApiService.getProductos(filtros);
-        
-        // NOTA: Si hay paginación, los productos están en data.results
-        const listaProductos = data.results || data; 
-
-        if (listaProductos.length === 0) {
-            this.container.innerHTML = '<div class="position-absolute top-25 start-50 translate-middle text-center mt-5">No se encontraron productos.</div>';
-            return;
-        }
-
-        this.container.innerHTML = listaProductos.map(p => {
-            const qty = this.state.carrito[p.id] || 0;
-            return UIRenderer.getProductCardHTML(p, qty);
-        }).join('');
-
+            const productos = await ApiService.getProductos(filtros);
+            this.container.innerHTML = productos.map(p => {
+                const qty = this.state.carrito[p.id] || 0;
+                return UIRenderer.getProductCardHTML(p, qty);
+            }).join('');
         } catch (error) {
             this.container.innerHTML = '<p class="text-danger">Error cargando productos.</p>';
         }
     },
 
-    bindFilterEvents() {
-        const inputs = document.querySelectorAll('.filter-input');
-        
-        const applyFilters = () => {
-            const params = new URLSearchParams();
-            const q = document.getElementById('filter-q')?.value;
-            const codigo = document.getElementById('filter-codigo')?.value;
-            const marca = document.getElementById('filter-marca')?.value;
-            const cat = document.getElementById('filter-categoria')?.value;
-            const gondola = document.getElementById('filter-gondola')?.value;
-            const stock = document.getElementById('filter-stock')?.value;
-            const order = document.getElementById('filter-order')?.value;
+    async handleCartAction(form, nuevaCantidad, btnElement) {
+        const productoId = form.dataset.id;
+        const originalQty = parseInt(form.querySelector('input[name="quantity"]').value);
 
-            if (q) params.append('search', q);
-            if (codigo) params.append('codigo', codigo);
-            if (marca) params.append('marca', marca);
-            if (cat) params.append('categoria', cat);
-            if (gondola) params.append('gondola', gondola);
-            if (stock) params.append('stock_status', stock);
-            if (order) params.append('ordering', order);
+        if (btnElement) {
+            const originalContent = btnElement.innerHTML;
+            btnElement.disabled = true;
+            btnElement.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+            
+            try {
+                const data = await ApiService.updateCarrito(productoId, nuevaCantidad);
+                
+                // Actualizar estado local
+                this.state.carrito[productoId] = nuevaCantidad;
+                if(nuevaCantidad === 0) delete this.state.carrito[productoId];
 
-            this.loadCatalog(`?${params.toString()}`);
-        };
-
-        const debouncedApply = debounce(applyFilters, 400);
-
-        inputs.forEach(input => {
-            if (input.tagName === 'SELECT') {
-                input.addEventListener('change', applyFilters);
-            } else {
-                input.addEventListener('input', debouncedApply);
+                // Actualizar UI
+                showMessage(data.message, 'success');
+                UIRenderer.updateCardState(form, nuevaCantidad);
+                
+                const counter = document.getElementById('carrito-total-items');
+                if (counter && data.nuevo_total_productos !== undefined) {
+                    counter.textContent = data.nuevo_total_productos;
+                }
+            } catch (error) {
+                showMessage(error.message, 'error');
+                UIRenderer.updateCardState(form, originalQty);
+            } finally {
+                btnElement.disabled = false;
+                btnElement.innerHTML = originalContent;
             }
-        });
-
-        document.getElementById('btn-clean-filters')?.addEventListener('click', () => {
-            inputs.forEach(i => i.value = '');
-            applyFilters();
-        });
+        }
     },
 
     bindEvents() {
-        // Event Delegation para Steppers (Usa burbujeo de eventos)
+        // Event Delegation para Steppers
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.stepper-incr, .stepper-decr');
             if (!btn) return;
@@ -124,34 +110,29 @@ const App = {
 
             this.handleCartAction(form, newQty, btn);
         });
+
+        // Listeners para Filtros
+        ['filter-categoria', 'filter-marca', 'filter-gondola'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.addEventListener('change', () => this.aplicarFiltros());
+            }
+        });
     },
 
-    async handleCartAction(form, nuevaCantidad, btnElement) {
-        const productoId = form.dataset.id;
-        const originalQty = parseInt(form.querySelector('input[name="quantity"]').value);
+    aplicarFiltros() {
+        const params = new URLSearchParams();
+        const cat = document.getElementById('filter-categoria')?.value;
+        const marca = document.getElementById('filter-marca')?.value;
+        const gondola = document.getElementById('filter-gondola')?.value;
 
-        const originalContent = btnElement.innerHTML;
-        btnElement.disabled = true;
-        btnElement.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+        if (cat) params.append('categoria', cat);
+        if (marca) params.append('marca', marca);
+        if (gondola) params.append('gondola', gondola);
         
-        try {
-            const data = await ApiService.updateCarrito(productoId, nuevaCantidad);
-            
-            this.state.carrito[productoId] = nuevaCantidad;
-            if(nuevaCantidad === 0) delete this.state.carrito[productoId];
+        // También podrías agregar ordenamiento aquí
 
-            showMessage(data.message, 'success');
-            UIRenderer.updateCardState(form, nuevaCantidad);
-            
-            document.dispatchEvent(new Event('cart:updated'));
-
-        } catch (error) {
-            showMessage(error.message, 'error');
-            UIRenderer.updateCardState(form, originalQty);
-        } finally {
-            btnElement.disabled = false;
-            btnElement.innerHTML = originalContent;
-        }
+        this.loadCatalog(`?${params.toString()}`);
     }
 };
 

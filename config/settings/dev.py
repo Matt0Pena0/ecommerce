@@ -8,12 +8,12 @@ CSRF_TRUSTED_ORIGINS = [
     "https://da0a92a2e15b.ngrok-free.app",
 ]
 INSTALLED_APPS = [
-    "debug_toolbar",
+    # "debug_toolbar",
     "django.contrib.admindocs",
 ] + INSTALLED_APPS
 
 MIDDLEWARE += [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.admindocs.middleware.XViewMiddleware",
 ]
 
