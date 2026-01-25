@@ -1,34 +1,38 @@
-// static/js/modules/ui.js
 import { CONFIG } from './utils.js';
+
 
 export const UIRenderer = {
     populateSelect(selectId, data, placeholder) {
         const select = document.getElementById(selectId);
         if (!select) return;
         select.innerHTML = `<option value="">${placeholder}</option>` + 
-                           data.map(item => `<option value="${item.id}">${item.nombre}</option>`).join('');
+            data.map(item => `<option value="${item.id}">${item.nombre}</option>`).join('');
     },
 
     getControlsHTML(qty, maxStock) {
         const isInCart = qty > 0;
         
+        const isMobile = window.innerWidth < 768;
+
+        const btnSizeClass = isMobile ? 'btn-xs' : 'btn btn-sm';
+
         if (isInCart) {
             return `
                 <div class="btn-stepper d-flex align-items-center m-1" role="group">
-                    <button type="button" class="btn bg-primary-subtle btn-sm stepper-decr" ${qty <= 0 ? 'disabled' : ''}>
+                    <button type="button" class="${btnSizeClass} bg-primary-subtle stepper-decr" ${qty <= 0 ? 'disabled' : ''}>
                         <i class="bi bi-dash-square-fill"></i>
                     </button>
                     <div class="qty-display mx-2 text-center" data-min="0" data-max="${maxStock}">
                         <span class="fw-semibold">${qty}</span>
                     </div>
-                    <button type="button" class="btn bg-primary-subtle btn-sm stepper-incr" ${qty >= maxStock ? 'disabled' : ''}>
+                    <button type="button" class="${btnSizeClass} bg-primary-subtle stepper-incr" ${qty >= maxStock ? 'disabled' : ''}>
                         <i class="bi bi-plus-square-fill"></i>
                     </button>
                 </div>`;
         }
         return `
             <div class="btn-stepper d-flex align-items-center m-1" role="group">
-                <button type="button" class="btn btn-sm btn-primary stepper-incr">
+                <button type="button" class="${btnSizeClass} btn-primary stepper-incr">
                     <i class="bi bi-plus-square-fill"></i>
                 </button>
             </div>`;
@@ -39,14 +43,14 @@ export const UIRenderer = {
         
         return `
             <div class="col g-1 g-sm-1 g-md-2 g-xl-4">
-                <div class="card d-flex flex-column shadow-sm p-1 p-md-2 m-0" style="height: 300px;">
+                <div class="card d-flex flex-column shadow-sm p-1 p-md-2 m-0" >
                     <div class="d-flex justify-content-center align-items-start" style="height: 80px;">
                         <img src="${p.img || '/static/img/producto.png'}" class="card-img-top w-auto img-fluid" style="max-height: 80px; object-fit:contain;">
                     </div>
                     <div class="card-body d-flex flex-column px-2 pt-1 pb-0">
-                        <div class="my-0" style="min-height: 6em;">
+                        <div class="my-0" style="min-height: 4rem;">
                             <p class="card-title my-0 text-truncate-2" title="${p.nombre}">${p.nombre}</p>
-                            <small class="text-muted text-truncate-2">${p.marca_nombre || ''}</small>
+                            <p class="text-muted text-truncate-2">${p.marca_nombre || ''}</p>
                         </div>
                         <div class="align-items-center mx-auto mt-2" style="height: 1.5em;">
                             <span class="fw-bold">$${p.precio_unitario}</span>
@@ -59,7 +63,7 @@ export const UIRenderer = {
                             </div>
                         </form>
 
-                        ${CONFIG.isSuperuser ? this.getAdminControls(p.id) : ''}
+                        ${CONFIG.isSuperuser ? this.getAdminControls(p) : ''}
                     </div>
                 </div>
             </div>`;
@@ -71,9 +75,11 @@ export const UIRenderer = {
 
             return `
                 <div class="card-footer d-flex justify-content-between gap-2 p-0 mt-2">
-                    <a href="/productos/actualizar/${p.id}/" class="btn btn-outline-secondary btn-sm flex-grow-1">
-                        <i class="bi bi-pencil-square"></i> Editar
-                    </a>
+                    <button data-bs-toggle="modal" data-bs-target="#productModal" data-product-id="${p.id}"
+                            class="btn btn-outline-secondary btn-sm flex-grow-1">
+                        <i class="bi bi-pencil-square"></i>
+                        <span class="d-none d-md-inline">Editar</span>
+                    </button>
                     
                     <button type="button" 
                             class="btn btn-outline-danger btn-sm" 

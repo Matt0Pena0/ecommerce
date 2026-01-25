@@ -8,6 +8,13 @@ export const ApiService = {
         return await response.json();
     },
 
+    async getProducto(id) {
+        const response = await fetch(`${CONFIG.urlProductos}${id}`);
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        return await response.json();
+    },
+
+
     async getMetadata() {
         const response = await fetch('/api/productos/metadata/');
         return await response.json();

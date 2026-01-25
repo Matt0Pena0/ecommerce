@@ -18,10 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Use the Clipboard API to write the text
                 await navigator.clipboard.writeText(text);
                 
-                showToast('¡Texto copiado al portapapeles!');
+                showMessage('¡Texto copiado al portapapeles!');
             } catch (err) {
                 console.error('Error al copiar el texto:', err);
-                showToast('Error al copiar el texto. Inténtalo de nuevo.');
+                showMessage('Error al copiar el texto. Inténtalo de nuevo.');
             }
         });
     }

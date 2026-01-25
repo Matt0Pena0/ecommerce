@@ -73,6 +73,7 @@ pip-delete-this-directory.txt
 *.pot
 *.mo
 README.dev.md
+apuntes.dev.md
 data/*
 
 # === Bootstrap ===

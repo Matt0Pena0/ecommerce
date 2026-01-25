@@ -6,17 +6,19 @@ class Codigo(models.Model):
     Representa un código único asociado a un producto.
 
     Si no se define explícitamente, se asigna automáticamente el valor del `pk` como código.
+
+    Sirve con el objetivo de asignar o migrar codigos de sistemas ya existentes
     """
     codigo = models.CharField(max_length=20, unique=True, blank=True)
 
     def save(self, *args, **kwargs):
         is_new = self._state.adding
-        # Primera pasada: guardamos para obtener self.pk
+        # Primera pasada: guarda para obtener self.pk
         super().save(*args, **kwargs)
 
         # Si es nuevo y aún no se definio un código, le asigna = pk
         if is_new and not self.codigo:
-            # Usas el pk numérico como código, convertido a string
+            # Usa el pk numérico como código, convertido a string
             self.codigo = str(self.pk)
             # Actualiza sólo este campo
             super().save(update_fields=["codigo"])
@@ -86,4 +88,4 @@ class Producto(models.Model):
     creado = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
-        return f"{self.codigo} - {self.nombre}"
+        return f"{self.id} - {self.nombre}"

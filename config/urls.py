@@ -6,6 +6,8 @@ from rest_framework.routers import DefaultRouter
 
 from productos.api import ProductoViewSet
 from carrito.api import CarritoViewSet
+from carrito.views import CarritoListView
+from productos.view import ProductoListView
 
 
 router = DefaultRouter()
@@ -17,9 +19,11 @@ urlpatterns = [
 
     path("api/", include(router.urls)),
 
+    path("productos/listar/", ProductoListView.as_view(), name="productos-listar"),
+
+    path("carrito/listar/", CarritoListView.as_view(), name="carrito-listar"),
+
     path("accounts/", include("accounts.urls.urls_base", namespace="accounts")),
-    path("productos/", include("productos.urls", namespace="productos")),
-    path("carrito/", include("carrito.urls", namespace="carrito")),
     path("ordenes/", include("ordenes.urls", namespace="ordenes")),
     path("", include("core.urls", namespace="core")),
 

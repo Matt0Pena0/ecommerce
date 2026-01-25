@@ -1,28 +1,27 @@
 {% load static %}
-<div>
-  <script type="module">
-      import { showToast } from "{% static 'js/toast.js' %}" ;
+<script type="module">
+    import { showMessage } from "{% static 'js/toast.js' %}";
 
-      document.addEventListener('DOMContentLoaded', function () {
-          const copyButton = document.getElementById('copiar-txt-btn');
+    document.addEventListener('DOMContentLoaded', function () {
+        const copyButton = document.getElementById('copiar-txt-btn');
 
-          if (copyButton) {
-              copyButton.addEventListener('click', async () => {
-                  const url = copyButton.dataset.urlCopyOrden;
+        if (copyButton) {
+            copyButton.addEventListener('click', async () => {
+                const url = copyButton.dataset.urlCopyOrden;
 
-                  try {
-                      const response = await fetch(url);
-                      const text = await response.text();
+                try {
+                    const response = await fetch(url);
+                    const text = await response.text();
 
-                      await navigator.clipboard.writeText(text);
+                    await navigator.clipboard.writeText(text);
 
-                      showToast('¡Texto copiado al portapapeles!');
-                  } catch (err) {
-                      console.error('Error al copiar el texto:', err);
-                      showToast('Error al copiar el texto. Inténtalo de nuevo.');
-                  }
-              });
-          }
-      });
-  </script>
-</div>
+                    // Ahora sí usará la función real que crea el elemento visual
+                    showMessage('¡Texto copiado al portapapeles!', 'success');
+                } catch (err) {
+                    console.error('Error al copiar:', err);
+                    showMessage('Error al copiar el texto.', 'error');
+                }
+            });
+        }
+    });
+</script>

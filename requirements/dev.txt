@@ -3,9 +3,6 @@
 # Debug y herramientas de desarrollo
 django-debug-toolbar==4.4.2
 
-# Test y utilidades
-locust==2.43.1
-
 pytest==9.0
 pytest-django==4.8.0
 black==25.1.0
