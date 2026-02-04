@@ -1,0 +1,95 @@
+<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <div class="modal-header bg-body-tertiary border-bottom-0">
+        <h5 class="modal-title fw-bold" id="productModalLabel">
+          <i class="bi bi-box-seam me-2"></i><span id="modal-title-text">Nuevo Producto</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <form id="productForm" novalidate enctype="multipart/form-data">
+          <input type="hidden" id="prod-id">
+
+          <div class="row g-3">
+            <div class="col-md-8">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="prod-nombre" name="nombre" placeholder="Nombre" required>
+                <label for="prod-nombre">Nombre del Producto</label>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="prod-codigo" name="codigo_input" placeholder="Código">
+                <label for="prod-codigo">Código de Barras</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="prod-precio" name="precio_unitario" step="0.01" placeholder="0.00" required>
+                <label for="prod-precio">Precio Unitario</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="prod-stock" name="stock" placeholder="0" required>
+                <label for="prod-stock">Stock Actual</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="prod-marca" name="marca"><option value="">Seleccionar...</option></select>
+                <label for="prod-marca">Marca</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="prod-categoria" name="categoria"><option value="">Seleccionar...</option></select>
+                <label for="prod-categoria">Categoría</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="prod-gondola" name="gondola"><option value="">Seleccionar...</option></select>
+                <label for="prod-gondola">Góndola</label>
+              </div>
+            </div>
+             <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="prod-unidad-medida" name="unidad_medida"><option value="">Seleccionar...</option></select>
+                <label for="prod-unidad-medida">Unidad de Medida</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control" placeholder="Descripción" id="prod-descripcion" name="descripcion" style="height: 100px"></textarea>
+                <label for="prod-descripcion">Descripción (Opcional)</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+               <label class="form-label text-muted small">Imagen del producto</label>
+               <input class="form-control" type="file" id="prod-img" name="img">
+             </div>
+
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer border-top-0 pt-0 pe-4 pb-4">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="productForm" class="btn btn-primary px-4" id="btn-save-product">
+            <span class="spinner-border spinner-border-sm d-none me-2" role="status" aria-hidden="true"></span>
+            Guardar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

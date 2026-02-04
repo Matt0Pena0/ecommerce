@@ -20,8 +20,6 @@
 
 @use "bootstrap/scss/bootstrap" as *;
 
-@import "bootstrap/font/bootstrap-icons.css";
-
 // Option 2
 //
 // // Place variable overrides first, then import just the styles you need. Note that some stylesheets are required no matter what.
@@ -29,7 +27,6 @@
 
 $font-size-base-desktop: 14px;
 $font-size-base-tablet: 12px;
-$font-size-base-mobile: 10px;
 
 // Aplicar tamaño de fuente base
 body {
@@ -44,11 +41,11 @@ body {
 }
 
 // Aplicar tamaño de fuente base para móviles
-@media (max-width: 767.98px) {
-  body {
-    font-size: $font-size-base-mobile;
-  }
-}
+// @media (max-width: 767.98px) {
+//   body {
+//     font-size: $font-size-base-mobile;
+//   }
+// }
 
 
 // Toggle global options
@@ -64,6 +61,15 @@ $body-color: #d3c5c5;
 $body-bg: #fff;
 $border-radius: .4rem;
 $success: #7952b3;
+
+
+.btn-xs {
+  @extend .btn;
+  --bs-btn-padding-y: 0.15rem;
+  --bs-btn-padding-x: 0.4rem;
+  --bs-btn-font-size: 0.75rem;
+  --bs-btn-border-radius: var(--bs-border-radius-sm);
+}
 
 // Required
 // @import "bootstrap/scss/_variables";

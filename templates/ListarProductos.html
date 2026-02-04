@@ -1,0 +1,56 @@
+{% extends "LayoutBase.html" %}
+{% load static %}
+
+{% block page_title %}Catálogo de Productos (API Optimized){% endblock %}
+
+{% block head %}{% endblock head %}
+
+{% block page_content %}
+
+  <div class="col g-1 g-sm-1 g-md-2 g-xl-4">
+
+    <div class="d-inline-flex flex-column gap-2 p-1 border border-secondary-subtle rounded shadow-sm mb-4">
+
+        <button class="btn btn-sm btn-primary d-flex align-items-center gap-2 w-100" 
+                type="button" 
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasFilters">
+            <i class="bi bi-menu-button-wide-fill me-1 fs-5 d-flex"></i>
+            <span class="d-none d-md-inline">Filtrar</span>
+        </button>
+
+        {% if request.user.is_superuser %}
+        <button data-bs-toggle="modal" data-bs-target="#productModal"
+        class="btn btn-sm btn-primary d-flex align-items-center gap-2 w-100"
+        >
+          <i class="bi bi-plus-lg me-1 fs-5 d-flex"></i>
+          <span class="d-none d-md-inline">Nuevo Producto</span>
+        </button>
+        {% endif %}
+
+    </div>
+
+    <div id="productos-container" 
+      class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-lg-6"
+      data-url-productos="/api/productos/"
+      data-is-superuser="{{ request.user.is_superuser|yesno:'true,false' }}">
+
+      <div class="col-12 text-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando catálogo...</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  {% include '_includes/_filters.html' %}
+  {% include '_includes/_producto_modal.html' %}
+  {% include "EliminarProducto.html" %}
+
+  {% block extra_scripts %}
+    <script type="module" src="{% static 'js/catalogo.js' %}" defer></script>
+  {% endblock extra_scripts %}
+
+{% endblock %}
