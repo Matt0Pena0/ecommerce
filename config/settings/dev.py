@@ -2,10 +2,10 @@ from decouple import config
 
 from .base import *
 
-ALLOWED_HOSTS = ["https://96a554e1c27e.ngrok-free.app", '.ngrok-free.app',"localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["https://c1d2-2800-a4-1f04-4100-ba0d-b70-5e86-47b4.ngrok-free.app", '.ngrok-free.app',"localhost", "127.0.0.1", "0.0.0.0"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://96a554e1c27e.ngrok-free.app",
+    "https://c1d2-2800-a4-1f04-4100-ba0d-b70-5e86-47b4.ngrok-free.app",
 ]
 INSTALLED_APPS = [
     # "debug_toolbar",

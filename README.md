@@ -1,4 +1,80 @@
-# Plataforma E-Commerce con Django y Docker
+# Migración a Django Rest Framework 0.2v
+## Optimización de Rendimiento (14s ➔ 50ms)
+
+Este proyecto documenta la migración de un E-commerce monolítico (Django MVT) a una API RESTful usando Django Rest Framework (DRF), logrando una reducción de latencia del **99.6%** bajo estrés.
+
+## 📊 Resumen
+
+Al enfrentarme a un cuello de botella crítico donde la renderización de templates en el servidor sumado algunas consultas SQL ineficientes (N+1) hacían que el sistema fuera demasiado lento, no permitiendo lograr una experiencia de usuario adecuada.
+
+| KPI (Key Performance Indicator) | Arquitectura Legacy (MVT) | Arquitectura Nueva (SPA) | Factor de Mejora |
+| :--- | :---: | :---: | :---: |
+| **Tiempo de Respuesta Promedio** | ~5,000 ms (5 seg) | **14 ms (0.01 seg)** | **⚡ 357x Más Rápido** |
+| **Tiempo de Respuesta Máximo** | ~19,500 ms (20 seg) | **277 ms (0.3 seg)** | **⚡ 70x Más Rápido** |
+| **Transacciones por Segundo (RPS)** | < 12 RPS (Inestable) | **> 51 RPS (Estable)** | **🚀 4x Capacidad** |
+| **Tamaño Promedio de Respuesta** | 32 Kb (HTML Completo) | 16 Kb (JSON Data) | **📉 50% Menos Tráfico** |
+| **Carga de CPU Servidor** | Crítica (Renderizado HTML) | Baja (Solo JSON) | **Eficiencia** |
+
+> **Nota:** Datos obtenidos mediante pruebas de carga con [Locust](https://locust.io/) simulando 100 usuarios concurrentes interactuando en la app.
+
+---
+
+## 📉 El Problema (Pre-Migración)
+La arquitectura original acoplaba la lógica de negocio con la presentación. Cada interacción simple (como "Agregar al carrito") obligaba al servidor a:
+1. Recalcular todo el carrito.
+2. Renderizar el HTML completo de la página.
+3. Enviar una respuesta pesada al cliente.
+
+**Evidencia (Locust Report - Pre Migración):**  
+![alt text](pruebas_estres/reports/pre_migracion.png)  
+*Se observa cómo la latencia se dispara a +10,000ms apenas aumenta la carga.*  
+
+---
+
+## 📈 La Solución (Post-Migración)
+Refactorización completa hacia una **API RESTful** con Django Rest Framework y un Frontend reactivo en Vanilla JS.
+
+### Cambios Arquitectónicos Clave:
+1.  **Desacoplamiento:** El Backend ahora solo sirve datos (JSON), delegando el renderizado al navegador del cliente.
+2.  **Optimización SQL:** Implementación estricta de `select_related` y `prefetch_related` en los ViewSets para eliminar el problema de consultas N+1.
+3.  **Estado Optimista:** El frontend actualiza la UI instantáneamente mientras la API confirma en segundo plano.
+
+**Evidencia (Locust Report - Post Migración):**  
+![alt text](pruebas_estres/reports/post_migracion.png)  
+*La latencia se mantiene plana y constante en ~50ms incluso con la misma carga de usuarios.*  
+
+---
+
+## 🛠 Metodología de Prueba
+Para garantizar la veracidad de los datos, se utilizó el mismo escenario de prueba en ambos entornos:
+
+* **Herramienta:** Locust.io
+* **Usuarios Concurrentes:** 100
+* **Tasa de Creación (Spawn Rate):** 1 usuarios/segundo
+* **Escenario:**
+    1.  Login de usuario - Paso necesario y que demuestra que no era el problema (No fue migrado).
+    2.  Navegación por catálogo (Listar productos) 
+    3.  Agregar item al carrito (Acción de escritura crítica)
+    4.  Checkout  
+
+### Comparativa Detallada de Endpoints (Percentil 95%)
+
+| Acción del Usuario | Endpoint Legacy | Tiempo (ms) | Endpoint API | Tiempo (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Agregar al Carrito** | `POST /carrito/agregar` | `14,000` | `POST /api/carrito/` | **`51`** |
+| **Ver Catálogo** | `GET /productos` | `14,000` | `GET /api/productos/` | **`25`** |
+| **Checkout** | `GET /carrito/finalizar` | `14,000` | `GET /carrito/finalizar` | **`24`** |
+
+---
+
+## 🏁 Conclusión
+La migración no solo mejoró la experiencia de usuario eliminando los tiempos de espera, sino que redujo drásticamente los costos operativos requeridos para escalar, ya que el servidor ahora procesa peticiones en milisegundos en lugar de segundos.
+
+
+---
+---
+
+# Plataforma E-Commerce con Django y Docker 0.1v
 
 > Una plataforma de e-commerce full-stack desplegada en un entorno de producción contenerizado, intentando seguir las mejores prácticas de DevOps.
 

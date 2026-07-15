@@ -1,7 +1,7 @@
 services:
   db:
     image: mysql:8.0
-    container_name: ecommerce_db_prod
+    container_name: ecommerce-db
     restart: unless-stopped
     env_file:
       - .env
@@ -15,7 +15,7 @@ services:
 
   web:
     build: .
-    container_name: ecommerce_web_prod
+    container_name: ecommerce-web
     restart: unless-stopped
     env_file:
       - .env
