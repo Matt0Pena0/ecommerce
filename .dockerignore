@@ -1,20 +1,57 @@
+# === Control de versiones ===
+.git/
+.gitignore
+
+# === Python ===
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
 *.sqlite3
 *.log
-*.env
-.env*
-asdmedia/
-staticfiles/
-node_modules/
+
+# === Entornos virtuales ===
 .venv/
 venv/
+env/
+ENV/
+
+# === Secretos / entorno (nunca en la imagen) ===
+.env
+.env.*
+
+# === Node (se reinstala en la etapa builder) ===
+node_modules/
+
+# === Artefactos generados (se regeneran en build/entrypoint) ===
+staticfiles/
+static/css/dist/
+# NOTA: mediafiles/ NO se excluye. Se monta como bind mount y contiene las
+# imágenes semilla versionadas (productos/producto.png, default del ImageField).
+
+
+# === Datos persistentes de MySQL (viven en volumen, no en la imagen) ===
+# NOTA: se excluye solo el directorio de datos de MySQL. Los fixtures
+# versionados (data/backup.json, data/data.json) SÍ entran en la imagen
+# para poder ejecutar `manage.py loaddata data/backup.json`.
+data/mysql/
+
+# === IDE / editor ===
 .idea/
 .vscode/
-*.png
-*.jpg
-*.jpeg
-*.svg
+
+# === SDD / documentación de desarrollo ===
+.agents/
+.config/
+.context/
+.specs/
 README.dev.md
+apuntes.dev.md
+
+# === Tests / coverage ===
+.pytest_cache/
+.coverage
+htmlcov/
+
+# === NOTA: pruebas_estres/ se incluye DELIBERADAMENTE ===
+# Contiene el locustfile y los reportes comparativos pre/post migración a DRF
+# (evidencia del hito v2, referenciada desde el README). No excluir.

@@ -1,0 +1,155 @@
+name: Deploy
+
+# ==============================================================================
+# Despliegue continuo al VPS (Ecommerce)
+# ==============================================================================
+# El workflow es AUTOSUFICIENTE e IDEMPOTENTE: hace el bootstrap del proyecto en
+# el VPS si no existe (clone, red docker) y despliega. No requiere pasos manuales
+# de git en el servidor.
+#
+# ÚNICO paso manual previo (una sola vez): crear /opt/ecommerce/.env.prod con los
+# secretos. No puede automatizarse desde el repo porque contiene credenciales.
+# Alternativamente puede inyectarse desde un secret (ver ENV_PROD más abajo).
+#
+# Secrets requeridos (Settings -> Secrets and variables -> Actions):
+#   VPS_HOST          IP o host del VPS
+#   VPS_USER          usuario SSH de despliegue
+#   VPS_SSH_KEY       clave privada SSH
+#   VPS_PROJECT_PATH  ruta del proyecto (ej: /opt/ecommerce)
+#   VPS_SSH_PORT      (opcional) puerto SSH, por defecto 22
+#   ENV_PROD          (opcional) contenido completo de .env.prod; si se define,
+#                     el workflow lo escribe en el servidor en cada deploy
+# ==============================================================================
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      load_fixtures:
+        description: "Cargar data/backup.json (SOLO primer deploy: sobrescribe datos)"
+        type: boolean
+        default: false
+      run_migrations_only:
+        description: "Solo aplicar migraciones, sin rebuild"
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy al VPS
+    runs-on: ubuntu-latest
+    if: github.repository == 'Matt0Pena0/ecommerce'
+
+    steps:
+      - name: Desplegar por SSH
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          REPO_URL: https://github.com/${{ github.repository }}.git
+          PROJECT_PATH: ${{ secrets.VPS_PROJECT_PATH }}
+          ENV_PROD: ${{ secrets.ENV_PROD }}
+          LOAD_FIXTURES: ${{ inputs.load_fixtures }}
+          MIGRATIONS_ONLY: ${{ inputs.run_migrations_only }}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT || 22 }}
+          envs: REPO_URL,PROJECT_PATH,ENV_PROD,LOAD_FIXTURES,MIGRATIONS_ONLY
+          script: |
+            set -e
+
+            # ---------------------------------------------------------------
+            # 1. Bootstrap: red compartida del gateway
+            # ---------------------------------------------------------------
+            if ! docker network inspect proxy-network >/dev/null 2>&1; then
+              echo "==> Creando red proxy-network"
+              docker network create proxy-network
+            else
+              echo "==> Red proxy-network ya existe"
+            fi
+
+            # ---------------------------------------------------------------
+            # 2. Bootstrap: código fuente (clone la primera vez, luego sync)
+            # ---------------------------------------------------------------
+            if [ ! -d "$PROJECT_PATH/.git" ]; then
+              echo "==> Primer despliegue: clonando repositorio"
+              mkdir -p "$PROJECT_PATH"
+              git clone "$REPO_URL" "$PROJECT_PATH"
+              cd "$PROJECT_PATH"
+            else
+              echo "==> Sincronizando con origin/main"
+              cd "$PROJECT_PATH"
+              git fetch --all
+              git reset --hard origin/main
+            fi
+
+            # ---------------------------------------------------------------
+            # 3. Archivo de entorno
+            # ---------------------------------------------------------------
+            if [ -n "$ENV_PROD" ]; then
+              echo "==> Escribiendo .env.prod desde el secret ENV_PROD"
+              printf '%s\n' "$ENV_PROD" > .env.prod
+              chmod 600 .env.prod
+            fi
+
+            if [ ! -f .env.prod ]; then
+              echo "ERROR: no existe $PROJECT_PATH/.env.prod" >&2
+              echo "Créalo en el servidor (ver .env.example, bloque B) o define el secret ENV_PROD." >&2
+              exit 1
+            fi
+
+            # ---------------------------------------------------------------
+            # 4. Permisos del bind mount de media (contenedor corre como uid 1000)
+            # ---------------------------------------------------------------
+            mkdir -p mediafiles data/mysql
+            if [ "$(stat -c '%u' mediafiles)" != "1000" ]; then
+              echo "==> Ajustando propiedad de mediafiles a uid 1000"
+              sudo chown -R 1000:1000 mediafiles || chown -R 1000:1000 mediafiles || true
+            fi
+
+            # ---------------------------------------------------------------
+            # 5. Despliegue
+            # ---------------------------------------------------------------
+            if [ "$MIGRATIONS_ONLY" = "true" ]; then
+              echo "==> Solo migraciones (sin rebuild)"
+              docker compose exec -T web python manage.py migrate --noinput
+            else
+              echo "==> Reconstruyendo y levantando servicios"
+              docker compose up --build -d
+
+              # migrate y collectstatic los ejecuta docker/entrypoint.sh al arrancar.
+              # No se invoca `exec migrate` aquí: el contenedor puede estar aún
+              # esperando a MySQL y competiría con el propio entrypoint.
+              echo "==> Esperando a que el servicio web esté en ejecución"
+              for i in $(seq 1 45); do
+                cid="$(docker compose ps -q web)"
+                if [ -n "$cid" ] && [ "$(docker inspect -f '{{.State.Running}}' "$cid")" = "true" ]; then
+                  echo "web en ejecución"; break
+                fi
+                if [ "$i" -eq 45 ]; then
+                  echo "ERROR: web no arrancó. Logs:" >&2
+                  docker compose logs --tail=80 web >&2
+                  exit 1
+                fi
+                sleep 2
+              done
+            fi
+
+            # ---------------------------------------------------------------
+            # 6. Carga inicial de datos (opt-in, solo primer deploy)
+            # ---------------------------------------------------------------
+            if [ "$LOAD_FIXTURES" = "true" ]; then
+              echo "==> Cargando data/backup.json"
+              docker compose exec -T web python manage.py loaddata data/backup.json
+            fi
+
+            # ---------------------------------------------------------------
+            # 7. Limpieza y estado
+            # ---------------------------------------------------------------
+            docker image prune -f
+            docker compose ps

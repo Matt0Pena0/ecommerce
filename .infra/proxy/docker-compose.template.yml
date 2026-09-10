@@ -1,0 +1,49 @@
+# ==============================================================================
+# Gateway Central — Nginx Proxy Manager
+# ==============================================================================
+# Ubicación en servidor: /opt/proxy/docker-compose.yml
+#
+# Este servicio es el ÚNICO punto de entrada público de la VPS.
+# Rutea tráfico por subdominio hacia el nginx interno de cada proyecto.
+# Gestiona SSL/TLS con certificados automáticos.
+#
+# SETUP INICIAL (una sola vez por VPS):
+#   1. Crear la red externa: docker network create proxy-network
+#   2. Copiar este archivo a /opt/proxy/docker-compose.yml
+#   3. Ejecutar: docker compose up -d
+#   4. Acceder al panel de administración: http://servidor:81
+# ==============================================================================
+
+services:
+  proxy:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"                     # HTTP público
+      - "443:443"                   # HTTPS público
+      - "81:81"  # Panel de administración
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true
+
+# ==============================================================================
+# Configuración de Ruteo (en el panel del gateway)
+# ==============================================================================
+# Para cada proyecto, crear un Proxy Host con:
+#
+# | Campo          | Valor                                    |
+# |----------------|------------------------------------------|
+# | Domain         | ecommerce.themattdev.com                               |
+# | Forward Host   | ecommerce-nginx                   |
+# | Forward Port   | 80                                       |
+# | SSL            | Certificado automático (Let's Encrypt)   |
+#
+# El gateway resuelve el Forward Host por nombre de contenedor
+# dentro de la red proxy-network.
+# ==============================================================================

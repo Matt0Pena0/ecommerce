@@ -27,6 +27,7 @@ FROM python:3.12-slim
 # Variables de entorno estándar
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=config.settings.prod
 
 # Instalar dependencias del sistema para mysqlclient
 RUN apt-get update \
@@ -34,6 +35,7 @@ RUN apt-get update \
         build-essential \
         default-libmysqlclient-dev \
         pkg-config \
+        default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -50,8 +52,17 @@ COPY . /app/
 # a la carpeta de estáticos de nuestra aplicación final.
 COPY --from=builder /app/static/css/dist/ /app/static/css/dist
 
+# Preparamos directorios de estáticos/media y usuario no-root.
+# El UID 1000 coincide con el estándar de contenedores de la infra (ver .infra/SECURITY.md).
+RUN mkdir -p /app/staticfiles /app/mediafiles \
+    && chmod +x /app/docker/entrypoint.sh \
+    && useradd --uid 1000 --create-home --shell /bin/bash appuser \
+    && chown -R appuser:appuser /app
+USER appuser
+
 # Exponer puerto (documentación)
 EXPOSE 8000
 
-# Comando por defecto
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "themattdev.wsgi:application"]
+# El entrypoint espera a la DB, aplica migraciones, recopila estáticos
+# y finalmente arranca Gunicorn con el módulo WSGI correcto (config.wsgi).
+ENTRYPOINT ["/app/docker/entrypoint.sh"]

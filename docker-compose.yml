@@ -1,36 +1,109 @@
+# ==============================================================================
+# Docker Compose — Producción (Ecommerce)
+# ==============================================================================
+# Arquitectura VPS multi-proyecto con gateway central (Nginx Proxy Manager).
+#
+# Ubicación en servidor: /opt/ecommerce/docker-compose.yml
+#
+# PRINCIPIOS (ver .infra/SECURITY.md):
+#   - Ningún servicio interno (db, web) publica puertos al host.
+#   - Solo el contenedor nginx (ecommerce-nginx) se conecta a proxy-network,
+#     visible para el gateway central que gestiona SSL y ruteo por subdominio.
+#   - La red 'internal' aísla la comunicación entre servicios del proyecto.
+#
+# SETUP:
+#   1. La red proxy-network debe existir: docker network create proxy-network
+#   2. Crear .env.prod a partir de .env.prod.example
+#   3. docker compose up --build -d
+#   4. En NPM: Proxy Host -> Forward Host: ecommerce-nginx, Port: 80, SSL automático
+# ==============================================================================
+
 services:
+
+  # --------------------------------------------------------------------------
+  # Base de Datos — MySQL 8.0
+  # --------------------------------------------------------------------------
   db:
     image: mysql:8.0
     container_name: ecommerce-db
     restart: unless-stopped
-    env_file:
-      - .env
+    # IMPORTANTE: las variables MYSQL_* se definen en .env.prod y se inyectan vía
+    # env_file. NO usar un bloque `environment:` con ${...} aquí: la interpolación
+    # de Compose lee ./.env (o --env-file), NO env_file, y `environment` tiene
+    # precedencia sobre `env_file` — resultaría en credenciales vacías.
+    env_file: .env.prod
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - internal
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASS}"]
+      # CMD-SHELL + $$ para que la variable la expanda el shell DEL CONTENEDOR
+      # (no Compose), tomándola de env_file.
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 20s
 
+  # --------------------------------------------------------------------------
+  # Backend — Django + Gunicorn
+  # --------------------------------------------------------------------------
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: ecommerce-web
     restart: unless-stopped
-    env_file:
-      - .env
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --log-level info
+    env_file: .env.prod
+    expose:
+      - "8000"
     volumes:
       - static_volume:/app/staticfiles
-      - media_volume:/app/mediafiles
-
-    ports:
-      - "127.0.0.1:8000:8000"
+      # media como bind mount (no volumen nombrado): las imágenes semilla
+      # versionadas (mediafiles/productos/producto.png) quedan disponibles de
+      # inmediato tras el git clone, y los uploads son fáciles de respaldar.
+      - ./mediafiles:/app/mediafiles
+    networks:
+      - internal
     depends_on:
       db:
         condition: service_healthy
 
+  # --------------------------------------------------------------------------
+  # Nginx — Reverse Proxy Interno
+  # --------------------------------------------------------------------------
+  # ÚNICO punto de contacto con el gateway central (NPM). Sirve estáticos/media
+  # y proxya el resto a Gunicorn. Conectado a internal + proxy-network.
+  # --------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: ecommerce-nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles:ro
+      - ./mediafiles:/app/mediafiles:ro
+    expose:
+      - "80"
+    networks:
+      - internal
+      - proxy-network
+    depends_on:
+      - web
+
+# ==============================================================================
+# Redes
+# ==============================================================================
+networks:
+  internal:
+    driver: bridge
+  proxy-network:
+    external: true   # Red creada por el gateway central (NPM)
+
+# ==============================================================================
+# Volúmenes
+# ==============================================================================
 volumes:
-  mysql_data:
+  # static_volume: regenerado por `collectstatic` en cada arranque del entrypoint.
+  # media: NO es volumen nombrado, es bind mount ./mediafiles (ver servicio web).
   static_volume:
-  media_volume:

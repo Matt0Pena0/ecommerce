@@ -8,3 +8,7 @@ pytest-django==4.8.0
 black==25.1.0
 isort==5.13.2
 flake8==7.0.0
+
+# Pruebas de carga — reporte comparativo pre/post migración a DRF (hito v2).
+# Ver pruebas_estres/locustfile.py y pruebas_estres/reports/
+locust==2.46.0

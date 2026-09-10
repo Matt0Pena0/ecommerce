@@ -1,11 +1,13 @@
-from decouple import config
+from decouple import Csv, config
 
 from .base import *
 
 
-DEBUG = config("DEBUG", cast=bool)
+DEBUG = config("DEBUG", cast=bool, default=False)
 
-ALLOWED_HOSTS = ['ecommerce.themattdev.com', 'www.ecommerce.themattdev.com', '200.45.208.202', '127.0.0.1']
+# Se lee de .env.prod (ALLOWED_HOSTS=dominio1,dominio2). Antes estaba hardcodeado
+# e incluía la IP del VPS anterior, lo que dejaba la variable de entorno sin efecto.
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 # INSTALLED_APPS += []
 

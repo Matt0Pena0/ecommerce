@@ -1,0 +1,53 @@
+# ==============================================================================
+# Docker Compose — Plantilla para Proyecto Sin Backend (Solo Frontend)
+# ==============================================================================
+# Proyecto: Ecommerce
+# Servicios: Frontend + Nginx (reverse proxy interno)
+#
+# USO:
+#   Para sitios estáticos, SSR sin API propia, o landing pages.
+#   1. Copiar este archivo como docker-compose.yml en la raíz del proyecto
+#   2. Sustituir todos los {{PLACEHOLDER}}
+#   3. Ejecutar: docker compose up -d
+# ==============================================================================
+
+services:
+
+  # --------------------------------------------------------------------------
+  # Frontend (Static / SSR)
+  # --------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - internal
+
+  # --------------------------------------------------------------------------
+  # Nginx — Reverse Proxy Interno
+  # --------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: ecommerce-nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    expose:
+      - "80"
+    networks:
+      - internal
+      - proxy-network
+    depends_on:
+      - frontend
+
+# ==============================================================================
+# Redes
+# ==============================================================================
+networks:
+  internal:
+    driver: bridge
+  proxy-network:
+    external: true
