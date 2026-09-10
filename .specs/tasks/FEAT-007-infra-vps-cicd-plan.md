@@ -162,6 +162,10 @@ Trigger: `push` a `main` + `workflow_dispatch`. Job `deploy`: usa SSH (secrets `
 - [ ] Ejecuta git pull + compose up --build + migrate
 - [ ] YAML válido; documentados los secrets requeridos
 
+> **SUPERSEDED por FEAT-008**: esta subtarea reflejaba el build en el VPS. El flujo
+> vigente publica la imagen en GHCR y el servidor solo hace `pull`. Ver
+> `.specs/tasks/FEAT-008-ghcr-registry-deploy-plan.md`.
+
 ---
 
 ### SUBTAREA 8 — Actualizar documentación operativa

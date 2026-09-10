@@ -8,12 +8,20 @@
 
 ## 1. Despliegue
 
-### Deploy completo (con rebuild)
+### Deploy (vía GitHub Actions — recomendado)
+
+El despliegue normal es automático con cada `push` a `main`. Para lanzarlo a mano:
+`Actions → Deploy → Run workflow`. El VPS no construye imágenes.
+
+### Deploy manual desde el VPS (excepcional)
+
+Requiere estar autenticado en GHCR (`docker login ghcr.io`):
 
 ```bash
 cd /opt/ecommerce
-git pull origin main
-docker compose up --build -d
+git pull origin main          # actualiza compose, nginx.conf, fixtures
+docker compose pull web       # baja la imagen publicada
+docker compose up -d
 ```
 
 ### Deploy sin rebuild (solo reinicio)
@@ -73,10 +81,16 @@ docker compose restart backend
 docker compose restart nginx
 ```
 
-### Reconstruir un servicio específico
+### Actualizar un servicio a la última imagen
 
 ```bash
-docker compose up --build -d backend
+docker compose pull web && docker compose up -d web
+```
+
+### Volver a una versión anterior (rollback)
+
+```bash
+WEB_TAG=sha-a1b2c3d docker compose up -d web
 ```
 
 ### Detener todo el proyecto

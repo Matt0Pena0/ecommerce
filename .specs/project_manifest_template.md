@@ -98,7 +98,8 @@
 | **Slug del proyecto** | `{{PROJECT_SLUG}}` |
 | **Dominio** | `{{DOMAIN}}` |
 | **Gateway central** | {{PROXY_MANAGER}} (`{{PROXY_MANAGER_IMAGE}}`) |
-| **Red del proxy** | `{{PROXY_NET}}` |
+| **Red del proxy** | `{{PROXY_NETWORK}}` (estándar: `proxy-network`) |
+| **Registry de imágenes** | `{{IMAGE_REGISTRY}}` (ej. `ghcr.io/owner/repo/web`) |
 | **Rama de despliegue** | `{{DEPLOY_BRANCH}}` |
 
 ### Servicios

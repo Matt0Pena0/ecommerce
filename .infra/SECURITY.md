@@ -70,21 +70,57 @@ Internet
 
 ---
 
-## 4. Firewall (Recomendado)
+## 4. Firewall + Acceso por VPN (Tailscale)
+
+El acceso administrativo (SSH) **no se expone a internet**: viaja por la VPN de Tailscale
+con IP interna estable. Solo el tráfico web público llega al host.
 
 ```bash
-# Configuración básica — solo tráfico HTTP/S y SSH
 ufw default deny incoming
 ufw default allow outgoing
-ufw allow 22/tcp                    # SSH
-ufw allow 80/tcp                    # HTTP (gateway)
-ufw allow 443/tcp                   # HTTPS (gateway)
-ufw allow 81/tcp  # Panel admin (restringir por IP en producción)
+
+# Tráfico web público (gateway NPM)
+ufw allow 80/tcp                    # HTTP
+ufw allow 443/tcp                   # HTTPS
+
+# SSH: NO abrir al mundo. Permitir solo por la interfaz de Tailscale.
+# OJO: usar el PUERTO REAL de sshd, que NO necesariamente es el 22.
+#   Averiguarlo con:  sudo sshd -T | grep '^port'
+SSH_PORT="$(sudo sshd -T | awk '/^port /{print $2; exit}')"
+ufw allow in on tailscale0 to any port "$SSH_PORT" proto tcp
+
+# Tailscale necesita salida UDP para negociar la conexión directa
+ufw allow out 41641/udp
+
+# Panel de administración del gateway: tampoco al mundo.
+# Alcanzarlo por la VPN en lugar de publicarlo.
+ufw allow in on tailscale0 to any port 81 proto tcp
+
 ufw enable
 ```
 
-> **Recomendación**: Restringir el acceso al panel de administración del gateway
-> por IP de origen en producción.
+> ### Advertencia — riesgo de perder el acceso al servidor
+>
+> 1. **Confirmá el puerto real de sshd antes de escribir reglas.** Un `ufw allow ... port 22`
+>    cuando sshd escucha en otro puerto te deja fuera al activar el firewall.
+> 2. **Verificá que entrás por la IP `100.x.y.z` de Tailscale** antes de cerrar el acceso
+>    público.
+> 3. Dejá una sesión abierta y usá una red de seguridad mientras aplicás cambios:
+>    `sudo shutdown -r +5` (y `sudo shutdown -c` si todo quedó bien).
+>
+> Nota: el puerto de NPM (81) queda accesible por la VPN. Si `ufw` está inactivo, ese panel
+> está **expuesto a internet**; conviene resolverlo antes que después.
+
+### Consecuencia para CI/CD
+
+Como SSH solo es alcanzable desde el tailnet, el workflow de despliegue une al runner de
+GitHub a la VPN como nodo efímero antes de conectarse. Ver la sección "Acceso a la red
+privada (Tailscale)" en `.infra/DEPLOYMENT.md`.
+
+### Panel del gateway
+
+Con este esquema el panel de NPM (puerto 81) deja de ser público y se alcanza por la VPN,
+lo que es preferible a restringirlo por IP de origen.
 
 ---
 
@@ -109,7 +145,8 @@ docker scout cves ecommerce-backend:latest
 |----------|-------------|--------|
 | Gateway (HTTP) | 80 | Público |
 | Gateway (HTTPS) | 443 | Público |
-| Gateway (Admin) | 81 | Restringir por IP |
+| Gateway (Admin) | 81 | Solo por VPN (`tailscale0`) |
+| SSH | 22 | Solo por VPN (`tailscale0`), no público |
 | Proyectos internos | Ninguno | Solo via proxy-network |
 | DB/Cache | Ninguno | Solo red interna |
 

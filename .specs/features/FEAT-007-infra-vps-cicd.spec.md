@@ -89,6 +89,9 @@ Internet (443)
 | `ci.yml` | `push` / `pull_request` a `main` | `checks` (django check + migraciones + tests si existen), `build` (docker build sin push) | Bloquea merge si falla |
 | `deploy.yml` | `push` a `main` (o `workflow_dispatch`) | `deploy` (SSH al VPS → `git pull` → `docker compose up --build -d` → `migrate`) | Despliegue en el VPS |
 
+> **NOTA (FEAT-008)**: la fila de `deploy.yml` quedó superseded. El flujo actual es
+> `build-and-push` a GHCR seguido de `deploy` por SSH con `pull` + `up -d` (sin `--build`).
+
 ### Secrets de GitHub requeridos
 
 | Secret | Descripción |
@@ -96,7 +99,7 @@ Internet (443)
 | `VPS_HOST` | IP o host del VPS |
 | `VPS_USER` | Usuario SSH de despliegue |
 | `VPS_SSH_KEY` | Clave privada SSH (deploy key) |
-| `VPS_PROJECT_PATH` | Ruta del proyecto en el VPS (`/opt/ecommerce`) |
+| `VPS_DEPLOY_PATH` | Ruta de despliegue en el VPS (`/opt/ecommerce`) — renombrado desde `VPS_PROJECT_PATH` |
 
 > **Repositorio**: `github.com/Matt0Pena0/ecommerce` — rama de despliegue `main`.
 > **Red del gateway**: `proxy-network` (externa, estándar de la infra del VPS).
@@ -174,8 +177,11 @@ Archivos que el agente asignado (@DevOps_Agent) DEBE leer antes de implementar:
    (nombre estandarizado en todos los proyectos del VPS).
 2. **Ruta de despliegue**: `/opt/ecommerce`. El VPS anterior (git clone + nginx del host) está
    apagado; se parte de un despliegue limpio.
-3. **Estrategia de deploy**: SSH + `git pull` + `docker compose up --build -d` (estándar de la
-   infra; sin registry de imágenes).
+3. ~~**Estrategia de deploy**: SSH + `git pull` + `docker compose up --build -d` (estándar de la
+   infra; sin registry de imágenes).~~
+   > **SUPERSEDED por FEAT-008**: el build dejó de ocurrir en el VPS. La imagen se
+   > construye en GitHub Actions y se publica en GHCR; el servidor solo hace `pull`.
+   > Ver `.specs/features/FEAT-008-ghcr-registry-deploy.spec.md`.
 4. **Servido de estáticos**: **nginx interno + volumen compartido** con `web` (opción elegida).
    Razón: el proyecto usa `media/` (imágenes de productos vía `ImageField`), que WhiteNoise no
    cubre; como el nginx interno es obligatorio por la arquitectura `proxy-network`, servir

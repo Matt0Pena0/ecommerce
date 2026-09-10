@@ -17,9 +17,9 @@ services:
   # Frontend (Static / SSR)
   # --------------------------------------------------------------------------
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    # ESTÁNDAR: imagen preconstruida y publicada por CI en GHCR. El VPS no compila.
+    image: ghcr.io/{{GH_OWNER}}/{{GH_REPO}}/frontend:${FRONTEND_TAG:-latest}
+    pull_policy: always
     restart: unless-stopped
     expose:
       - "80"

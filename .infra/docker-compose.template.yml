@@ -57,9 +57,11 @@ services:
   # Backend (API / Application Server)
   # --------------------------------------------------------------------------
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    # ESTÁNDAR: imagen preconstruida y publicada por CI en GHCR. El VPS no compila.
+    # Etiquetar también con sha-<short> permite rollback sin rebuild:
+    #   BACKEND_TAG=sha-a1b2c3d docker compose up -d backend
+    image: ghcr.io/{{GH_OWNER}}/{{GH_REPO}}/backend:${BACKEND_TAG:-latest}
+    pull_policy: always
     restart: unless-stopped
     env_file: .env.prod
     expose:
@@ -76,10 +78,8 @@ services:
   # Frontend (SPA / SSR / Static)
   # --------------------------------------------------------------------------
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      target: production
+    image: ghcr.io/{{GH_OWNER}}/{{GH_REPO}}/frontend:${FRONTEND_TAG:-latest}
+    pull_policy: always
     restart: unless-stopped
     expose:
       - "80"

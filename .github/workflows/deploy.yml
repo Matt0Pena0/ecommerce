@@ -1,24 +1,32 @@
 name: Deploy
 
 # ==============================================================================
-# Despliegue continuo al VPS (Ecommerce)
+# Despliegue continuo al VPS vía GHCR (Ecommerce) — FEAT-008
 # ==============================================================================
-# El workflow es AUTOSUFICIENTE e IDEMPOTENTE: hace el bootstrap del proyecto en
-# el VPS si no existe (clone, red docker) y despliega. No requiere pasos manuales
-# de git en el servidor.
+# El build ocurre en el runner de Actions y se publica como imagen en GHCR.
+# El VPS NO construye: solo hace `docker compose pull` + `up -d`.
 #
-# ÚNICO paso manual previo (una sola vez): crear /opt/ecommerce/.env.prod con los
-# secretos. No puede automatizarse desde el repo porque contiene credenciales.
-# Alternativamente puede inyectarse desde un secret (ver ENV_PROD más abajo).
+# El workflow es AUTOSUFICIENTE e IDEMPOTENTE: crea la red docker, clona el
+# repositorio la primera vez y sincroniza en los siguientes deploys.
 #
-# Secrets requeridos (Settings -> Secrets and variables -> Actions):
-#   VPS_HOST          IP o host del VPS
-#   VPS_USER          usuario SSH de despliegue
-#   VPS_SSH_KEY       clave privada SSH
-#   VPS_PROJECT_PATH  ruta del proyecto (ej: /opt/ecommerce)
-#   VPS_SSH_PORT      (opcional) puerto SSH, por defecto 22
-#   ENV_PROD          (opcional) contenido completo de .env.prod; si se define,
-#                     el workflow lo escribe en el servidor en cada deploy
+# ÚNICO paso manual previo (una sola vez): que exista /opt/ecommerce/.env.prod
+# con los secretos. Puede automatizarse definiendo el secret ENV_PROD.
+#
+# RED: el VPS no expone SSH a internet. El runner se une al tailnet de Tailscale
+# como nodo efímero y accede por la IP interna (100.x.y.z o nombre MagicDNS).
+#
+# Secrets:
+#   TS_OAUTH_CLIENT_ID  OAuth client de Tailscale (scope auth_keys, escritura)
+#   TS_OAUTH_SECRET     Secret del OAuth client de Tailscale
+#   VPS_HOST            IP de Tailscale del VPS (100.x.y.z) o nombre MagicDNS
+#   VPS_USER            usuario SSH con permisos sobre Docker
+#   VPS_SSH_KEY         clave privada SSH
+#   VPS_DEPLOY_PATH     ruta de despliegue en el VPS (ej: /opt/ecommerce)
+#   VPS_SSH_PORT        (opcional) puerto SSH, por defecto 22
+#   ENV_PROD            (opcional) contenido completo de .env.prod
+#   GHCR_TOKEN          (opcional, recomendado) PAT con read:packages para que el
+#                       VPS pueda hacer pull de forma autónoma. Si no se define,
+#                       se usa GITHUB_TOKEN (válido solo durante el job).
 # ==============================================================================
 
 on:
@@ -30,8 +38,8 @@ on:
         description: "Cargar data/backup.json (SOLO primer deploy: sobrescribe datos)"
         type: boolean
         default: false
-      run_migrations_only:
-        description: "Solo aplicar migraciones, sin rebuild"
+      skip_build:
+        description: "Desplegar la imagen :latest existente sin reconstruir"
         type: boolean
         default: false
 
@@ -39,54 +47,179 @@ concurrency:
   group: deploy-production
   cancel-in-progress: false
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
+  # ==========================================================================
+  # 1. Build y publicación de la imagen en GHCR
+  # ==========================================================================
+  build-and-push:
+    name: Build y push a GHCR
+    runs-on: ubuntu-latest
+    if: github.repository == 'Matt0Pena0/ecommerce' && inputs.skip_build != true
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # GHCR exige la ruta de imagen en minúsculas.
+      - name: Normalizar nombre de imagen
+        id: meta
+        run: |
+          echo "image=${REGISTRY}/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')/web" >> "$GITHUB_OUTPUT"
+          echo "sha_tag=sha-$(echo '${{ github.sha }}' | cut -c1-7)" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login a GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build y push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.image }}:latest
+            ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Resumen
+        run: |
+          echo "Imagen publicada:" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`${{ steps.meta.outputs.image }}:latest\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_tag }}\`" >> "$GITHUB_STEP_SUMMARY"
+
+  # ==========================================================================
+  # 2. Despliegue en el VPS (pull, sin build)
+  # ==========================================================================
   deploy:
     name: Deploy al VPS
     runs-on: ubuntu-latest
-    if: github.repository == 'Matt0Pena0/ecommerce'
+    needs: [build-and-push]
+    # `always()` + comprobación explícita permite desplegar con skip_build=true,
+    # caso en el que build-and-push queda 'skipped' (no 'failure').
+    if: |
+      always() &&
+      github.repository == 'Matt0Pena0/ecommerce' &&
+      (needs.build-and-push.result == 'success' || needs.build-and-push.result == 'skipped')
 
     steps:
+      # ----------------------------------------------------------------------
+      # Acceso a la red privada (Tailscale)
+      # ----------------------------------------------------------------------
+      # El VPS NO expone SSH a internet: el acceso es por la VPN de Tailscale.
+      # Este paso une al runner al tailnet como nodo EFÍMERO (se desconecta al
+      # terminar el job), permitiendo el SSH posterior contra la IP interna.
+      #
+      # Requisitos en el panel de Tailscale:
+      #   - OAuth client con scope `auth_keys` (escritura)
+      #   - Tag `tag:ci` definido en las ACL y autorizado a alcanzar el VPS:22
+      # ----------------------------------------------------------------------
+      - name: Conectar a Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      # Diagnóstico: si el SSH falla, este paso permite distinguir un problema de
+      # VPN/ACL de un problema de credenciales SSH. No bloquea el despliegue.
+      - name: Verificar conectividad con el VPS
+        continue-on-error: true
+        run: |
+          echo "==> Estado de Tailscale"
+          tailscale status
+          echo "==> Comprobando puerto 22 en ${{ secrets.VPS_HOST }}"
+          timeout 15 bash -c 'until nc -z "$1" "${2:-22}"; do sleep 1; done' _ \
+            "${{ secrets.VPS_HOST }}" "${{ secrets.VPS_SSH_PORT || 22 }}" \
+            && echo "Puerto SSH alcanzable por la VPN" \
+            || echo "AVISO: no se alcanzó el puerto SSH (revisar ACL de tag:ci)"
+
       - name: Desplegar por SSH
         uses: appleboy/ssh-action@v1.2.0
         env:
           REPO_URL: https://github.com/${{ github.repository }}.git
-          PROJECT_PATH: ${{ secrets.VPS_PROJECT_PATH }}
+          DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
           ENV_PROD: ${{ secrets.ENV_PROD }}
           LOAD_FIXTURES: ${{ inputs.load_fixtures }}
-          MIGRATIONS_ONLY: ${{ inputs.run_migrations_only }}
+          REGISTRY: ${{ env.REGISTRY }}
+          GHCR_USER: ${{ github.actor }}
+          GHCR_PASS: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_SSH_PORT || 22 }}
-          envs: REPO_URL,PROJECT_PATH,ENV_PROD,LOAD_FIXTURES,MIGRATIONS_ONLY
+          envs: REPO_URL,DEPLOY_PATH,ENV_PROD,LOAD_FIXTURES,REGISTRY,GHCR_USER,GHCR_PASS
           script: |
             set -e
 
             # ---------------------------------------------------------------
-            # 1. Bootstrap: red compartida del gateway
+            # 0. Validación de entradas obligatorias
+            # ---------------------------------------------------------------
+            # Sin esto, un secret ausente produce errores crípticos aguas abajo
+            # (p. ej. `mkdir: cannot create directory ''`).
+            if [ -z "$DEPLOY_PATH" ]; then
+              echo "ERROR: el secret VPS_DEPLOY_PATH está vacío o no existe." >&2
+              echo "       Definilo en Settings > Secrets and variables > Actions" >&2
+              echo "       con el valor: /opt/ecommerce" >&2
+              exit 1
+            fi
+            if [ -z "$REPO_URL" ]; then
+              echo "ERROR: REPO_URL vacío (no se pudo derivar el repositorio)." >&2
+              exit 1
+            fi
+            echo "==> Ruta de despliegue: $DEPLOY_PATH"
+
+            # ---------------------------------------------------------------
+            # 1. Red compartida del gateway
             # ---------------------------------------------------------------
             if ! docker network inspect proxy-network >/dev/null 2>&1; then
               echo "==> Creando red proxy-network"
               docker network create proxy-network
-            else
-              echo "==> Red proxy-network ya existe"
             fi
 
             # ---------------------------------------------------------------
-            # 2. Bootstrap: código fuente (clone la primera vez, luego sync)
+            # 2. Código fuente (compose, nginx.conf, fixtures, media semilla)
+            #    Sigue siendo necesario aunque el build ya no ocurra aquí.
             # ---------------------------------------------------------------
-            if [ ! -d "$PROJECT_PATH/.git" ]; then
-              echo "==> Primer despliegue: clonando repositorio"
-              mkdir -p "$PROJECT_PATH"
-              git clone "$REPO_URL" "$PROJECT_PATH"
-              cd "$PROJECT_PATH"
+            # Se inicializa el repo EN EL LUGAR (init + fetch) en lugar de usar
+            # `git clone`, porque el directorio de despliegue puede existir ya y
+            # contener archivos que NO están en git y deben preservarse:
+            #   .env.prod, data/mysql/, mediafiles/ (uploads)
+            # `git clone` falla si el destino no está vacío.
+            mkdir -p "$DEPLOY_PATH"
+            cd "$DEPLOY_PATH"
+
+            if [ ! -d .git ]; then
+              echo "==> Primer despliegue: inicializando repositorio en $DEPLOY_PATH"
+              git init -q
+              git remote add origin "$REPO_URL"
             else
               echo "==> Sincronizando con origin/main"
-              cd "$PROJECT_PATH"
-              git fetch --all
-              git reset --hard origin/main
+              git remote set-url origin "$REPO_URL"
             fi
+
+            git fetch --prune origin
+            # symbolic-ref + reset --hard en vez de checkout: reset no aborta si
+            # hay archivos sin trackear que colisionan con los del repo.
+            git symbolic-ref HEAD refs/heads/main
+            git reset --hard origin/main
+            echo "==> Commit desplegado: $(git rev-parse --short HEAD)"
 
             # ---------------------------------------------------------------
             # 3. Archivo de entorno
@@ -98,7 +231,7 @@ jobs:
             fi
 
             if [ ! -f .env.prod ]; then
-              echo "ERROR: no existe $PROJECT_PATH/.env.prod" >&2
+              echo "ERROR: no existe $DEPLOY_PATH/.env.prod" >&2
               echo "Créalo en el servidor (ver .env.example, bloque B) o define el secret ENV_PROD." >&2
               exit 1
             fi
@@ -113,35 +246,54 @@ jobs:
             fi
 
             # ---------------------------------------------------------------
-            # 5. Despliegue
+            # 5. Autenticación contra GHCR y pull de la imagen
             # ---------------------------------------------------------------
-            if [ "$MIGRATIONS_ONLY" = "true" ]; then
-              echo "==> Solo migraciones (sin rebuild)"
-              docker compose exec -T web python manage.py migrate --noinput
-            else
-              echo "==> Reconstruyendo y levantando servicios"
-              docker compose up --build -d
+            echo "==> Autenticando en $REGISTRY"
+            printf '%s' "$GHCR_PASS" | docker login "$REGISTRY" -u "$GHCR_USER" --password-stdin
 
-              # migrate y collectstatic los ejecuta docker/entrypoint.sh al arrancar.
-              # No se invoca `exec migrate` aquí: el contenedor puede estar aún
-              # esperando a MySQL y competiría con el propio entrypoint.
-              echo "==> Esperando a que el servicio web esté en ejecución"
-              for i in $(seq 1 45); do
-                cid="$(docker compose ps -q web)"
-                if [ -n "$cid" ] && [ "$(docker inspect -f '{{.State.Running}}' "$cid")" = "true" ]; then
-                  echo "web en ejecución"; break
-                fi
-                if [ "$i" -eq 45 ]; then
-                  echo "ERROR: web no arrancó. Logs:" >&2
-                  docker compose logs --tail=80 web >&2
-                  exit 1
-                fi
-                sleep 2
-              done
+            echo "==> Descargando imagen"
+            docker compose pull web
+
+            # ---------------------------------------------------------------
+            # 6. Levantar servicios (SIN build: la imagen viene de GHCR)
+            # ---------------------------------------------------------------
+            echo "==> Levantando servicios"
+            docker compose up -d
+
+            # migrate y collectstatic los ejecuta docker/entrypoint.sh al arrancar.
+            echo "==> Esperando a que el servicio web esté en ejecución"
+            for i in $(seq 1 45); do
+              cid="$(docker compose ps -q web)"
+              if [ -n "$cid" ] && [ "$(docker inspect -f '{{.State.Running}}' "$cid")" = "true" ]; then
+                echo "web en ejecución"; break
+              fi
+              if [ "$i" -eq 45 ]; then
+                echo "ERROR: web no arrancó. Logs:" >&2
+                docker compose logs --tail=80 web >&2
+                exit 1
+              fi
+              sleep 2
+            done
+
+            # ---------------------------------------------------------------
+            # 6b. Sanidad: el gateway debe compartir red con nuestro nginx
+            # ---------------------------------------------------------------
+            # Si el gateway y ecommerce-nginx no están en la misma red, el sitio
+            # devuelve 502 aunque todos los contenedores estén "Up". Este chequeo
+            # convierte ese fallo silencioso en un aviso visible.
+            gw="$(docker ps --filter 'ancestor=jc21/nginx-proxy-manager:latest' --format '{{.Names}}' | head -1)"
+            if [ -n "$gw" ]; then
+              if docker inspect "$gw" --format '{{range $n, $c := .NetworkSettings.Networks}}{{$n}} {{end}}' \
+                   | grep -qw proxy-network; then
+                echo "OK: $gw comparte proxy-network con ecommerce-nginx"
+              else
+                echo "AVISO: $gw NO está en proxy-network. El sitio dará 502." >&2
+                echo "       Solución: docker network connect proxy-network $gw" >&2
+              fi
             fi
 
             # ---------------------------------------------------------------
-            # 6. Carga inicial de datos (opt-in, solo primer deploy)
+            # 7. Carga inicial de datos (opt-in, solo primer deploy)
             # ---------------------------------------------------------------
             if [ "$LOAD_FIXTURES" = "true" ]; then
               echo "==> Cargando data/backup.json"
@@ -149,7 +301,8 @@ jobs:
             fi
 
             # ---------------------------------------------------------------
-            # 7. Limpieza y estado
+            # 8. Limpieza y estado
             # ---------------------------------------------------------------
+            docker logout "$REGISTRY" || true
             docker image prune -f
             docker compose ps

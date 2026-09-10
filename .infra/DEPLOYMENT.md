@@ -26,23 +26,38 @@ gateway a través de la red externa `proxy-network`.
 
 ---
 
-## Modelo de Despliegue: GitHub Actions
+## Modelo de Despliegue: GitHub Actions + GHCR
 
-El despliegue **no se hace a mano en el servidor**. El workflow `deploy.yml` es
-autosuficiente e idempotente: crea la red Docker, clona el repositorio la primera vez,
-sincroniza en los siguientes deploys, levanta los servicios y aplica migraciones.
+El despliegue **no se hace a mano en el servidor** y **el VPS no construye imágenes**.
+El build ocurre en el runner de Actions, se publica en GitHub Container Registry (GHCR)
+y el servidor solo hace `pull`.
 
 ```
-push a main  ──▶  ci.yml (checks + build)
-                     │
-                     ▼
-                  deploy.yml  ──SSH──▶  VPS
-                                        ├── crea proxy-network si falta
-                                        ├── clona (1ª vez) o git reset --hard
-                                        ├── valida .env.prod
-                                        ├── docker compose up --build -d
-                                        └── entrypoint: migrate + collectstatic
+push a main
+    │
+    ├──▶ ci.yml            checks (django check, migraciones, pytest) + build de validación
+    │
+    └──▶ deploy.yml
+           │
+           ├── job build-and-push (runner)
+           │     docker build  ──▶  ghcr.io/matt0pena0/ecommerce/web
+           │                        tags: latest, sha-<short>
+           │
+           └── job deploy
+                 ├── tailscale: runner se une al tailnet (nodo efímero, tag:ci)
+                 ├── SSH a la IP interna del VPS (100.x.y.z) ← sin puertos públicos
+                 ├── crea proxy-network si falta
+                 ├── clona (1ª vez) o git reset --hard   ← compose, nginx.conf, fixtures
+                 ├── valida/escribe .env.prod
+                 ├── docker login ghcr.io
+                 ├── docker compose pull web
+                 ├── docker compose up -d      (SIN --build)
+                 └── entrypoint: migrate + collectstatic
 ```
+
+> El repositorio sigue clonándose en el VPS porque `docker-compose.yml`,
+> `nginx/nginx.conf`, `mediafiles/` semilla y `data/backup.json` viven en git.
+> Lo que desaparece es la compilación.
 
 ### Configuración previa (una sola vez)
 
@@ -50,12 +65,64 @@ push a main  ──▶  ci.yml (checks + build)
 
 | Secret | Descripción |
 |--------|-------------|
-| `VPS_HOST` | IP o host del VPS |
+| `TS_OAUTH_CLIENT_ID` | OAuth client de Tailscale (scope `auth_keys` con escritura) |
+| `TS_OAUTH_SECRET` | Secret del OAuth client de Tailscale |
+| `VPS_HOST` | **IP de Tailscale del VPS** (`100.x.y.z`) o nombre MagicDNS. No la IP pública. |
 | `VPS_USER` | Usuario SSH con permisos sobre Docker |
 | `VPS_SSH_KEY` | Clave privada SSH |
-| `VPS_PROJECT_PATH` | `/opt/ecommerce` |
+| `VPS_DEPLOY_PATH` | Ruta de despliegue en el VPS: `/opt/ecommerce` |
 | `VPS_SSH_PORT` | (opcional) puerto SSH, por defecto `22` |
 | `ENV_PROD` | (opcional, recomendado) contenido completo de `.env.prod` |
+| `GHCR_TOKEN` | (opcional, recomendado) PAT con `read:packages`, para que el VPS pueda hacer `pull` de forma autónoma (p. ej. en un redeploy manual). Si no se define, se usa `GITHUB_TOKEN`, válido solo durante la ejecución del workflow. |
+
+> El workflow requiere `permissions: packages: write` para publicar en GHCR; ya está
+> declarado en `deploy.yml`. Verifica también que el repositorio tenga GitHub Packages
+> habilitado (`Settings → Actions → Workflow permissions`).
+
+### Acceso a la red privada (Tailscale)
+
+El VPS **no expone SSH a internet**: el acceso es por la VPN de Tailscale, con IP interna
+estable (lo que además elimina el problema de las IPs dinámicas). El runner de GitHub no
+está en el tailnet por defecto, así que el workflow lo une como **nodo efímero** antes de
+hacer SSH:
+
+```yaml
+- name: Conectar a Tailscale
+  uses: tailscale/github-action@v3
+  with:
+    oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+    oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+    tags: tag:ci
+```
+
+Configuración necesaria en el panel de Tailscale (una sola vez):
+
+1. **OAuth client** con scope `auth_keys` (escritura). Sus credenciales van a los secrets
+   `TS_OAUTH_CLIENT_ID` y `TS_OAUTH_SECRET`.
+2. **Tag `tag:ci`** declarado en `tagOwners` de las ACL.
+3. **Regla ACL** que permita a `tag:ci` alcanzar el VPS por SSH:
+
+```jsonc
+{
+  "tagOwners": { "tag:ci": ["autogroup:admin"] },
+  "acls": [
+    {
+      "action": "accept",
+      "src": ["tag:ci"],
+      "dst": ["tag:vps:22"]   // o el hostname/IP concreta del servidor
+    }
+  ]
+}
+```
+
+4. **`VPS_HOST` debe ser la IP de Tailscale** (`100.x.y.z`) o el nombre MagicDNS del
+   servidor, **no** la IP pública.
+
+El nodo del runner se desconecta automáticamente al finalizar el job, por lo que no quedan
+dispositivos huérfanos en el tailnet.
+
+> Si preferís no gestionar claves SSH, Tailscale SSH permite autenticar por ACL en lugar de
+> `VPS_SSH_KEY`. Requiere `--ssh` en el cliente del VPS y una regla `ssh` en las ACL.
 
 **2. Archivo de entorno** — es el único dato que no puede vivir en el repo. Dos opciones:
 
@@ -81,7 +148,8 @@ sudo mkdir -p /opt/ecommerce && sudo chown "$USER" /opt/ecommerce
 1. Configura los secrets (paso anterior).
 2. Lanza el workflow **Deploy** desde `Actions → Deploy → Run workflow`, marcando
    la casilla **`load_fixtures`** para cargar `data/backup.json` en el arranque inicial.
-3. Verifica el log del workflow: debe mostrar el clone, `up --build`, y `web en ejecución`.
+3. Verifica el log del workflow: debe mostrar la imagen publicada en GHCR, el clone,
+   el `docker compose pull`, y `web en ejecución`.
 
 El entrypoint del contenedor `web` ejecuta automáticamente en cada arranque:
 1. Espera a que MySQL esté disponible
@@ -162,8 +230,8 @@ En el panel de NPM, crear un Proxy Host:
 
 | Workflow | Trigger | Qué hace |
 |----------|---------|----------|
-| `ci.yml` | push / PR a `main` | `manage.py check`, verificación de migraciones, `pytest`, `docker build` |
-| `deploy.yml` | push a `main` o manual | Bootstrap + sync + `compose up --build` + espera de readiness |
+| `ci.yml` | push / PR a `main` | `manage.py check`, verificación de migraciones, `pytest`, build de validación (sin push) |
+| `deploy.yml` | push a `main` o manual | `build-and-push` a GHCR → `deploy` (SSH: pull + `up -d`) |
 
 ### Entradas manuales de `deploy.yml`
 
@@ -172,7 +240,22 @@ Desde `Actions → Deploy → Run workflow`:
 | Input | Uso |
 |-------|-----|
 | `load_fixtures` | Carga `data/backup.json`. **Solo primer deploy** (sobrescribe por PK). |
-| `run_migrations_only` | Aplica migraciones sin rebuild. Útil para hotfixes de datos. |
+| `skip_build` | Redespliega la imagen `:latest` ya publicada, sin reconstruir. |
+
+### Rollback
+
+Las imágenes se etiquetan también con `sha-<short>`, lo que permite volver atrás sin rebuild:
+
+```bash
+cd /opt/ecommerce
+WEB_TAG=sha-a1b2c3d docker compose up -d web
+```
+
+Para ver los tags disponibles: `Packages` del repositorio en GitHub, o
+`docker image ls | grep ecommerce`.
+
+> `WEB_TAG` se resuelve en la **interpolación** de Compose, por lo que debe venir del
+> entorno del shell (o de `./.env`), no de `env_file`. Sin definirla, se usa `latest`.
 
 ---
 

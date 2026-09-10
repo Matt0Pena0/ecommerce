@@ -135,10 +135,16 @@ cd /opt/ecommerce && docker compose up -d
 
 ### Deploy de actualización
 
+El deploy normal es automático vía GitHub Actions (`push` a `main`). El VPS **no construye
+imágenes**: las descarga desde GHCR. Ver `.infra/DEPLOYMENT.md`.
+
+Deploy manual desde el servidor (excepcional, requiere `docker login ghcr.io`):
+
 ```bash
 cd /opt/ecommerce
-git pull origin main
-docker compose up --build -d
+git pull origin main          # compose, nginx.conf, fixtures
+docker compose pull web       # imagen publicada por Actions
+docker compose up -d
 ```
 
 ---
@@ -156,23 +162,30 @@ docker compose up --build -d
 
 ## Placeholders de Infraestructura
 
-| Placeholder | Descripción | Ejemplo |
-|-------------|-------------|---------|
-| `ecommerce` | Nombre del proyecto en formato slug (kebab-case) | `mi-app`, `ecommerce-api` |
-| `/opt` | Ruta base de proyectos en el servidor | `/opt`, `/srv/apps` |
-| `Nginx Proxy Manager` | Herramienta de proxy/gateway central | `Nginx Proxy Manager`, `Traefik`, `Caddy` |
-| `jc21/nginx-proxy-manager:latest` | Imagen Docker del gateway central | `jc21/nginx-proxy-manager:latest` |
-| `proxy-network` | Nombre de la red Docker compartida del proxy | `proxy-network`, `gateway_net` |
-| `81` | Puerto del panel de administración del gateway | `81`, `8080` |
-| `ecommerce.themattdev.com` | Dominio base del proyecto | `miapp.example.com` |
-| `main` | Rama de despliegue | `main`, `production` |
-| `mysql:8.0` | Imagen Docker de la base de datos | `postgres:15-alpine`, `mysql:8` |
-| `3306` | Puerto interno de la base de datos | `5432`, `3306` |
-| `redis:7-alpine` | Imagen Docker del sistema de cache | `redis:7-alpine`, `memcached:alpine` |
-| `8000` | Puerto interno del backend | `8000`, `3000`, `4000` |
-| `80` | Puerto interno del frontend | `80`, `3000` |
-| `1000` | UID del usuario no-root en contenedores | `1000` |
-| `ufw` | Herramienta de firewall del servidor | `ufw`, `firewalld`, `iptables` |
+Valores concretos con los que está instanciada la infraestructura de **Ecommerce**.
+Al adaptar las plantillas a otro proyecto, sustituir por los suyos.
+
+| Parámetro | Valor en Ecommerce |
+|-----------|--------------------|
+| Slug del proyecto | `ecommerce` |
+| Ruta base en el servidor | `/opt` (proyecto en `/opt/ecommerce`) |
+| Gateway central | Nginx Proxy Manager (`jc21/nginx-proxy-manager:latest`) |
+| **Red compartida del proxy** | **`proxy-network`** (estándar de la VPS) |
+| Puerto del panel del gateway | `81` (solo alcanzable por VPN) |
+| **Acceso administrativo (SSH)** | **Tailscale** — IP interna `100.x.y.z`, sin puertos públicos |
+| Dominio | `ecommerce.themattdev.com` |
+| Rama de despliegue | `main` |
+| Imagen de base de datos | `mysql:8.0` (puerto interno `3306`) |
+| Cache | No configurado |
+| Puerto interno del backend | `8000` (Gunicorn) |
+| Nginx interno | `nginx:alpine`, contenedor `ecommerce-nginx`, puerto `80` |
+| UID del usuario en contenedores | `1000` |
+| Firewall | `ufw` |
+| **Registry de imágenes** | **`ghcr.io/matt0pena0/ecommerce/web`** |
+| Tags de imagen | `latest` (móvil) y `sha-<short>` (inmutable, para rollback) |
+
+> La red **debe** llamarse `proxy-network` en todos los proyectos de la VPS. El nombre
+> anterior `proxy_net` está descontinuado.
 
 ---
 
@@ -182,7 +195,8 @@ docker compose up --build -d
 |----------|-------------|--------|
 | Gateway (HTTP) | 80 | Público |
 | Gateway (HTTPS) | 443 | Público |
-| Gateway (Admin) | 81 | Restringir por IP |
+| Gateway (Admin) | 81 | Solo por VPN (`tailscale0`) |
+| SSH | 22 | Solo por VPN (`tailscale0`), no público |
 | Proyectos internos | Ninguno | Solo via proxy-network |
 | DB/Cache | Ninguno | Solo red interna del proyecto |
 

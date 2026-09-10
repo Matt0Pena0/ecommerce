@@ -1,5 +1,7 @@
 name: CI
 
+# En push a main, la publicación de la imagen la realiza deploy.yml (FEAT-008).
+# Aquí el build es solo de validación: verifica que la imagen compile, sin publicar.
 on:
   push:
     branches: [main]
@@ -49,6 +51,11 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+          # El proyecto NO tiene requirements.txt ni pyproject.toml en la raíz:
+          # las dependencias viven en requirements/{base,dev,prod}.txt.
+          # Sin esta ruta explícita, la caché de pip falla al no encontrar
+          # los globs por defecto (**/requirements.txt, **/pyproject.toml).
+          cache-dependency-path: requirements/*.txt
 
       - name: Install system dependencies (mysqlclient)
         run: |
@@ -70,6 +77,15 @@ jobs:
             echo "Waiting for MySQL..."; sleep 2
           done
 
+      # Django crea una base aparte para los tests: test_<DB_NAME>. El contenedor
+      # de MySQL solo concede privilegios sobre DB_NAME, así que sin este GRANT
+      # los tests fallan con: (1044, "Access denied ... to database 'test_...'").
+      # El patrón `test_%` cubre también las bases paralelas (test_..._gw0, etc.).
+      - name: Conceder privilegios sobre la base de tests
+        run: |
+          mysql -h 127.0.0.1 -u root -p"$DB_ROOT_PASSWORD" \
+            -e "GRANT ALL PRIVILEGES ON \`test_%\`.* TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
+
       - name: Django system check
         run: python manage.py check
 
@@ -85,7 +101,7 @@ jobs:
         run: pytest -v
 
   build:
-    name: Docker build (producción)
+    name: Docker build (validación, sin push)
     runs-on: ubuntu-latest
     needs: checks
 
@@ -96,6 +112,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Valida que la imagen de producción compile. La publicación en GHCR es
+      # responsabilidad de deploy.yml (job build-and-push), que corre solo en
+      # push a main. Se comparte la caché de GHA para no duplicar trabajo.
       - name: Build production image (sin push)
         uses: docker/build-push-action@v6
         with:

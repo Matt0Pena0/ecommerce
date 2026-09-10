@@ -175,6 +175,7 @@ ecommerce/
 | FEAT-005 | Backend | API REST productos y carrito (DRF ViewSets) | DONE |
 | FEAT-006 | DevOps | Dockerización (producción + desarrollo) | DONE |
 | FEAT-007 | DevOps | Integración infra VPS (nginx interno + proxy-network) + CI/CD GitHub Actions | DONE |
+| FEAT-008 | DevOps | Despliegue vía GHCR (registry) en lugar de build en el VPS | DONE |
 
 ### Estados Válidos
 
@@ -238,6 +239,7 @@ ecommerce/
 | **Gateway central** | Nginx Proxy Manager (red `proxy-network`) |
 | **Repositorio** | `github.com/Matt0Pena0/ecommerce` |
 | **Rama de despliegue** | `main` |
+| **Acceso administrativo** | Tailscale (VPN). SSH y panel del gateway sin exposición pública. |
 
 ### Servicios (docker-compose.yml producción)
 
@@ -255,8 +257,18 @@ ecommerce/
 
 | Workflow | Trigger | Propósito |
 |----------|---------|-----------|
-| `.github/workflows/ci.yml` | push/PR a `main` | `check`, verificación de migraciones, tests, `docker build` |
-| `.github/workflows/deploy.yml` | push a `main` / manual | Deploy por SSH: `git reset --hard` + `compose up --build` + `migrate` |
+| `.github/workflows/ci.yml` | push/PR a `main` | `check`, verificación de migraciones, `pytest`, build de validación (sin push) |
+| `.github/workflows/deploy.yml` | push a `main` / manual | `build-and-push` a GHCR → `deploy` por SSH (`pull` + `up -d`) |
+
+### Estrategia de imágenes (FEAT-008)
+
+| Parámetro | Valor |
+|-----------|-------|
+| Registry | `ghcr.io/matt0pena0/ecommerce/web` |
+| Tags | `latest` (móvil), `sha-<short>` (inmutable) |
+| Build | En el runner de GitHub Actions. **El VPS no compila.** |
+| Deploy | Runner se une al tailnet (nodo efímero) → SSH a IP interna → `docker login ghcr.io` + `pull` + `up -d` |
+| Rollback | `WEB_TAG=sha-<short> docker compose up -d web` |
 
 ### Plantillas y Guías
 

@@ -13,9 +13,12 @@
 #
 # SETUP:
 #   1. La red proxy-network debe existir: docker network create proxy-network
-#   2. Crear .env.prod a partir de .env.prod.example
-#   3. docker compose up --build -d
+#   2. Crear .env.prod (ver .env.example, bloque B)
+#   3. docker login ghcr.io && docker compose pull && docker compose up -d
 #   4. En NPM: Proxy Host -> Forward Host: ecommerce-nginx, Port: 80, SSL automático
+#
+# IMAGEN: el servicio `web` NO se construye aquí. La imagen la publica GitHub
+# Actions en GHCR (ver FEAT-008). El VPS solo hace pull.
 # ==============================================================================
 
 services:
@@ -49,9 +52,12 @@ services:
   # Backend — Django + Gunicorn
   # --------------------------------------------------------------------------
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # Imagen preconstruida y publicada por GitHub Actions en GHCR.
+    # WEB_TAG permite fijar un SHA concreto para rollback:
+    #   WEB_TAG=sha-a1b2c3d docker compose up -d web
+    # El default ':-latest' evita que la variable quede vacía si no está definida.
+    image: ghcr.io/matt0pena0/ecommerce/web:${WEB_TAG:-latest}
+    pull_policy: always
     container_name: ecommerce-web
     restart: unless-stopped
     env_file: .env.prod
