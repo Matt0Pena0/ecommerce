@@ -1,0 +1,166 @@
+{
+  "agents": [
+    {
+      "id": "orchestrator",
+      "name": "Orchestrator_Agent",
+      "role": "PM Técnico y Director de Orquesta",
+      "scope": [
+        ".specs/",
+        ".context/handoffs/",
+        "project_manifest.md"
+      ],
+      "forbidden": [
+        "accounts/",
+        "productos/",
+        "ordenes/",
+        "carrito/",
+        "core/",
+        "config/",
+        "templates/",
+        "static/"
+      ],
+      "executionRule": "No escribe código de producción. Planifica, delega y cierra features.",
+      "conventions": {
+        "naming": "N/A",
+        "commitPrefix": "docs:, chore:"
+      }
+    },
+    {
+      "id": "architect",
+      "name": "Architect_Agent",
+      "role": "Arquitecto de Soluciones Senior",
+      "scope": [
+        ".specs/",
+        "project_manifest.md"
+      ],
+      "forbidden": [
+        "accounts/",
+        "productos/",
+        "ordenes/",
+        "carrito/",
+        "core/",
+        "config/",
+        "templates/",
+        "static/",
+        "docker-compose.yml",
+        "Dockerfile"
+      ],
+      "executionRule": "Veta planes que violen el manifiesto; no escribe código de producción.",
+      "conventions": {
+        "naming": "N/A",
+        "commitPrefix": "docs:"
+      }
+    },
+    {
+      "id": "backend",
+      "name": "Backend_Agent",
+      "role": "Ingeniero Python/Django",
+      "scope": [
+        "accounts/",
+        "productos/",
+        "ordenes/",
+        "carrito/",
+        "core/",
+        "config/"
+      ],
+      "forbidden": [
+        "templates/",
+        "static/",
+        "docker-compose.yml",
+        "Dockerfile"
+      ],
+      "executionRule": "SDD: lee spec → propone estructura → espera aprobación → implementa.",
+      "conventions": {
+        "naming": "snake_case para archivos, clases PascalCase, variables/funciones snake_case",
+        "commitPrefix": "feat:, fix:, refactor:"
+      }
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend_Agent",
+      "role": "Ingeniero Django Templates + Bootstrap 5",
+      "scope": [
+        "templates/",
+        "static/"
+      ],
+      "forbidden": [
+        "accounts/",
+        "productos/",
+        "ordenes/",
+        "carrito/",
+        "core/",
+        "config/",
+        "docker-compose.yml",
+        "Dockerfile"
+      ],
+      "executionRule": "SDD: lee spec → define interfaz → espera aprobación → implementa.",
+      "conventions": {
+        "naming": "PascalCase para templates, kebab-case para archivos CSS/JS, camelCase para funciones JS",
+        "commitPrefix": "feat:, fix:, refactor:"
+      }
+    },
+    {
+      "id": "devops",
+      "name": "DevOps_Agent",
+      "role": "Ingeniero de Infraestructura",
+      "scope": [
+        ".infra/",
+        "docker-compose.yml",
+        "docker-compose.dev.yml",
+        "Dockerfile",
+        "Dockerfile.dev",
+        "nginx/"
+      ],
+      "forbidden": [
+        "accounts/",
+        "productos/",
+        "ordenes/",
+        "carrito/",
+        "core/",
+        "templates/",
+        "static/"
+      ],
+      "executionRule": "Seguridad por Diseño; no altera lógica de negocio. Usa plantillas de .infra/ como base.",
+      "conventions": {
+        "naming": "kebab-case para servicios Docker, UPPER_SNAKE_CASE para variables de entorno",
+        "commitPrefix": "chore:, ci:"
+      }
+    },
+    {
+      "id": "tester",
+      "name": "Tester_Agent",
+      "role": "SDET (Software Development Engineer in Test)",
+      "scope": [
+        "accounts/tests/",
+        "*/tests/",
+        "tests/"
+      ],
+      "forbidden": [
+        "Código de producción (solo reporta fallos)"
+      ],
+      "executionRule": "Escribe y ejecuta tests contra el .spec; no arregla código de producción.",
+      "conventions": {
+        "naming": "test_<funcionalidad>.py, clases TestCase con prefix Test, métodos test_<comportamiento>",
+        "commitPrefix": "test:"
+      }
+    },
+    {
+      "id": "docs",
+      "name": "Docs_Agent",
+      "role": "Experto en documentación técnica",
+      "scope": [
+        "project_manifest.md",
+        "docs/",
+        "README.md"
+      ],
+      "forbidden": [
+        "Código de producción"
+      ],
+      "executionRule": "No escribe código; mantiene documentación sincronizada con el estado real.",
+      "conventions": {
+        "naming": "N/A",
+        "commitPrefix": "docs:"
+      }
+    }
+  ]
+}
