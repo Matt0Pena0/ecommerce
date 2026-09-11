@@ -28,12 +28,8 @@ services:
   # --------------------------------------------------------------------------
   db:
     image: mysql:8.0
-    container_name: ecommerce-db
+    container_name: ecommerce_db # ecommerce-db
     restart: unless-stopped
-    # IMPORTANTE: las variables MYSQL_* se definen en .env.prod y se inyectan vía
-    # env_file. NO usar un bloque `environment:` con ${...} aquí: la interpolación
-    # de Compose lee ./.env (o --env-file), NO env_file, y `environment` tiene
-    # precedencia sobre `env_file` — resultaría en credenciales vacías.
     env_file: .env.prod
     volumes:
       - ./data/mysql:/var/lib/mysql
@@ -45,8 +41,8 @@ services:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 20s
+      retries: 10
+      start_period: 180s
 
   # --------------------------------------------------------------------------
   # Backend — Django + Gunicorn
@@ -58,7 +54,7 @@ services:
     # El default ':-latest' evita que la variable quede vacía si no está definida.
     image: ghcr.io/matt0pena0/ecommerce/web:${WEB_TAG:-latest}
     pull_policy: always
-    container_name: ecommerce-web
+    container_name: ecommerce_web
     restart: unless-stopped
     env_file: .env.prod
     expose:

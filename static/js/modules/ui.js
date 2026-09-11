@@ -50,7 +50,7 @@ export const UIRenderer = {
                     <div class="card-body d-flex flex-column px-2 pt-1 pb-0">
                         <div class="my-0" style="min-height: 4rem;">
                             <p class="card-title my-0 text-truncate-2" title="${p.nombre}">${p.nombre}</p>
-                            <p class="text-muted text-truncate-2">${p.marca_nombre || ''}</p>
+                            <p class="text-muted text-truncate-2">${p.marca_nombre || ''} | ${p.unidad_nombre || 'Unid.'}</p>
                         </div>
                         <div class="align-items-center mx-auto mt-2" style="height: 1.5em;">
                             <span class="fw-bold">$${p.precio_unitario}</span>

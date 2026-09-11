@@ -1,530 +1,1874 @@
 [
-  {
-    "nombre": "Servilletas",
-    "unidad": "unidad",
-    "marca": "Nova",
-    "descripcion": "doble hoja grande"
-  },
-  {
-    "nombre": "Servilletas",
-    "unidad": "unidad",
-    "marca": "Nova",
-    "descripcion": "doble hoja de 100mts"
-  },
-  {
-    "nombre": "Servilletas",
-    "unidad": "unidad",
-    "marca": "Nova",
-    "descripcion": "gigante"
-  },
-  {
-    "nombre": "Papel higiénico",
-    "unidad": "unidad",
-    "marca": "Sublime",
-    "descripcion": "doble hoja"
-  },
-  {
-    "nombre": "Papel higiénico",
-    "unidad": "unidad",
-    "marca": "Sublime",
-    "descripcion": "PH sublime azul"
-  },
-  {
-    "nombre": "Aceite",
-    "unidad": "unidad",
-    "marca": "Óptimo",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Jabón en polvo",
-    "unidad": "unidad",
-    "marca": "Gramby",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Suavizante",
-    "unidad": "unidad",
-    "marca": "Confort",
-    "descripcion": "naranja"
-  },
-  {
-    "nombre": "Lavandina",
-    "unidad": "unidad",
-    "marca": "Jane",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Detergente",
-    "unidad": "unidad",
-    "marca": "CIF",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Arroz",
-    "unidad": "unidad",
-    "marca": "Parboiled",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Arroz",
-    "unidad": "unidad",
-    "marca": "Saman",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Arroz",
-    "unidad": "unidad",
-    "marca": "Carnaroli",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Manteca",
-    "unidad": "unidad",
-    "marca": "Conaprole",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Manteca",
-    "unidad": "unidad",
-    "marca": "Conaprole",
-    "descripcion": "de 200g"
-  },
-  {
-    "nombre": "Pan lactal",
-    "unidad": "unidad",
-    "marca": "Los Sorchantes",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Pan lactal",
-    "unidad": "unidad",
-    "marca": "Bimbo",
-    "descripcion": "de semillas"
-  },
-  {
-    "nombre": "Pan lactal",
-    "unidad": "unidad",
-    "marca": "Bimbo Vital",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Pan rayado",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Requesón",
-    "unidad": "unidad",
-    "marca": "Conaprole",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Queso Philadelphia",
-    "unidad": "unidad",
-    "marca": "Philadelphia",
-    "descripcion": "original"
-  },
-  {
-    "nombre": "Queso Philadelphia",
-    "unidad": "unidad",
-    "marca": "Philadelphia",
-    "descripcion": "común"
-  },
-  {
-    "nombre": "Pulpa de tomate",
-    "unidad": "unidad",
-    "marca": "Conaprole",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Harina 0000",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Mayonesa",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "tipo casera"
-  },
-  {
-    "nombre": "Mayonesa",
-    "unidad": "unidad",
-    "marca": "Hellmans",
-    "descripcion": "casera"
-  },
-  {
-    "nombre": "Mayonesa",
-    "unidad": "unidad",
-    "marca": "Hellmans",
-    "descripcion": "azul"
-  },
-  {
-    "nombre": "Ketchup",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Mostaza",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Azúcar",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Vascolet",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Vascolet",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "oreo"
-  },
-  {
-    "nombre": "Tallarines",
-    "unidad": "unidad",
-    "marca": "Cololo",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Tirabuzones",
-    "unidad": "unidad",
-    "marca": "Adria",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Suavizante",
-    "unidad": "unidad",
-    "marca": "Downy",
-    "descripcion": "rosado"
-  },
-  {
-    "nombre": "Fundas de leche",
-    "unidad": "unidad",
-    "marca": "Parmalat",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Fundas de leche",
-    "unidad": "unidad",
-    "marca": "Parmalat",
-    "descripcion": "de 6"
-  },
-  {
-    "nombre": "Talco corporal",
-    "unidad": "unidad",
-    "marca": "Sr Selby",
-    "descripcion": "perfumado"
-  },
-  {
-    "nombre": "Talco para pies",
-    "unidad": "unidad",
-    "marca": "Xabapie",
-    "descripcion": "frasco grande"
-  },
-  {
-    "nombre": "Desodorante",
-    "unidad": "unidad",
-    "marca": "Dove",
-    "descripcion": "coco"
-  },
-  {
-    "nombre": "Desodorante",
-    "unidad": "unidad",
-    "marca": "Old Spice",
-    "descripcion": "negro vip"
-  },
-  {
-    "nombre": "Desodorante",
-    "unidad": "unidad",
-    "marca": "Rexona",
-    "descripcion": "odorno en crema"
-  },
-  {
-    "nombre": "Desodorante",
-    "unidad": "unidad",
-    "marca": "Rexona",
-    "descripcion": "sensitive en crema"
-  },
-  {
-    "nombre": "Limpiador Pato",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "para inodoro floral"
-  },
-  {
-    "nombre": "Galletas",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "cerealitas de arroz"
-  },
-  {
-    "nombre": "Fideos",
-    "unidad": "unidad",
-    "marca": "Adria",
-    "descripcion": "colita de chancho"
-  },
-  {
-    "nombre": "Fideos",
-    "unidad": "unidad",
-    "marca": "Adria",
-    "descripcion": "moñas"
-  },
-  {
-    "nombre": "Polenta",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Pasta de dientes",
-    "unidad": "unidad",
-    "marca": "Colgate",
-    "descripcion": "max white blanca grande"
-  },
-  {
-    "nombre": "Pasta de dientes",
-    "unidad": "unidad",
-    "marca": "Colgate",
-    "descripcion": "grande triple acción"
-  },
-  {
-    "nombre": "Galletas",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "malteada la trigueña"
-  },
-  {
-    "nombre": "Raid",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "mata moscas y mosquitos"
-  },
-  {
-    "nombre": "Raid",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "mata cucarachas"
-  },
-  {
-    "nombre": "Pastillas de mosquitos",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Salsa de soja",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Papel de cocina",
-    "unidad": "unidad",
-    "marca": "Nova",
-    "descripcion": "doble hoja"
-  },
-  {
-    "nombre": "Royal",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "de 200g"
-  },
-  {
-    "nombre": "Levadura instantánea",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "caja"
-  },
-  {
-    "nombre": "Dulce de leche",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "manjar"
-  },
-  {
-    "nombre": "Suavizante",
-    "unidad": "unidad",
-    "marca": "Confort",
-    "descripcion": "rosado o naranja"
-  },
-  {
-    "nombre": "Sal fina",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Maicena",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Palillos de plástico",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Ajo deshidratado",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Repuesto líquido para aparato de mosquitos",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Veneno para cucarachas",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "casitas"
-  },
-  {
-    "nombre": "Acondicionador",
-    "unidad": "unidad",
-    "marca": "Treseme",
-    "descripcion": "880ml"
-  },
-  {
-    "nombre": "Detergente",
-    "unidad": "unidad",
-    "marca": "Axion",
-    "descripcion": "2lt"
-  },
-  {
-    "nombre": "Aceto balsámico",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Shampoo y acondicionador",
-    "unidad": "unidad",
-    "marca": "Elvive",
-    "descripcion": "grande óleo"
-  },
-  {
-    "nombre": "Shampoo y acondicionador",
-    "unidad": "unidad",
-    "marca": "Elvive",
-    "descripcion": "400ml óleo extraordinario"
-  },
-  {
-    "nombre": "Bidón de 5L",
-    "unidad": "unidad",
-    "marca": "CIF",
-    "descripcion": "perfumol rosado"
-  },
-  {
-    "nombre": "Bidón de 5L",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "de aceite"
-  },
-  {
-    "nombre": "Aguajane",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Fideos",
-    "unidad": "unidad",
-    "marca": "Adria",
-    "descripcion": "mostacholitos"
-  },
-  {
-    "nombre": "Calditos de verduras",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "caja de 12"
-  },
-  {
-    "nombre": "Rapiditas",
-    "unidad": "unidad",
-    "marca": "Bimbo",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Aerosol Lysoform",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Calditos de gallina",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "caja de 12"
-  },
-  {
-    "nombre": "Calditos de panceta",
-    "unidad": "unidad",
-    "marca": "",
-    "descripcion": "caja de 12"
-  },
-  {
-    "nombre": "Aromatizador",
-    "unidad": "unidad",
-    "marca": "Glade",
-    "descripcion": "de vainilla"
-  },
-  {
-    "nombre": "Bolsitas",
-    "unidad": "Rollo",
-    "marca": "",
-    "descripcion": "de 24x34"
-  },
-  {
-    "nombre": "Bolsitas",
-    "unidad": "Rollo",
-    "marca": "",
-    "descripcion": "de 38x38"
-  },
-  {
-    "nombre": "Puré instantáneo",
-    "unidad": "500g",
-    "marca": "",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Queso crema",
-    "unidad": "unidad",
-    "marca": "Casan cream",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Corbatitas",
-    "unidad": "Kg",
-    "marca": "Adria",
-    "descripcion": ""
-  },
-  {
-    "nombre": "Nylon film",
-    "unidad": "Rollo",
-    "marca": "",
-    "descripcion": "de 28 cm"
-  },
-  {
-    "nombre": "Leche chocolatada",
-    "unidad": "Lt",
-    "marca": "Conaprole",
-    "descripcion": ""
-  }
+    {
+        "id": 1,
+        "codigo": "1001",
+        "nombre": "Aceite de Oliva Extra Virgen",
+        "marca": "El Cerrito",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 636.11,
+        "descripcion": "Aceite de oliva extra virgen de primera prensada en frío. Botella de 1 Lt.",
+        "stock": 100,
+        "raw_factura": "ACEITE DE OLIVA EL CERRITO E.VIRGEN 1 LT"
+    },
+    {
+        "id": 2,
+        "codigo": "1002",
+        "nombre": "Aceite de Oliva de Orujo",
+        "marca": "Emigrante",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 300.98,
+        "descripcion": "Aceite de oliva refinado de orujo de oliva. Botella de 1 Lt.",
+        "stock": 100,
+        "raw_factura": "ACEITE DE OLIVA EMIGRANTE DE ORUJO 1L."
+    },
+    {
+        "id": 3,
+        "codigo": "1003",
+        "nombre": "Aceite de Mesa",
+        "marca": "Óptimo",
+        "categoria": "Almacén",
+        "unidad_medida": "Bidón de 5L",
+        "precio_unitario": 514.17,
+        "descripcion": "Aceite comestible vegetal de mesa, presentación bidón familiar.",
+        "stock": 100,
+        "raw_factura": "ACEITE OPTIMO 5 LTS."
+    },
+    {
+        "id": 4,
+        "codigo": "1004",
+        "nombre": "Lavandina Desinfectante Clásica",
+        "marca": "Agua Jane",
+        "categoria": "Limpieza",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 76.28,
+        "descripcion": "Lavandina concentrada desinfectante clásica.",
+        "stock": 100,
+        "raw_factura": "AGUA JANE 1 LT."
+    },
+    {
+        "id": 5,
+        "codigo": "1005",
+        "nombre": "Lavandina Desinfectante Clásica",
+        "marca": "Agua Jane",
+        "categoria": "Limpieza",
+        "unidad_medida": "2 Lt",
+        "precio_unitario": 129.04,
+        "descripcion": "Lavandina concentrada desinfectante clásica en envase económico.",
+        "stock": 100,
+        "raw_factura": "AGUA JANE 2 LT."
+    },
+    {
+        "id": 6,
+        "codigo": "1006",
+        "nombre": "Arroz Parboiled",
+        "marca": "Saman",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 44.59,
+        "descripcion": "Arroz parboiled de grano largo, no se pasa ni se pega.",
+        "stock": 100,
+        "raw_factura": "ARROZ SAMAN PARBOILED 1 KG."
+    },
+    {
+        "id": 7,
+        "codigo": "1007",
+        "nombre": "Arroz Parboiled",
+        "marca": "Saman",
+        "categoria": "Almacén",
+        "unidad_medida": "5 Kg",
+        "precio_unitario": 279.2,
+        "descripcion": "Arroz parboiled grano largo bolsa económica familiar.",
+        "stock": 100,
+        "raw_factura": "ARROZ SAMAN PARBOILED 5 KGS."
+    },
+    {
+        "id": 8,
+        "codigo": "1008",
+        "nombre": "Lomitos de Atún al Natural",
+        "marca": "Río de la Plata",
+        "categoria": "Almacén",
+        "unidad_medida": "170 g",
+        "precio_unitario": 121.75,
+        "descripcion": "Lomitos de atún al natural en agua y sal.",
+        "stock": 100,
+        "raw_factura": "ATUN RIO DE LA PLATA AL NATURAL 170 GRS."
+    },
+    {
+        "id": 9,
+        "codigo": "1009",
+        "nombre": "Avena Instantánea Lámina Fina",
+        "marca": "Puritas",
+        "categoria": "Almacén",
+        "unidad_medida": "800 g",
+        "precio_unitario": 105.97,
+        "descripcion": "Avena tradicional en hojuelas lámina fina seleccionada.",
+        "stock": 100,
+        "raw_factura": "AVENA PURITAS LAMINA FINA 800 GRS."
+    },
+    {
+        "id": 10,
+        "codigo": "1010",
+        "nombre": "Azúcar Blanco Común",
+        "marca": "Bella Unión",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 42.0,
+        "descripcion": "Azúcar blanco estándar refinado de caña natural.",
+        "stock": 100,
+        "raw_factura": "AZUCAR BELLA UNION 1 KG."
+    },
+    {
+        "id": 11,
+        "codigo": "1011",
+        "nombre": "Bolsas de Polietileno en Rollo",
+        "marca": "Roll",
+        "categoria": "Limpieza",
+        "unidad_medida": "24x35 cm",
+        "precio_unitario": 437.82,
+        "descripcion": "Bolsas plásticas transparentes en rollo punteado medidas 24 x 35 cm.",
+        "stock": 100,
+        "raw_factura": "BOLSAS P.ROLL 24 X 35 R"
+    },
+    {
+        "id": 12,
+        "codigo": "1012",
+        "nombre": "Caldos de Carne en Cubos",
+        "marca": "Knorr",
+        "categoria": "Almacén",
+        "unidad_medida": "Caja x 12",
+        "precio_unitario": 67.14,
+        "descripcion": "Cubos de caldo concentrado sabor carne para sopas y guisados.",
+        "stock": 100,
+        "raw_factura": "CALDOS KNORR 12 CUBOS CARNE NVO."
+    },
+    {
+        "id": 13,
+        "codigo": "1013",
+        "nombre": "Caldos de Gallina en Cubos",
+        "marca": "Knorr",
+        "categoria": "Almacén",
+        "unidad_medida": "Caja x 12",
+        "precio_unitario": 67.14,
+        "descripcion": "Cubos de caldo concentrado sabor gallina para sopas y salsas.",
+        "stock": 100,
+        "raw_factura": "CALDOS KNORR 12 CUBOS GALLINA NVO."
+    },
+    {
+        "id": 14,
+        "codigo": "1014",
+        "nombre": "Caldos de Verduras en Cubos",
+        "marca": "Knorr",
+        "categoria": "Almacén",
+        "unidad_medida": "Caja x 12",
+        "precio_unitario": 67.14,
+        "descripcion": "Cubos de caldo concentrado sabor verduras de la huerta.",
+        "stock": 100,
+        "raw_factura": "CALDOS KNORR 12 CUBOS VERDURAS NVO."
+    },
+    {
+        "id": 15,
+        "codigo": "1015",
+        "nombre": "Garbanzos Seleccionados",
+        "marca": "Cefa",
+        "categoria": "Almacén",
+        "unidad_medida": "300 g",
+        "precio_unitario": 31.22,
+        "descripcion": "Garbanzos secos seleccionados calidad premium.",
+        "stock": 100,
+        "raw_factura": "CEFA GARBANZOS 300 GRS."
+    },
+    {
+        "id": 16,
+        "codigo": "1016",
+        "nombre": "Porotos Frutilla",
+        "marca": "Cefa",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 63.82,
+        "descripcion": "Porotos secos variedad frutilla de cocción tierna.",
+        "stock": 100,
+        "raw_factura": "CEFA POROTOS FRUTILLA 500 GRS."
+    },
+    {
+        "id": 17,
+        "codigo": "1017",
+        "nombre": "Champú y Acondicionador Probióticos",
+        "marca": "Fructis",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "350 ml",
+        "precio_unitario": 221.7,
+        "descripcion": "Champú con acondicionador fortificante con probióticos y extractos frutales.",
+        "stock": 100,
+        "raw_factura": "CHAMPU FRUCTIS ACOND. PROBIOTICOS 350 ML"
+    },
+    {
+        "id": 18,
+        "codigo": "1018",
+        "nombre": "Champú Clásico No Más Lágrimas",
+        "marca": "Johnson's",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "750 ml",
+        "precio_unitario": 683.71,
+        "descripcion": "Champú para bebés y niños fórmula suave No Más Lágrimas.",
+        "stock": 100,
+        "raw_factura": "CHAMPU JOHNSON'S CLASICO 750 ML."
+    },
+    {
+        "id": 19,
+        "codigo": "1019",
+        "nombre": "Champú Restauración + Acondicionador",
+        "marca": "Pantene",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "Pack ahorro",
+        "precio_unitario": 549.64,
+        "descripcion": "Pack ahorro: Champú Pantene Pro-V Restauración 700 ml + Acondicionador 200 ml de regalo.",
+        "stock": 100,
+        "raw_factura": "CHAMPU PANTENE RESTAURA.700ML.+ACO 200ML"
+    },
+    {
+        "id": 20,
+        "codigo": "1020",
+        "nombre": "Champú y Acondicionador Efecto Botox",
+        "marca": "TRESemmé",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "880 ml",
+        "precio_unitario": 410.17,
+        "descripcion": "Champú con acondicionador blindaje y brillo efecto botox capilar.",
+        "stock": 100,
+        "raw_factura": "CHAMPU TRESEMME ACOND. LI.EF.BOTOX.880ML"
+    },
+    {
+        "id": 21,
+        "codigo": "1021",
+        "nombre": "Crema de Leche Natural",
+        "marca": "Colonial",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "500 cc",
+        "precio_unitario": 89.3,
+        "descripcion": "Crema de leche fresca natural Granja Pocha Colonial.",
+        "stock": 100,
+        "raw_factura": "CREMA DE LECHE COLONIAL G.P. 500 C.C."
+    },
+    {
+        "id": 22,
+        "codigo": "1022",
+        "nombre": "Crema de Leche Larga Vida UHT",
+        "marca": "La Serenísima",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "200 ml",
+        "precio_unitario": 93.69,
+        "descripcion": "Crema de leche UHT homogeneizada larga vida envase brik.",
+        "stock": 100,
+        "raw_factura": "CREMA DE LECHE LA SERENISIMA L.VID.200ML"
+    },
+    {
+        "id": 23,
+        "codigo": "1023",
+        "nombre": "Crema Dental Máxima Protección Anticaries",
+        "marca": "Colgate",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "180 g",
+        "precio_unitario": 91.57,
+        "descripcion": "Pasta de dientes con calcio y flúor para protección familiar anticaries.",
+        "stock": 100,
+        "raw_factura": "CREMA DENTAL COLGATE C/CALCIO 180 GRS."
+    },
+    {
+        "id": 24,
+        "codigo": "1024",
+        "nombre": "Crema Dental Max White Crystal Mint",
+        "marca": "Colgate",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "220 g",
+        "precio_unitario": 129.12,
+        "descripcion": "Pasta dental blanqueadora con microcristales refrescantes Crystal Mint.",
+        "stock": 100,
+        "raw_factura": "CREMA DENTAL COLGATE MAX WHITE 220 GRS."
+    },
+    {
+        "id": 25,
+        "codigo": "1025",
+        "nombre": "Crema Dental Triple Acción",
+        "marca": "Colgate",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "180 g",
+        "precio_unitario": 171.51,
+        "descripcion": "Pasta dental protección anticaries, blancura natural y aliento fresco.",
+        "stock": 100,
+        "raw_factura": "CREMA DENTAL COLGATE TRIPLE ACCION 180GR"
+    },
+    {
+        "id": 26,
+        "codigo": "1026",
+        "nombre": "Desinfectante en Aerosol Frutal",
+        "marca": "Lysoform",
+        "categoria": "Limpieza",
+        "unidad_medida": "360 cc",
+        "precio_unitario": 194.21,
+        "descripcion": "Desinfectante de ambientes y superficies en aerosol fragancia frutal.",
+        "stock": 100,
+        "raw_factura": "DESINFECTANTE LYSOFORM FRUTAL 360 C.C"
+    },
+    {
+        "id": 27,
+        "codigo": "1027",
+        "nombre": "Desinfectante en Aerosol Original",
+        "marca": "Lysoform",
+        "categoria": "Limpieza",
+        "unidad_medida": "360 cc",
+        "precio_unitario": 191.74,
+        "descripcion": "Aerosol desinfectante antibacteriano y antiviral fragancia clásica original.",
+        "stock": 100,
+        "raw_factura": "DESINFECTANTE LYSOFORM ORIGINAL 360 C.C."
+    },
+    {
+        "id": 28,
+        "codigo": "1028",
+        "nombre": "Desinfectante en Aerosol Original",
+        "marca": "Lysoform",
+        "categoria": "Limpieza",
+        "unidad_medida": "495 cc",
+        "precio_unitario": 266.88,
+        "descripcion": "Aerosol desinfectante tamaño familiar original 495 cc.",
+        "stock": 100,
+        "raw_factura": "DESINFECTANTE LYSOFORM ORIGINAL 495 CC"
+    },
+    {
+        "id": 29,
+        "codigo": "1029",
+        "nombre": "Aromatizador Automático Repuesto Caricias de Algodón",
+        "marca": "Glade",
+        "categoria": "Limpieza",
+        "unidad_medida": "unidad",
+        "precio_unitario": 252.15,
+        "descripcion": "Repuesto para difusor automático Glade fragancia Caricias de Algodón.",
+        "stock": 100,
+        "raw_factura": "DESOD. AMBIENTAL GLADE AUTOM.REP.CAR/ALG"
+    },
+    {
+        "id": 30,
+        "codigo": "1030",
+        "nombre": "Desodorante Antitranspirante Granada & Verbena",
+        "marca": "Dove",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "150 ml",
+        "precio_unitario": 192.71,
+        "descripcion": "Antitranspirante femenino en aerosol Go Fresh Granada & Verbena con 1/4 crema humectante.",
+        "stock": 100,
+        "raw_factura": "DESOD. DOVE F SPRAY AP 150ML GRAN&VERBE."
+    },
+    {
+        "id": 31,
+        "codigo": "1031",
+        "nombre": "Pastillas para Cisterna Mochila",
+        "marca": "Pato",
+        "categoria": "Limpieza",
+        "unidad_medida": "Pack de 2",
+        "precio_unitario": 258.81,
+        "descripcion": "Pastillas limpiadoras automáticas y aromatizantes para cisterna mochila.",
+        "stock": 100,
+        "raw_factura": "DESOD. INOD. PATO P/CISTERNA MOCHILA X 2"
+    },
+    {
+        "id": 32,
+        "codigo": "1032",
+        "nombre": "Pastilla para Inodoro Canasta Lavanda",
+        "marca": "Pato",
+        "categoria": "Limpieza",
+        "unidad_medida": "unidad",
+        "precio_unitario": 62.32,
+        "descripcion": "Pastilla aromatizante y desodorizante para inodoro fragancia Lavanda.",
+        "stock": 100,
+        "raw_factura": "DESOD. INOD. PATO PASTILLA LAVANDA X 1"
+    },
+    {
+        "id": 33,
+        "codigo": "1033",
+        "nombre": "Desodorante Body Spray Showtime",
+        "marca": "Old Spice",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "96 g",
+        "precio_unitario": 163.94,
+        "descripcion": "Desodorante corporal masculino en spray fragancia Showtime.",
+        "stock": 100,
+        "raw_factura": "DESOD. OLD SPICE SPRAY DEO SHOWTIME 96GR"
+    },
+    {
+        "id": 34,
+        "codigo": "1034",
+        "nombre": "Desodorante Body Spray V.I.P",
+        "marca": "Old Spice",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "96 g",
+        "precio_unitario": 163.94,
+        "descripcion": "Desodorante corporal masculino en spray fragancia VIP elegancia y frescura.",
+        "stock": 100,
+        "raw_factura": "DESOD. OLD SPICE SPRAY DEO V.I.P 96 GRS"
+    },
+    {
+        "id": 35,
+        "codigo": "1035",
+        "nombre": "Desodorante Antitranspirante Odorono Crema",
+        "marca": "Rexona",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "60 g",
+        "precio_unitario": 115.24,
+        "descripcion": "Antitranspirante clásico en crema Odorono pote 60 g.",
+        "stock": 100,
+        "raw_factura": "DESOD. REXONA AP ODORONO POTE 60 GRS"
+    },
+    {
+        "id": 36,
+        "codigo": "1036",
+        "nombre": "Desodorante Antitranspirante Nutritivo",
+        "marca": "Rexona",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "150 ml",
+        "precio_unitario": 160.47,
+        "descripcion": "Antitranspirante en aerosol femenino con nutrientes para la piel.",
+        "stock": 100,
+        "raw_factura": "DESOD. REXONA F SPRAY AP NUTR. 150 ML."
+    },
+    {
+        "id": 37,
+        "codigo": "1037",
+        "nombre": "Detergente Lavavajillas Bioactive Lima",
+        "marca": "CIF",
+        "categoria": "Limpieza",
+        "unidad_medida": "1.25 L",
+        "precio_unitario": 241.11,
+        "descripcion": "Detergente lavavajilla ultraconcentrado Bioactive aroma lima.",
+        "stock": 100,
+        "raw_factura": "DETERGENTE CIF BIOACTIVE LIMA 1,25 LTS."
+    },
+    {
+        "id": 38,
+        "codigo": "1038",
+        "nombre": "Detergente Lavavajillas Bioactive Lima",
+        "marca": "CIF",
+        "categoria": "Limpieza",
+        "unidad_medida": "500 ml",
+        "precio_unitario": 122.82,
+        "descripcion": "Detergente lavavajilla concentrado Bioactive aroma lima.",
+        "stock": 100,
+        "raw_factura": "DETERGENTE CIF BIOACTIVE LIMA 500 ML"
+    },
+    {
+        "id": 39,
+        "codigo": "1039",
+        "nombre": "Detergente Lavavajillas Aloe Vera",
+        "marca": "Nevex",
+        "categoria": "Limpieza",
+        "unidad_medida": "1.25 L",
+        "precio_unitario": 131.61,
+        "descripcion": "Detergente líquido lavavajillas suave para manos con aloe vera.",
+        "stock": 100,
+        "raw_factura": "DETERGENTE NEVEX ALOE VERA 1,250 CC"
+    },
+    {
+        "id": 40,
+        "codigo": "1040",
+        "nombre": "Detergente Lavavajillas Frutas Cítricas",
+        "marca": "Nevex",
+        "categoria": "Limpieza",
+        "unidad_medida": "1.25 L",
+        "precio_unitario": 125.96,
+        "descripcion": "Detergente líquido lavavajillas clásico con aroma a frutas cítricas.",
+        "stock": 100,
+        "raw_factura": "DETERGENTE NEVEX FRUTAS CIT.CLAS 1250 CC"
+    },
+    {
+        "id": 41,
+        "codigo": "1041",
+        "nombre": "Detergente Lavavajillas con Glicerina",
+        "marca": "Nevex",
+        "categoria": "Limpieza",
+        "unidad_medida": "1.25 L",
+        "precio_unitario": 131.61,
+        "descripcion": "Detergente líquido para vajilla fórmula humectante con glicerina.",
+        "stock": 100,
+        "raw_factura": "DETERGENTE NEVEX GLICERINA 1,250 CC"
+    },
+    {
+        "id": 42,
+        "codigo": "1042",
+        "nombre": "Dulce de Leche Tradicional",
+        "marca": "Manjar",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 167.12,
+        "descripcion": "Dulce de leche clásico uruguayo pote familiar de 1 Kg.",
+        "stock": 100,
+        "raw_factura": "DULCE DE LECHE MANJAR 1 KG."
+    },
+    {
+        "id": 43,
+        "codigo": "1043",
+        "nombre": "Especia Curry en Polvo",
+        "marca": "La Manchega",
+        "categoria": "Almacén",
+        "unidad_medida": "25 g",
+        "precio_unitario": 50.53,
+        "descripcion": "Mezcla de especias aromáticas tipo curry sobre 25 g.",
+        "stock": 100,
+        "raw_factura": "E. CURRY LA MANCHEGA 25 GRS."
+    },
+    {
+        "id": 44,
+        "codigo": "1044",
+        "nombre": "Esponja de Aluminio en Madeja",
+        "marca": "Jaspe",
+        "categoria": "Limpieza",
+        "unidad_medida": "30 g",
+        "precio_unitario": 29.95,
+        "descripcion": "Esponja espiral metálica de aluminio para ollas y suciedad difícil.",
+        "stock": 100,
+        "raw_factura": "ESPONJA JASPE ALUMINIO MADEJA 30G.300783"
+    },
+    {
+        "id": 45,
+        "codigo": "1045",
+        "nombre": "Fideos al Huevo Alfabeto",
+        "marca": "Adria",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 74.2,
+        "descripcion": "Pasta seca tradicional al huevo Adria variedad Alfabeto.",
+        "stock": 100,
+        "raw_factura": "FIDEOS ADRIA AL HUEVO ALFABETO 500 GRS."
+    },
+    {
+        "id": 46,
+        "codigo": "1046",
+        "nombre": "Fideos al Huevo Caracoles",
+        "marca": "Adria",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 74.2,
+        "descripcion": "Pasta seca tradicional al huevo Adria variedad Caracoles.",
+        "stock": 100,
+        "raw_factura": "FIDEOS ADRIA AL HUEVO CARACOLES 500 GRS."
+    },
+    {
+        "id": 47,
+        "codigo": "1047",
+        "nombre": "Fideos al Huevo Estrellitas",
+        "marca": "Adria",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 74.2,
+        "descripcion": "Pasta seca tradicional al huevo Adria variedad Estrellitas.",
+        "stock": 100,
+        "raw_factura": "FIDEOS ADRIA AL HUEVO ESTRELLITAS 500 G."
+    },
+    {
+        "id": 48,
+        "codigo": "1048",
+        "nombre": "Fideos al Huevo Mostacholes",
+        "marca": "Adria",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 74.2,
+        "descripcion": "Pasta seca tradicional al huevo Adria variedad Mostacholes.",
+        "stock": 100,
+        "raw_factura": "FIDEOS ADRIA AL HUEVO MOSTACHOLES 500 G."
+    },
+    {
+        "id": 49,
+        "codigo": "1049",
+        "nombre": "Fideos al Huevo Moñitas",
+        "marca": "Adria",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 74.2,
+        "descripcion": "Pasta seca tradicional al huevo Adria variedad Moñitas.",
+        "stock": 100,
+        "raw_factura": "FIDEOS ADRIA AL HUEVO MOÑITAS 500 GRS."
+    },
+    {
+        "id": 50,
+        "codigo": "1050",
+        "nombre": "Fideos al Huevo Tirabuzón",
+        "marca": "Adria",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 74.2,
+        "descripcion": "Pasta seca tradicional al huevo Adria variedad Tirabuzón.",
+        "stock": 100,
+        "raw_factura": "FIDEOS ADRIA AL HUEVO TIRABUZON 500 GRS."
+    },
+    {
+        "id": 51,
+        "codigo": "1051",
+        "nombre": "Fideos Tallarines Medianos",
+        "marca": "Cololo",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 63.76,
+        "descripcion": "Pasta seca al huevo tipo tallarín medio Cololo.",
+        "stock": 100,
+        "raw_factura": "FIDEOS COLOLO TALLARIN MED. 500 GRS."
+    },
+    {
+        "id": 52,
+        "codigo": "1052",
+        "nombre": "Galletitas de Arroz Crocantes",
+        "marca": "Cerealitas",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "160 g",
+        "precio_unitario": 118.88,
+        "descripcion": "Galletitas horneadas crocantes a base de harina de arroz.",
+        "stock": 100,
+        "raw_factura": "GALL. CEREALITAS.S.ARROZ 160 GRS."
+    },
+    {
+        "id": 53,
+        "codigo": "1053",
+        "nombre": "Galletas Malteadas Clásicas",
+        "marca": "La Trigueña",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "500 g",
+        "precio_unitario": 128.31,
+        "descripcion": "Galletas crocantes de agua sabor malteada tradicional.",
+        "stock": 100,
+        "raw_factura": "GALL. LA TRIGUEÑA.S.MALTEADA 500 GRS."
+    },
+    {
+        "id": 54,
+        "codigo": "1054",
+        "nombre": "Galletas Marinas de Agua",
+        "marca": "La Trigueña",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "500 g",
+        "precio_unitario": 128.31,
+        "descripcion": "Galletas de mesa tipo marina crocantes La Trigueña.",
+        "stock": 100,
+        "raw_factura": "GALL. LA TRIGUEÑA.S.MARINA 500 GRS."
+    },
+    {
+        "id": 55,
+        "codigo": "1055",
+        "nombre": "Obleas Waffle Rellenas Chocolate",
+        "marca": "Portezuelo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "80 g",
+        "precio_unitario": 23.91,
+        "descripcion": "Obleas crujientes rellenas con suave crema sabor Chocolate.",
+        "stock": 100,
+        "raw_factura": "GALL. PORTEZUELO WAFFLE CHOCOLATE 80 GRS"
+    },
+    {
+        "id": 56,
+        "codigo": "1056",
+        "nombre": "Obleas Waffle Rellenas Dulce de Leche",
+        "marca": "Portezuelo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "80 g",
+        "precio_unitario": 22.59,
+        "descripcion": "Obleas crujientes rellenas con suave crema sabor Dulce de Leche.",
+        "stock": 100,
+        "raw_factura": "GALL. PORTEZUELO WAFFLE D.D.LECHE 80 GRS"
+    },
+    {
+        "id": 57,
+        "codigo": "1057",
+        "nombre": "Obleas Waffle Rellenas Frutilla",
+        "marca": "Portezuelo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "80 g",
+        "precio_unitario": 23.91,
+        "descripcion": "Obleas crujientes rellenas con suave crema sabor Frutilla.",
+        "stock": 100,
+        "raw_factura": "GALL. PORTEZUELO WAFFLE FRUTILLA 80 GRS"
+    },
+    {
+        "id": 58,
+        "codigo": "1058",
+        "nombre": "Obleas Waffle Rellenas Limón",
+        "marca": "Portezuelo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "80 g",
+        "precio_unitario": 22.59,
+        "descripcion": "Obleas crujientes rellenas con suave crema sabor Limón.",
+        "stock": 100,
+        "raw_factura": "GALL. PORTEZUELO WAFFLE LIMON 80 GRS"
+    },
+    {
+        "id": 59,
+        "codigo": "1059",
+        "nombre": "Garbanzos Seleccionados",
+        "marca": "Cololo",
+        "categoria": "Almacén",
+        "unidad_medida": "400 g",
+        "precio_unitario": 44.03,
+        "descripcion": "Garbanzos secos seleccionados primera calidad.",
+        "stock": 100,
+        "raw_factura": "GARBANZOS COLOLO 400 GRS."
+    },
+    {
+        "id": 60,
+        "codigo": "1060",
+        "nombre": "Gelatina Sabor Cereza",
+        "marca": "Conaprole",
+        "categoria": "Almacén",
+        "unidad_medida": "Pack de 2",
+        "precio_unitario": 42.23,
+        "descripcion": "Polvo para preparar postre de gelatina sabor cereza pack x 2 unidades de 104 g.",
+        "stock": 100,
+        "raw_factura": "GELATINA CONAPROLE CEREZA 104 GRS.X 2"
+    },
+    {
+        "id": 61,
+        "codigo": "1061",
+        "nombre": "Harina de Trigo 0000",
+        "marca": "Molino Central",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 39.9,
+        "descripcion": "Harina de trigo pura 0000 ultra refinada para masas y repostería.",
+        "stock": 100,
+        "raw_factura": "HARINA 0000 1 KG."
+    },
+    {
+        "id": 62,
+        "codigo": "1062",
+        "nombre": "Harina 0000 Ultra Refinada",
+        "marca": "Cañuelas",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 46.42,
+        "descripcion": "Harina de trigo 0000 de máxima pureza para cocina y repostería.",
+        "stock": 100,
+        "raw_factura": "HARINA CAÑUELAS 0000 1 KG."
+    },
+    {
+        "id": 63,
+        "codigo": "1063",
+        "nombre": "Insecticida Exterminador Aerosol",
+        "marca": "Raid",
+        "categoria": "Limpieza",
+        "unidad_medida": "360 cc",
+        "precio_unitario": 170.07,
+        "descripcion": "Aerosol insecticida acción fulminante de amplio espectro.",
+        "stock": 100,
+        "raw_factura": "INS. RAID EXTERMINADOR 360 C.C."
+    },
+    {
+        "id": 64,
+        "codigo": "1064",
+        "nombre": "Insecticida Mata Moscas y Mosquitos Sin Olor",
+        "marca": "Raid",
+        "categoria": "Limpieza",
+        "unidad_medida": "420 cc",
+        "precio_unitario": 293.11,
+        "descripcion": "Aerosol mata moscas y mosquitos sin olor a base acuosa (360 cc + 60 cc gratis).",
+        "stock": 100,
+        "raw_factura": "INS. RAID MATA M/MOSQ.S/O 360C +60.GRATIS"
+    },
+    {
+        "id": 65,
+        "codigo": "1065",
+        "nombre": "Insecticida Max Mata Cucarachas Sin Olor",
+        "marca": "Raid",
+        "categoria": "Limpieza",
+        "unidad_medida": "360 cc",
+        "precio_unitario": 218.17,
+        "descripcion": "Aerosol exterminador de cucarachas y rastreros con acción residual sin olor.",
+        "stock": 100,
+        "raw_factura": "INS. RAID MAX MATA CUCARACHA S/OLOR 360C"
+    },
+    {
+        "id": 66,
+        "codigo": "1066",
+        "nombre": "Tabletas Repelente de Mosquitos",
+        "marca": "Raid",
+        "categoria": "Limpieza",
+        "unidad_medida": "Caja x 24",
+        "precio_unitario": 316.23,
+        "descripcion": "Tabletas termoevaporables para aparato eléctrico contra mosquitos.",
+        "stock": 100,
+        "raw_factura": "INS. TABLETAS RAID P/MOSQUITOS X 24"
+    },
+    {
+        "id": 67,
+        "codigo": "1067",
+        "nombre": "Jabón Líquido para Ropa en Cápsulas",
+        "marca": "Barón Rojo",
+        "categoria": "Limpieza",
+        "unidad_medida": "Caja de 30",
+        "precio_unitario": 328.03,
+        "descripcion": "Cápsulas de detergente líquido ultraconcentrado para lavarropas.",
+        "stock": 100,
+        "raw_factura": "JABON LIQ. BARON ROJO CAPSULAS X 30 UDS."
+    },
+    {
+        "id": 68,
+        "codigo": "1068",
+        "nombre": "Jabón en Polvo Bicarbonato y Limón",
+        "marca": "Granby",
+        "categoria": "Limpieza",
+        "unidad_medida": "3 Kg",
+        "precio_unitario": 203.07,
+        "descripcion": "Jabón en polvo con bicarbonato de sodio y frescura de limón.",
+        "stock": 100,
+        "raw_factura": "JABON POL. GRANBY BE LIMON 3 KGS."
+    },
+    {
+        "id": 69,
+        "codigo": "1069",
+        "nombre": "Jabón en Polvo Bicarbonato y Limón",
+        "marca": "Granby",
+        "categoria": "Limpieza",
+        "unidad_medida": "5 Kg",
+        "precio_unitario": 344.34,
+        "descripcion": "Jabón en polvo con bicarbonato y limón tamaño familiar económico.",
+        "stock": 100,
+        "raw_factura": "JABON POL. GRANBY BE LIMON 5 KGS."
+    },
+    {
+        "id": 70,
+        "codigo": "1070",
+        "nombre": "Jabón de Tocador en Barra Original Blanco",
+        "marca": "Dove",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "Pack de 6",
+        "precio_unitario": 263.3,
+        "descripcion": "Pack ahorro x 6 pastillas de jabón de tocador Dove con 1/4 crema humectante Original Blanco de 90 g c/u.",
+        "stock": 100,
+        "raw_factura": "JABON TOC. DOVE BLANCO 90G X 6"
+    },
+    {
+        "id": 71,
+        "codigo": "1071",
+        "nombre": "Jabón de Tocador en Barra Creamy Indulgence",
+        "marca": "Dove",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "Pack de 6",
+        "precio_unitario": 271.2,
+        "descripcion": "Pack ahorro x 6 pastillas de jabón de tocador Dove con 1/4 crema humectante Creamy Indulgence de 90 g c/u.",
+        "stock": 100,
+        "raw_factura": "JABON TOC. DOVE C.INDULGE. 90G X 6"
+    },
+    {
+        "id": 72,
+        "codigo": "1072",
+        "nombre": "Jabón de Tocador en Barra Manteca de Karité y Vainilla",
+        "marca": "Dove",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "Pack de 6",
+        "precio_unitario": 271.2,
+        "descripcion": "Pack ahorro x 6 pastillas de jabón de tocador Dove con 1/4 crema humectante Manteca de Karité y Vainilla de 90 g c/u.",
+        "stock": 100,
+        "raw_factura": "JABON TOC. DOVE KARITE (VAI) 90G X 6"
+    },
+    {
+        "id": 73,
+        "codigo": "1073",
+        "nombre": "Jabón de Tocador en Barra Leche de Coco y Jazmín",
+        "marca": "Dove",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "Pack de 6",
+        "precio_unitario": 271.2,
+        "descripcion": "Pack ahorro x 6 pastillas de jabón de tocador Dove con 1/4 crema humectante Leche de Coco y Jazmín de 90 g c/u.",
+        "stock": 100,
+        "raw_factura": "JABON TOC. DOVE L.COCO 90G X 6"
+    },
+    {
+        "id": 74,
+        "codigo": "1074",
+        "nombre": "Jabón de Tocador en Barra Revigorizante",
+        "marca": "Dove",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "Pack de 6",
+        "precio_unitario": 271.2,
+        "descripcion": "Pack ahorro x 6 pastillas de jabón de tocador Dove con 1/4 crema humectante Revigorizante de 90 g c/u.",
+        "stock": 100,
+        "raw_factura": "JABON TOC. DOVE REVIGO. 90G X 6"
+    },
+    {
+        "id": 75,
+        "codigo": "1075",
+        "nombre": "Leche Entera Ultra Pasteurizada",
+        "marca": "Blancanube",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 63.58,
+        "descripcion": "Leche entera ultra pasteurizada homogeneizada.",
+        "stock": 100,
+        "raw_factura": "LECHE BLANCANUBE ULTRA ENTERA 1 LT."
+    },
+    {
+        "id": 76,
+        "codigo": "1076",
+        "nombre": "Leche Entera Larga Vida UHT",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 59.71,
+        "descripcion": "Leche entera UHT larga vida homogeneizada envase Tetra Brik.",
+        "stock": 100,
+        "raw_factura": "LECHE CONAPROLE L/VIDA TETRA 1 LT."
+    },
+    {
+        "id": 77,
+        "codigo": "1077",
+        "nombre": "Leche Entera UHT en Botella",
+        "marca": "Parmalat",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 63.18,
+        "descripcion": "Leche entera UHT ultrapasteurizada botella plástica con tapa rosca.",
+        "stock": 100,
+        "raw_factura": "LECHE PARMALAT ENTERA UHT BOTELLA 1 LT."
+    },
+    {
+        "id": 78,
+        "codigo": "1078",
+        "nombre": "Limpiador Antigrasa Gatillo Pulverizador",
+        "marca": "CIF",
+        "categoria": "Limpieza",
+        "unidad_medida": "500 ml",
+        "precio_unitario": 198.64,
+        "descripcion": "Limpiador desengrasante profundo para cocina con gatillo pulverizador.",
+        "stock": 100,
+        "raw_factura": "LIMPIADOR CIF EXPERT ANTIGRASA C/P.500ML"
+    },
+    {
+        "id": 79,
+        "codigo": "1079",
+        "nombre": "Limpiador Antigrasa Repuesto Doypack",
+        "marca": "CIF",
+        "categoria": "Limpieza",
+        "unidad_medida": "900 ml",
+        "precio_unitario": 191.31,
+        "descripcion": "Limpiador desengrasante cocina repuesto económico Doypack.",
+        "stock": 100,
+        "raw_factura": "LIMPIADOR CIF EXPERT ANTIGRASA D.P.900ML"
+    },
+    {
+        "id": 80,
+        "codigo": "1080",
+        "nombre": "Limpiador de Pisos Profesional Lavanda",
+        "marca": "CIF",
+        "categoria": "Limpieza",
+        "unidad_medida": "Bidón de 5L",
+        "precio_unitario": 549.4,
+        "descripcion": "Limpiador líquido desodorizante para pisos línea profesional aroma Lavanda.",
+        "stock": 100,
+        "raw_factura": "LIMPIADOR CIF PISOS PROFES.LAVANDA 5 LTS"
+    },
+    {
+        "id": 81,
+        "codigo": "1081",
+        "nombre": "Limpiador Líquido Pisos Naranja Antibacterial",
+        "marca": "Fabuloso",
+        "categoria": "Limpieza",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 81.01,
+        "descripcion": "Limpiador multiuso desinfectante antibacterial aroma Energía Naranja.",
+        "stock": 100,
+        "raw_factura": "LIMPIADOR FABULOSO ENERGIA NAR.ANTB.1LT"
+    },
+    {
+        "id": 82,
+        "codigo": "1082",
+        "nombre": "Limpiador Desengrasante Cocina Doypack",
+        "marca": "Mr Músculo",
+        "categoria": "Limpieza",
+        "unidad_medida": "900 cc",
+        "precio_unitario": 173.75,
+        "descripcion": "Limpiador antigrasa para superficies de cocina repuesto económico Doypack.",
+        "stock": 100,
+        "raw_factura": "LIMPIADOR MR.MUSCULO ANT.COCINA 900C D.P"
+    },
+    {
+        "id": 83,
+        "codigo": "1083",
+        "nombre": "Limpiador Gel para Inodoros Floral",
+        "marca": "Pato",
+        "categoria": "Limpieza",
+        "unidad_medida": "500 ml",
+        "precio_unitario": 184.41,
+        "descripcion": "Gel desinfectante y antisarro para limpieza profunda de inodoro fragancia Floral.",
+        "stock": 100,
+        "raw_factura": "LIMPIADOR PATO P/INOD. GEL FLORAL 500 ML"
+    },
+    {
+        "id": 84,
+        "codigo": "1084",
+        "nombre": "Limpiador Gel para Inodoros Marina",
+        "marca": "Pato",
+        "categoria": "Limpieza",
+        "unidad_medida": "500 ml",
+        "precio_unitario": 217.22,
+        "descripcion": "Gel limpiador desinfectante antisarro para inodoros fragancia Brisa Marina.",
+        "stock": 100,
+        "raw_factura": "LIMPIADOR PATO P/INOD. MARINA 500 ML."
+    },
+    {
+        "id": 85,
+        "codigo": "1085",
+        "nombre": "Manteca Salada Extra",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "100 g",
+        "precio_unitario": 52.06,
+        "descripcion": "Manteca pasteurizada de crema fresca con sal.",
+        "stock": 100,
+        "raw_factura": "MANTECA CONAPROLE 100 GRS. SALADA"
+    },
+    {
+        "id": 86,
+        "codigo": "1086",
+        "nombre": "Manteca Sin Sal Clásica",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "200 g",
+        "precio_unitario": 96.12,
+        "descripcion": "Manteca pasteurizada natural pura de leche sin sal agregada.",
+        "stock": 100,
+        "raw_factura": "MANTECA CONAPROLE 200 GRS. SIN SAL"
+    },
+    {
+        "id": 87,
+        "codigo": "1087",
+        "nombre": "Mayonesa Clásica Doypack",
+        "marca": "Hellmann's",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 185.31,
+        "descripcion": "Mayonesa clásica tradicional cremosa y suave envase familiar Doypack 1000 cc.",
+        "stock": 100,
+        "raw_factura": "MAYONESA HELLMANN'S 1000 C.C."
+    },
+    {
+        "id": 88,
+        "codigo": "1088",
+        "nombre": "Mayonesa Tipo Casera con Limón",
+        "marca": "Hellmann's",
+        "categoria": "Almacén",
+        "unidad_medida": "445 g",
+        "precio_unitario": 136.56,
+        "descripcion": "Mayonesa receta tipo casera con toque de jugo de limón envase Squeeze.",
+        "stock": 100,
+        "raw_factura": "MAYONESA HELLMANN'S TIPO CASERA 445 GRS."
+    },
+    {
+        "id": 89,
+        "codigo": "1089",
+        "nombre": "Mostaza Tradicional de Mesa",
+        "marca": "Del Gaucho",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 101.6,
+        "descripcion": "Mostaza clásica de mesa suave y especiada pote plástico.",
+        "stock": 100,
+        "raw_factura": "MOSTAZA DEL GAUCHO 500 GRS."
+    },
+    {
+        "id": 90,
+        "codigo": "1090",
+        "nombre": "Mostaza Original Pote",
+        "marca": "Savora",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 336.4,
+        "descripcion": "Mostaza suave elaborada con 13 especias seleccionadas pote 1 Kg.",
+        "stock": 100,
+        "raw_factura": "MOSTAZA SAVORA 1 KG."
+    },
+    {
+        "id": 91,
+        "codigo": "1091",
+        "nombre": "Mostaza Original Doypack",
+        "marca": "Savora",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 255.45,
+        "descripcion": "Mostaza original elaborada con semillas de mostaza y especias Doypack.",
+        "stock": 100,
+        "raw_factura": "MOSTAZA SAVORA 500 GRS. DOY PACK"
+    },
+    {
+        "id": 92,
+        "codigo": "1092",
+        "nombre": "Detergente Lavavajillas Flores Blancas",
+        "marca": "Nevex",
+        "categoria": "Limpieza",
+        "unidad_medida": "1.25 L",
+        "precio_unitario": 137.62,
+        "descripcion": "Detergente lavavajillas líquido fórmula concentrada aroma Flores Blancas.",
+        "stock": 100,
+        "raw_factura": "OF. DETERGENTE NEVEX FL. BLANCAS 1,250 CC"
+    },
+    {
+        "id": 93,
+        "codigo": "1093",
+        "nombre": "Detergente Lavavajillas Té Verde",
+        "marca": "Nevex",
+        "categoria": "Limpieza",
+        "unidad_medida": "1.25 L",
+        "precio_unitario": 118.4,
+        "descripcion": "Detergente líquido concentrado con extracto de Té Verde desengrasante.",
+        "stock": 100,
+        "raw_factura": "OF. DETERGENTE NEVEX TE VERDE 1250 CC"
+    },
+    {
+        "id": 94,
+        "codigo": "1094",
+        "nombre": "Jabón Líquido para Ropa Matic Doypack",
+        "marca": "Nevex",
+        "categoria": "Limpieza",
+        "unidad_medida": "3 Lt",
+        "precio_unitario": 294.07,
+        "descripcion": "Jabón líquido para lavarropas automáticos Nevex Matic remueve manchas Doypack 3 Litros.",
+        "stock": 100,
+        "raw_factura": "OF. JABON LIQ. NEVEX MATIC 3 LT. D.PACK"
+    },
+    {
+        "id": 95,
+        "codigo": "1095",
+        "nombre": "Pan de Molde Blanco Lacteado",
+        "marca": "Bimbo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "540 g",
+        "precio_unitario": 133.53,
+        "descripcion": "Pan de molde lacteado clásico en rebanadas suaves y esponjosas.",
+        "stock": 100,
+        "raw_factura": "PAN BIMBO LACTEADO 540 GRS."
+    },
+    {
+        "id": 96,
+        "codigo": "1096",
+        "nombre": "Pan de Molde Vital Avena y Girasol con Masa Madre",
+        "marca": "Bimbo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "510 g",
+        "precio_unitario": 156.18,
+        "descripcion": "Pan integral nutritivo con copos de avena, semillas de girasol y masa madre.",
+        "stock": 100,
+        "raw_factura": "PAN BIMBO VITAL AVENA/GIRA.C/M.MADRE 510"
+    },
+    {
+        "id": 97,
+        "codigo": "1097",
+        "nombre": "Pan Lactal Blanco Tradicional",
+        "marca": "Los Sorchantes",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "480 g",
+        "precio_unitario": 104.96,
+        "descripcion": "Pan de molde lactal blanco en rebanadas tiernas Los Sorchantes.",
+        "stock": 100,
+        "raw_factura": "PAN LOS SORCHANTES LACTEADO 480 GRS."
+    },
+    {
+        "id": 98,
+        "codigo": "1098",
+        "nombre": "Pan Rallado Saborizado",
+        "marca": "Los Sorchantes",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "800 g",
+        "precio_unitario": 158.71,
+        "descripcion": "Pan rallado crocante con hierbas y especias para milanesas y rebozados.",
+        "stock": 100,
+        "raw_factura": "PAN RALLADO SORCHANTES SABORIZADO 800GRS"
+    },
+    {
+        "id": 99,
+        "codigo": "1099",
+        "nombre": "Papel Higiénico Doble Hoja",
+        "marca": "Sublime",
+        "categoria": "Limpieza",
+        "unidad_medida": "Pack x 10",
+        "precio_unitario": 187.75,
+        "descripcion": "Papel higiénico de textura suave doble hoja rollos de 30 metros paquete x 10 unidades.",
+        "stock": 100,
+        "raw_factura": "PAPEL HIG. SUBLIME D.HOJA 30MT. 12X10"
+    },
+    {
+        "id": 100,
+        "codigo": "1100",
+        "nombre": "Papel Higiénico Noble Doble Hoja",
+        "marca": "Sublime",
+        "categoria": "Limpieza",
+        "unidad_medida": "Pack x 24",
+        "precio_unitario": 363.98,
+        "descripcion": "Papel higiénico extra suave doble hoja rollos de 30 metros pack ahorro x 24 unidades.",
+        "stock": 100,
+        "raw_factura": "PAPEL HIG. SUBLIME NOBLE D.HOJA 30MT.X24"
+    },
+    {
+        "id": 101,
+        "codigo": "1101",
+        "nombre": "Papel Manteca para Cocina",
+        "marca": "Bricoflex",
+        "categoria": "Limpieza",
+        "unidad_medida": "Rollo 7.5m",
+        "precio_unitario": 72.73,
+        "descripcion": "Rollo de papel manteca antiadherente resistente al calor para horno y repostería 30 cm x 7.5 m.",
+        "stock": 100,
+        "raw_factura": "PAPEL MANTECA BRICOFLEX 30 CM.X 7,5 MT."
+    },
+    {
+        "id": 102,
+        "codigo": "1102",
+        "nombre": "Perfumador de Ropa y Telas Primavera Repuesto",
+        "marca": "Poett",
+        "categoria": "Limpieza",
+        "unidad_medida": "250 ml",
+        "precio_unitario": 202.0,
+        "descripcion": "Aromatizante y desodorizante para telas y ropa fragancia Primavera repuesto.",
+        "stock": 100,
+        "raw_factura": "PERFUMADOR DE ROPA POETT REP.PRIMA.250ML"
+    },
+    {
+        "id": 103,
+        "codigo": "1103",
+        "nombre": "Polenta Instantánea Mágica 1 Minuto",
+        "marca": "Puritas",
+        "categoria": "Almacén",
+        "unidad_medida": "450 g",
+        "precio_unitario": 33.97,
+        "descripcion": "Harina de maíz precocida instantánea cocción rápida en 1 minuto.",
+        "stock": 100,
+        "raw_factura": "POLENTA PURITAS 1 MINUTO 450 GRS."
+    },
+    {
+        "id": 104,
+        "codigo": "1104",
+        "nombre": "Polvo para Hornear",
+        "marca": "Royal",
+        "categoria": "Almacén",
+        "unidad_medida": "200 g",
+        "precio_unitario": 107.96,
+        "descripcion": "Levadura química leudante instantánea para tortas y masas.",
+        "stock": 100,
+        "raw_factura": "POLVO DE HORNEAR ROYAL 200 GRS."
+    },
+    {
+        "id": 105,
+        "codigo": "1105",
+        "nombre": "Lentejas Seleccionadas 5mm",
+        "marca": "Prodal",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 98.7,
+        "descripcion": "Lentejas secas seleccionadas tamaño 5 mm de cocción rápida.",
+        "stock": 100,
+        "raw_factura": "PRODAL LENTEJAS 5 M.M. 1 KG."
+    },
+    {
+        "id": 106,
+        "codigo": "1106",
+        "nombre": "Porotos Frutilla Seleccionados",
+        "marca": "Prodal",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 151.55,
+        "descripcion": "Porotos secos variedad frutilla de textura cremosa.",
+        "stock": 100,
+        "raw_factura": "PRODAL POROTOS FRUTILLA 1 KG."
+    },
+    {
+        "id": 107,
+        "codigo": "1107",
+        "nombre": "Porotos Negros Seleccionados",
+        "marca": "Prodal",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 127.89,
+        "descripcion": "Porotos negros secos seleccionados ideales para feijoada y guisos.",
+        "stock": 100,
+        "raw_factura": "PRODAL POROTOS NEGROS 1 KG."
+    },
+    {
+        "id": 108,
+        "codigo": "1108",
+        "nombre": "Pulpa de Tomate Tamizada",
+        "marca": "Conaprole",
+        "categoria": "Almacén",
+        "unidad_medida": "1030 g",
+        "precio_unitario": 82.99,
+        "descripcion": "Puré de tomate concentrado tamizado natural sin conservantes envase Tetra Brik.",
+        "stock": 100,
+        "raw_factura": "PULPA DE TOMATE CONAPROLE 1030 GRS."
+    },
+    {
+        "id": 109,
+        "codigo": "1109",
+        "nombre": "Puré de Papas en Copos",
+        "marca": "Demás",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 251.72,
+        "descripcion": "Copos de papa deshidratados para preparar puré instantáneo suave y cremoso.",
+        "stock": 100,
+        "raw_factura": "PURE DE PAPA DEMAS 1 KGS."
+    },
+    {
+        "id": 110,
+        "codigo": "1110",
+        "nombre": "Puré de Papas Instantáneo",
+        "marca": "Gourmet",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 241.0,
+        "descripcion": "Puré de papas deshidratado en copos calidad gourmet preparación rápida.",
+        "stock": 100,
+        "raw_factura": "PURE DE PAPAS GOURMET 1 KG."
+    },
+    {
+        "id": 111,
+        "codigo": "1111",
+        "nombre": "Queso Blanco Crema Clásico",
+        "marca": "Casancrem",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "500 g",
+        "precio_unitario": 196.05,
+        "descripcion": "Queso blanco untable tradicional consistencia cremosa y suave.",
+        "stock": 100,
+        "raw_factura": "QUESO CASANCREM CLASICO 500 GRS."
+    },
+    {
+        "id": 112,
+        "codigo": "1112",
+        "nombre": "Requesón Clásico Tradicional",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "250 g",
+        "precio_unitario": 121.78,
+        "descripcion": "Requesón untable clásico suave y nutritivo.",
+        "stock": 100,
+        "raw_factura": "QUESO CONAPROLE REQUESON 250 GRS."
+    },
+    {
+        "id": 113,
+        "codigo": "1113",
+        "nombre": "Queso Untable Cream Cheese",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "230 g",
+        "precio_unitario": 169.05,
+        "descripcion": "Queso untable tipo Cream Cheese ideal para postres y tostadas.",
+        "stock": 100,
+        "raw_factura": "QUESO CONAPROLE UNTABLE CREAM CHEES.230G"
+    },
+    {
+        "id": 114,
+        "codigo": "1114",
+        "nombre": "Queso Untable Sabor Cheddar",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "230 g",
+        "precio_unitario": 114.67,
+        "descripcion": "Queso fundido untable con intenso sabor a queso cheddar.",
+        "stock": 100,
+        "raw_factura": "QUESO CONAPROLE UNTABLE PRO.CHEDDAR 230G"
+    },
+    {
+        "id": 115,
+        "codigo": "1115",
+        "nombre": "Queso Blanco Crema Light",
+        "marca": "Philadelphia",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "150 g",
+        "precio_unitario": 151.19,
+        "descripcion": "Queso blanco untable original Philadelphia reducido en calorías.",
+        "stock": 100,
+        "raw_factura": "QUESO PHILADELPHIA CREMA LIGHT 150 GRS."
+    },
+    {
+        "id": 116,
+        "codigo": "1116",
+        "nombre": "Queso Blanco Crema Original",
+        "marca": "Philadelphia",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "150 g",
+        "precio_unitario": 146.01,
+        "descripcion": "Queso blanco crema original Philadelphia sabor auténtico y textura inigualable.",
+        "stock": 100,
+        "raw_factura": "QUESO PHILADELPHIA CREMA ORIGINAL 150 GR"
+    },
+    {
+        "id": 117,
+        "codigo": "1117",
+        "nombre": "Tortillas de Trigo Rapiditas Clásicas",
+        "marca": "Bimbo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "Pack de 10",
+        "precio_unitario": 112.77,
+        "descripcion": "Tortillas de harina de trigo para tacos, wraps y quesadillas paquete x 10 unidades.",
+        "stock": 100,
+        "raw_factura": "RAPIDITAS BIMBO REGULARES X 10 310 GRS."
+    },
+    {
+        "id": 118,
+        "codigo": "1118",
+        "nombre": "Jugo en Polvo Sin Azúcar Manzana Verde",
+        "marca": "Clight",
+        "categoria": "Bebidas",
+        "unidad_medida": "Sobre",
+        "precio_unitario": 24.5,
+        "descripcion": "Polvo para preparar jugo refrescante sabor Manzana Verde sin azúcar enriquecido con vitaminas.",
+        "stock": 100,
+        "raw_factura": "REFRESCO POLVO CLIGHT S/AZ. MANZANA VDE."
+    },
+    {
+        "id": 119,
+        "codigo": "1119",
+        "nombre": "Jugo en Polvo Sin Azúcar Naranja",
+        "marca": "Clight",
+        "categoria": "Bebidas",
+        "unidad_medida": "Sobre",
+        "precio_unitario": 24.5,
+        "descripcion": "Polvo para preparar jugo refrescante sabor Naranja sin azúcar enriquecido con vitaminas.",
+        "stock": 100,
+        "raw_factura": "REFRESCO POLVO CLIGHT S/AZ. NARANJA"
+    },
+    {
+        "id": 120,
+        "codigo": "1120",
+        "nombre": "Jugo en Polvo Sin Azúcar Pomelo Rosado",
+        "marca": "Clight",
+        "categoria": "Bebidas",
+        "unidad_medida": "Sobre",
+        "precio_unitario": 24.5,
+        "descripcion": "Polvo para preparar jugo refrescante sabor Pomelo Rosado sin azúcar enriquecido con vitaminas.",
+        "stock": 100,
+        "raw_factura": "REFRESCO POLVO CLIGHT S/AZ. POM.ROSA.NVO"
+    },
+    {
+        "id": 121,
+        "codigo": "1121",
+        "nombre": "Jugo en Polvo Sin Azúcar Naranja Dulce",
+        "marca": "Clight",
+        "categoria": "Bebidas",
+        "unidad_medida": "Sobre",
+        "precio_unitario": 24.5,
+        "descripcion": "Polvo para preparar jugo refrescante sabor Naranja Dulce sin azúcar enriquecido con vitaminas.",
+        "stock": 100,
+        "raw_factura": "REFRESCO POLVO CLIGHT S/AZ.NARANJA DULCE"
+    },
+    {
+        "id": 122,
+        "codigo": "1122",
+        "nombre": "Jugo en Polvo Naranja",
+        "marca": "Tang",
+        "categoria": "Bebidas",
+        "unidad_medida": "Sobre 1L",
+        "precio_unitario": 19.69,
+        "descripcion": "Polvo para preparar 1 Litro de jugo frutal sabor Naranja con vitamina C.",
+        "stock": 100,
+        "raw_factura": "REFRESCO POLVO TANG 1L. NARANJA"
+    },
+    {
+        "id": 123,
+        "codigo": "1123",
+        "nombre": "Jugo en Polvo Naranja Durazno",
+        "marca": "Tang",
+        "categoria": "Bebidas",
+        "unidad_medida": "Sobre 1L",
+        "precio_unitario": 19.69,
+        "descripcion": "Polvo para preparar 1 Litro de jugo frutal sabor Naranja Durazno con vitamina C.",
+        "stock": 100,
+        "raw_factura": "REFRESCO POLVO TANG 1L. NARANJA-DURAZNO"
+    },
+    {
+        "id": 124,
+        "codigo": "1124",
+        "nombre": "Jugo en Polvo Naranja Mango",
+        "marca": "Tang",
+        "categoria": "Bebidas",
+        "unidad_medida": "Sobre 1L",
+        "precio_unitario": 19.69,
+        "descripcion": "Polvo para preparar 1 Litro de jugo frutal sabor Naranja Mango con vitamina C.",
+        "stock": 100,
+        "raw_factura": "REFRESCO POLVO TANG 1L. NARANJA-MANGO"
+    },
+    {
+        "id": 125,
+        "codigo": "1125",
+        "nombre": "Sal Fina Corrediza",
+        "marca": "Diamante",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 39.96,
+        "descripcion": "Sal común de mesa fina enriquecida con yodo y flúor.",
+        "stock": 100,
+        "raw_factura": "SAL FINA DIAMANTE 500 GRS."
+    },
+    {
+        "id": 126,
+        "codigo": "1126",
+        "nombre": "Sal Fina Yodofluorada",
+        "marca": "Sek",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 44.25,
+        "descripcion": "Sal de mesa fina purificada con flúor y yodo.",
+        "stock": 100,
+        "raw_factura": "SAL SEK FINA YODOFLUORADA 500 GRS."
+    },
+    {
+        "id": 127,
+        "codigo": "1127",
+        "nombre": "Sal Gruesa Yodofluorada",
+        "marca": "Sek",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 44.25,
+        "descripcion": "Sal marina gruesa para carnes y cocina con yodo y flúor.",
+        "stock": 100,
+        "raw_factura": "SAL SEK GRUESA YODOFLUORADA 500 GRS."
+    },
+    {
+        "id": 128,
+        "codigo": "1128",
+        "nombre": "Salsa de Soja Tradicional",
+        "marca": "Kyoto",
+        "categoria": "Almacén",
+        "unidad_medida": "500 cc",
+        "precio_unitario": 272.69,
+        "descripcion": "Salsa de soja fermentada clásica para marinados y aderezos.",
+        "stock": 100,
+        "raw_factura": "SALSA DE SOJA KYOTO 500 C.C."
+    },
+    {
+        "id": 129,
+        "codigo": "1129",
+        "nombre": "Salsa Ketchup Clásica Squeeze",
+        "marca": "Hellmann's",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 253.89,
+        "descripcion": "Ketchup elaborado con tomates maduros seleccionados envase Squeeze.",
+        "stock": 100,
+        "raw_factura": "SALSA KETCHUP HELLMANN'S 1 KG."
+    },
+    {
+        "id": 130,
+        "codigo": "1130",
+        "nombre": "Salsa Ketchup Clásica Doypack",
+        "marca": "Hellmann's",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 126.75,
+        "descripcion": "Ketchup clásico de tomates frescos en práctico envase Doypack.",
+        "stock": 100,
+        "raw_factura": "SALSA KETCHUP HELLMANN'S 500 GRS. D PACK"
+    },
+    {
+        "id": 131,
+        "codigo": "1131",
+        "nombre": "Saborizador en Cubos Ajil",
+        "marca": "Monte Cudine",
+        "categoria": "Almacén",
+        "unidad_medida": "Caja x 4",
+        "precio_unitario": 47.13,
+        "descripcion": "Cubitos concentrados sazonadores para carnes, pastas y arroces sabor Ajil.",
+        "stock": 100,
+        "raw_factura": "SAZON MONTE CUDINE CUB.AJIL 9 GRS.X 4"
+    },
+    {
+        "id": 132,
+        "codigo": "1132",
+        "nombre": "Saborizador en Cubos Panceta y Hierbas",
+        "marca": "Monte Cudine",
+        "categoria": "Almacén",
+        "unidad_medida": "Caja x 4",
+        "precio_unitario": 47.13,
+        "descripcion": "Cubitos concentrados sazonadores para carnes, pastas y arroces sabor Panceta y Hierbas.",
+        "stock": 100,
+        "raw_factura": "SAZON MONTE CUDINE CUB.PANCE/HIER.9GR.X4"
+    },
+    {
+        "id": 133,
+        "codigo": "1133",
+        "nombre": "Saborizador en Cubos Queso",
+        "marca": "Monte Cudine",
+        "categoria": "Almacén",
+        "unidad_medida": "Caja x 4",
+        "precio_unitario": 49.28,
+        "descripcion": "Cubitos concentrados sazonadores para carnes, pastas y arroces sabor Queso.",
+        "stock": 100,
+        "raw_factura": "SAZON MONTE CUDINE CUB.QUESO 9 GRS.X 4"
+    },
+    {
+        "id": 134,
+        "codigo": "1134",
+        "nombre": "Suavizante para Ropa Brisa Elegante",
+        "marca": "Comfort",
+        "categoria": "Limpieza",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 273.19,
+        "descripcion": "Suavizante de ropa concentrado fragancia duradera y toque suave Brisa Elegante.",
+        "stock": 100,
+        "raw_factura": "SUAVIZANTE COMFORT BRISA ELEG. 1 LT."
+    },
+    {
+        "id": 135,
+        "codigo": "1135",
+        "nombre": "Suavizante para Ropa Energía Floral",
+        "marca": "Comfort",
+        "categoria": "Limpieza",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 287.88,
+        "descripcion": "Suavizante de ropa concentrado fragancia duradera y toque suave Energía Floral.",
+        "stock": 100,
+        "raw_factura": "SUAVIZANTE COMFORT ENERGIA FLORAL 1 LT."
+    },
+    {
+        "id": 136,
+        "codigo": "1136",
+        "nombre": "Suavizante para Ropa Frescor Intenso",
+        "marca": "Comfort",
+        "categoria": "Limpieza",
+        "unidad_medida": "1 Lt",
+        "precio_unitario": 269.15,
+        "descripcion": "Suavizante de ropa concentrado fragancia duradera y toque suave Frescor Intenso.",
+        "stock": 100,
+        "raw_factura": "SUAVIZANTE COMFORT FRESCOR INTENSO 1 LT."
+    },
+    {
+        "id": 137,
+        "codigo": "1137",
+        "nombre": "Suavizante Concentrado Amanecer",
+        "marca": "Downy",
+        "categoria": "Limpieza",
+        "unidad_medida": "730 ml",
+        "precio_unitario": 163.24,
+        "descripcion": "Suavizante para ropa ultraconcentrado Downy aroma Amanecer microcápsulas de perfume.",
+        "stock": 100,
+        "raw_factura": "SUAVIZANTE DOWNY CONC. AMANECER 730 ML."
+    },
+    {
+        "id": 138,
+        "codigo": "1138",
+        "nombre": "Suavizante Concentrado Floral",
+        "marca": "Downy",
+        "categoria": "Limpieza",
+        "unidad_medida": "800 ml",
+        "precio_unitario": 163.24,
+        "descripcion": "Suavizante para ropa ultraconcentrado Downy aroma Floral microcápsulas de perfume.",
+        "stock": 100,
+        "raw_factura": "SUAVIZANTE DOWNY CONC. FLORAL 800 ML."
+    },
+    {
+        "id": 139,
+        "codigo": "1139",
+        "nombre": "Suavizante Concentrado Pureza Silvestre",
+        "marca": "Downy",
+        "categoria": "Limpieza",
+        "unidad_medida": "730 ml",
+        "precio_unitario": 163.24,
+        "descripcion": "Suavizante para ropa ultraconcentrado Downy aroma Pureza Silvestre microcápsulas de perfume.",
+        "stock": 100,
+        "raw_factura": "SUAVIZANTE DOWNY CONC. PUREZA SIL.730 ML"
+    },
+    {
+        "id": 140,
+        "codigo": "1140",
+        "nombre": "Talco Corporal Perfumado",
+        "marca": "Dr. Selby",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "250 g",
+        "precio_unitario": 155.83,
+        "descripcion": "Talco desodorante corporal de extrema suavidad con agradable fragancia talquera.",
+        "stock": 100,
+        "raw_factura": "TALCO DR.SELBY P/CUERPO 250 GRS."
+    },
+    {
+        "id": 141,
+        "codigo": "1141",
+        "nombre": "Talco para Pies Azul Clásico",
+        "marca": "Xanapié",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "200 g",
+        "precio_unitario": 149.88,
+        "descripcion": "Talco desodorante y antibacteriano para pies y calzado Xanapié Azul Clásico.",
+        "stock": 100,
+        "raw_factura": "TALCO XANAPIE AZUL C/PROMO 200 GRS."
+    },
+    {
+        "id": 142,
+        "codigo": "1142",
+        "nombre": "Talco para Pies Azul Repuesto Económico",
+        "marca": "Xanapié",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "180 g",
+        "precio_unitario": 98.91,
+        "descripcion": "Talco desodorante y antibacteriano para pies y calzado Xanapié Azul Repuesto Económico.",
+        "stock": 100,
+        "raw_factura": "TALCO XANAPIE AZUL SPECIAL REPUESTO 180G"
+    },
+    {
+        "id": 143,
+        "codigo": "1143",
+        "nombre": "Talco para Pies Rojo Fórmula Fuerte",
+        "marca": "Xanapié",
+        "categoria": "Cuidado Personal",
+        "unidad_medida": "60 g",
+        "precio_unitario": 36.73,
+        "descripcion": "Talco desodorante y antibacteriano para pies y calzado Xanapié Rojo Fórmula Fuerte.",
+        "stock": 100,
+        "raw_factura": "TALCO XANAPIE ROJO BOLSA REPUESTO 60 GRS"
+    },
+    {
+        "id": 144,
+        "codigo": "1144",
+        "nombre": "Toallas de Cocina Gigante Doble Hoja",
+        "marca": "Nova",
+        "categoria": "Limpieza",
+        "unidad_medida": "Rollo 100m",
+        "precio_unitario": 328.56,
+        "descripcion": "Rollo gigante de papel absorbente de cocina doble hoja 100 metros.",
+        "stock": 100,
+        "raw_factura": "TOALLAS COCINA NOVA GIGANTE DH 100 MT."
+    },
+    {
+        "id": 145,
+        "codigo": "1145",
+        "nombre": "Toallas de Cocina Megarollo",
+        "marca": "Nova",
+        "categoria": "Limpieza",
+        "unidad_medida": "Rollo 250 paños",
+        "precio_unitario": 74.24,
+        "descripcion": "Megarollo de toallas de papel absorbente para cocina 250 paños precortados.",
+        "stock": 100,
+        "raw_factura": "TOALLAS COCINA NOVA MEGAROLLO 250PAÑ.X 1"
+    },
+    {
+        "id": 146,
+        "codigo": "1146",
+        "nombre": "Toallas de Cocina Ultra Gigante",
+        "marca": "Nova",
+        "categoria": "Limpieza",
+        "unidad_medida": "Rollo 70m",
+        "precio_unitario": 248.48,
+        "descripcion": "Rollo de cocina ultra absorbente de alta resistencia 70 metros.",
+        "stock": 100,
+        "raw_factura": "TOALLAS COCINA NOVA ULTRA GIGANTE 70 MT."
+    },
+    {
+        "id": 147,
+        "codigo": "1147",
+        "nombre": "Toallas de Cocina Clásicas",
+        "marca": "Sussex",
+        "categoria": "Limpieza",
+        "unidad_medida": "Pack x 2",
+        "precio_unitario": 65.6,
+        "descripcion": "Pack duplo de toallas de papel absorbente para cocina 100 paños x 2 rollos.",
+        "stock": 100,
+        "raw_factura": "TOALLAS COCINA SUSSEX/NOVA CLA.100PAÑ.X2"
+    },
+    {
+        "id": 148,
+        "codigo": "1148",
+        "nombre": "Esencia de Vainilla Repostería",
+        "marca": "Monte Cudine",
+        "categoria": "Almacén",
+        "unidad_medida": "250 cc",
+        "precio_unitario": 267.93,
+        "descripcion": "Esencia aromatizante de vainilla para postres, bizcochuelos y repostería.",
+        "stock": 100,
+        "raw_factura": "VAINILLA MONTE CUDINE 250 C.C."
+    },
+    {
+        "id": 149,
+        "codigo": "1149",
+        "nombre": "Galletitas Vainillas Clásicas",
+        "marca": "Bimbo",
+        "categoria": "Panadería y Galletitas",
+        "unidad_medida": "444 g",
+        "precio_unitario": 240.41,
+        "descripcion": "Vainillas esponjosas y crocantes con azúcar cristal.",
+        "stock": 100,
+        "raw_factura": "VAINILLAS BIMBO 444 GRS."
+    },
+    {
+        "id": 150,
+        "codigo": "1150",
+        "nombre": "Cacao en Polvo Fortificado",
+        "marca": "Vascolet",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 379.47,
+        "descripcion": "Alimento chocolatado en polvo fortificado con vitaminas y minerales.",
+        "stock": 100,
+        "raw_factura": "VASCOLET 1 KG."
+    },
+    {
+        "id": 151,
+        "codigo": "1151",
+        "nombre": "Cacao en Polvo Fortificado",
+        "marca": "Vascolet",
+        "categoria": "Almacén",
+        "unidad_medida": "500 g",
+        "precio_unitario": 238.76,
+        "descripcion": "Alimento chocolatado en polvo instantáneo para leche.",
+        "stock": 100,
+        "raw_factura": "VASCOLET 500 GRS."
+    },
+    {
+        "id": 152,
+        "codigo": "1152",
+        "nombre": "Yerba Mate Serena",
+        "marca": "Canarias",
+        "categoria": "Almacén",
+        "unidad_medida": "1 Kg",
+        "precio_unitario": 211.29,
+        "descripcion": "Yerba mate uruguaya compuesta con toronjil, mburucuyá, menta y tilo.",
+        "stock": 100,
+        "raw_factura": "YERBA CANARIAS SERENA 1 KG."
+    },
+    {
+        "id": 153,
+        "codigo": "1153",
+        "nombre": "Yogur Bebible Conamigos Durazno",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "185 g",
+        "precio_unitario": 39.08,
+        "descripcion": "Yogur descremado bebible endulzado sabor Durazno botellita 185 g.",
+        "stock": 100,
+        "raw_factura": "YOGUR CONAPROLE CONAMIGOS BEB.DURAZ.185G"
+    },
+    {
+        "id": 154,
+        "codigo": "1154",
+        "nombre": "Yogur Bebible Conamigos Frutilla",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "185 g",
+        "precio_unitario": 39.08,
+        "descripcion": "Yogur descremado bebible endulzado sabor Frutilla botellita 185 g.",
+        "stock": 100,
+        "raw_factura": "YOGUR CONAPROLE CONAMIGOS BEB.FRUT.185GR"
+    },
+    {
+        "id": 155,
+        "codigo": "1155",
+        "nombre": "Yogur Bebible Yoprole Durazno",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "185 g",
+        "precio_unitario": 36.82,
+        "descripcion": "Yogur descremado bebible endulzado sabor Durazno botellita 185 g.",
+        "stock": 100,
+        "raw_factura": "YOGUR CONAPROLE YOPROLE BEB.DURAZNO 185G"
+    },
+    {
+        "id": 156,
+        "codigo": "1156",
+        "nombre": "Yogur Bebible Yoprole Frutilla",
+        "marca": "Conaprole",
+        "categoria": "Lácteos y Quesos",
+        "unidad_medida": "185 g",
+        "precio_unitario": 36.82,
+        "descripcion": "Yogur descremado bebible endulzado sabor Frutilla botellita 185 g.",
+        "stock": 100,
+        "raw_factura": "YOGUR CONAPROLE YOPROLE BEB.FRUTI.185GRS"
+    }
 ]

@@ -202,7 +202,26 @@ jobs:
             # contener archivos que NO están en git y deben preservarse:
             #   .env.prod, data/mysql/, mediafiles/ (uploads)
             # `git clone` falla si el destino no está vacío.
-            mkdir -p "$DEPLOY_PATH"
+            # El directorio puede existir y pertenecer a root (creado con
+            # `sudo mkdir`), en cuyo caso `git init` falla con "Permission denied".
+            # Se intenta corregir la propiedad y, si no se puede, se aborta con
+            # una instrucción concreta en lugar de un error opaco.
+            if [ ! -d "$DEPLOY_PATH" ]; then
+              mkdir -p "$DEPLOY_PATH" 2>/dev/null || sudo mkdir -p "$DEPLOY_PATH" || true
+            fi
+
+            if [ ! -w "$DEPLOY_PATH" ]; then
+              echo "==> $DEPLOY_PATH no es escribible por $(whoami); ajustando propiedad"
+              sudo chown -R "$(id -u):$(id -g)" "$DEPLOY_PATH" 2>/dev/null || true
+            fi
+
+            if [ ! -w "$DEPLOY_PATH" ]; then
+              echo "ERROR: $DEPLOY_PATH no es escribible por el usuario $(whoami)." >&2
+              echo "       Ejecutá en el VPS:" >&2
+              echo "         sudo chown -R $(whoami):$(whoami) $DEPLOY_PATH" >&2
+              exit 1
+            fi
+
             cd "$DEPLOY_PATH"
 
             if [ ! -d .git ]; then
