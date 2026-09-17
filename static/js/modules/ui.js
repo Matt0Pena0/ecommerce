@@ -71,7 +71,7 @@ export const UIRenderer = {
 
     getAdminControls(p) {
             // Generamos la URL de borrado. 
-            const deleteUrl = `/productos/eliminar/${p.id}/api`; 
+            const deleteUrl = `/api/productos/${p.id}/`; 
 
             return `
                 <div class="card-footer d-flex justify-content-between gap-2 p-0 mt-2">
