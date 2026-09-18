@@ -32,9 +32,8 @@
           <th>
             Cantidad x 
             Producto  
-            Marca -
-            Unidad - 
-            Descripcion
+            Marca | 
+            Unidad
           </th>
         </tr>
       </thead>
@@ -46,11 +45,8 @@
             {% if item.marca %}
             {{ item.marca }}
             {% endif %}
-            {% if item.unidad %} - 
+            {% if item.unidad %} |  
             {{ item.unidad }}
-            {% endif %}
-            {% if item.descripcion %}
-            {{ item.descripcion }}
             {% endif %}
           </td>
         </tr>

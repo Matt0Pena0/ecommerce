@@ -6,6 +6,7 @@ class OrdenSerializer:
     """Convierte una Orden en una lista de dicts listos para exportar, optimizando queries."""
 
     @staticmethod
+    # Fix: Revisar por qué _safe no se está aplicando correctamente.
     def _safe(value):
         """Convierte None o 'Null' en '', y lo devuelve como str."""
         if value is None or str(value).strip().lower() == "null":

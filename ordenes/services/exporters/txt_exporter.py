@@ -10,11 +10,14 @@ class TxtExporter:
         items_list = []
         for item in items:
             # Agrega `cantidad x nombre marca` ya serializados.
-            line = f"{item.get('cantidad')} x {item.get('nombre')} {item.get('marca')}"
+            line = f"{item.get('cantidad')} x {item.get('nombre')}"
+
+            # Si hay marca, se agrega.
+            line += f" {item.get('marca')}" if item.get('marca') else ""
 
             # Si hay undida y/o descripcion, se agregan.
-            if item.get('unidad') or item.get('descripcion'):
-                line += f" - {item.get('unidad')} {item.get('descripcion')}"
+            line += f" | {item.get('unidad')}" if item.get('unidad') else ""
+            # line += f" - {item.get('descripcion')}" if item.get('descripcion') else ""
 
             # Poblar la lista de items
             items_list.append(line)
