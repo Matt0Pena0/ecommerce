@@ -5,6 +5,20 @@ export const CONFIG = {
     isSuperuser: document.getElementById('productos-container')?.dataset.isSuperuser === 'true'
 };
 
+/**
+ * Normaliza un valor monetario a 2 decimales.
+ *
+ * La API es inconsistente por diseño de DRF:
+ *  - `precio_unitario` es un DecimalField del modelo -> llega como string ("12.50")
+ *  - `subtotal` y `total_dinero` son SerializerMethodField que devuelven Decimal,
+ *    y el JSONEncoder de DRF los castea a float -> llegan como number (12.5)
+ * Number() unifica ambos casos y toFixed(2) recupera el decimal perdido.
+ */
+export const formatMoney = (value) => {
+    const n = Number(value);
+    return Number.isFinite(n) ? n.toFixed(2) : '0.00';
+};
+
 export const getCookie = (name) => {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

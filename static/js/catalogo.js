@@ -143,7 +143,11 @@ const App = {
             showMessage(data.message, 'success');
             UIRenderer.updateCardState(form, nuevaCantidad);
             
-            document.dispatchEvent(new Event('cart:updated'));
+            // El endpoint ya nos devolvió el total, lo mandamos en el payload
+            // para que el badge no tenga que consultarlo de nuevo
+            document.dispatchEvent(new CustomEvent('cart:updated', {
+                detail: { totalUnidades: data.nuevo_total_productos }
+            }));
 
         } catch (error) {
             showMessage(error.message, 'error');

@@ -20,20 +20,35 @@ const CartApp = {
             if (!data.items || data.items.length === 0) {
                 this.container.innerHTML = '<tr><td colspan="9" class="text-center py-5">Tu carrito está vacío.</td></tr>';
                 document.getElementById('cart-summary').classList.add('d-none');
+                // Avisamos igual: si se borró el último item, el badge tiene que llegar a 0
+                this.emitCartUpdated(0, 0);
                 return;
             }
 
             // Pintamos las filas usando el UIRenderer
             this.container.innerHTML = data.items.map(item => UIRenderer.getCartRowHTML(item)).join('');
-            
-            // Actualizamos el total general
-            document.dispatchEvent(new Event('cart:updated'));
+
+            // El total ya vino en esta misma respuesta, no hace falta otra request
+            UIRenderer.updateCartTotal(data.total_dinero);
             document.getElementById('cart-summary').classList.remove('d-none');
+
+            this.emitCartUpdated(data.total_unidades, data.total_dinero);
 
         } catch (error) {
             console.error(error);
             this.container.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error al cargar el carrito.</td></tr>';
         }
+    },
+
+    /**
+     * Publica el evento global del carrito con los totales ya calculados.
+     * Al mandarlos en `detail`, los suscriptores (ej: el badge del navbar) no
+     * necesitan volver a consultar la API para saber cómo quedó el carrito.
+     */
+    emitCartUpdated(totalUnidades, totalDinero) {
+        document.dispatchEvent(new CustomEvent('cart:updated', {
+            detail: { totalUnidades, totalDinero }
+        }));
     },
 
     bindEvents() {

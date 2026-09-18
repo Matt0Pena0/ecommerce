@@ -1,4 +1,4 @@
-import { CONFIG } from './utils.js';
+import { CONFIG, formatMoney } from './utils.js';
 
 
 export const UIRenderer = {
@@ -115,9 +115,19 @@ export const UIRenderer = {
         }
     },
 
+    // Actualiza solo el total general, sin repintar la tabla
+    updateCartTotal(totalDinero) {
+        const el = document.getElementById('cart-total-price');
+        if (!el) return; // No estamos en la página del carrito
+        el.textContent = `$${formatMoney(totalDinero)}`;
+    },
+
     getCartRowHTML(item) {
         const p = item.producto; // Gracias al nuevo serializer
         const subtotal = item.subtotal; 
+        const unidadNombre = p.unidad_nombre && p.unidad_nombre !== 'Null' && p.unidad_nombre !== 'unidad'
+            ? p.unidad_nombre
+            : 'Unid.';
 
         return `
             <tr data-producto-id="${p.id}">
@@ -125,7 +135,7 @@ export const UIRenderer = {
                 
                 <td>${p.marca_nombre || '-'}</td>
                 
-                <td>${p.unidad_nombre || 'Unid.'}</td>
+                <td>${unidadNombre}</td>
                 
                 <td title="${p.descripcion || ''}" class="text-truncate" style="max-width: 150px;">
                 ${p.descripcion || '-'}
@@ -141,9 +151,9 @@ export const UIRenderer = {
                 </div>
                 </td>
                 
-                <td>$${p.precio_unitario}</td>
+                <td>$${formatMoney(p.precio_unitario)}</td>
                 
-                <td class="fw-bold">$${subtotal}</td>
+                <td class="fw-bold">$${formatMoney(subtotal)}</td>
                 
                 <td>
                     <button type="button" 
